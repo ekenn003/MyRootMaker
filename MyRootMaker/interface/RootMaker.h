@@ -1,3 +1,4 @@
+// second line of test comments here
 #ifndef RootMaker_h
 #define RootMaker_h
 #include "FWCore/Framework/interface/MakerMacros.h"
