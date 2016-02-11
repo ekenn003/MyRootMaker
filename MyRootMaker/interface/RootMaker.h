@@ -177,8 +177,6 @@ using namespace pat;
 #define M_photonmaxcount 500
 #define M_conversionmaxcount 500
 #define M_jetmaxcount 500
-#define M_musecverticesmaxcount 500
-#define M_secverticesmaxcount 1000
 #define M_genallparticlesmaxcount 10000
 #define M_genparticlesmaxcount 500
 #define M_genjetmaxcount 500
@@ -229,21 +227,12 @@ class RootMaker : public edm::EDAnalyzer {
     edm::EDGetTokenT<edm::SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit>>> ebRecHitsToken_;
     edm::EDGetTokenT<edm::SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit>>> eeRecHitsToken_;
     edm::EDGetTokenT<edm::SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit>>> esRecHitsToken_;
-    // AOD tokens
     edm::EDGetTokenT<reco::TrackCollection> recoTracksToken_;
-    edm::EDGetTokenT<reco::MuonCollection> recoMuonsToken_;
-    edm::EDGetTokenT<reco::GsfElectronCollection> recoElectronsToken_;
-    edm::EDGetTokenT<reco::PhotonCollection> recoPhotonsToken_;
-    edm::EDGetTokenT<reco::PFTauCollection> recoTausToken_;
     edm::EDGetTokenT<pat::JetCollection> tauJetsToken_;
-    edm::EDGetTokenT<pat::JetCollection> ak4caloJetsToken_;
-    edm::EDGetTokenT<pat::JetCollection> ak4jptJetsToken_;
-    edm::EDGetTokenT<reco::PFJetCollection> ak4pfJetsToken_;
-    edm::EDGetTokenT<reco::PFCandidateCollection> recoPFCandsToken_;
-    edm::EDGetTokenT<reco::PFMETCollection> recoMetToken_;
-    edm::EDGetTokenT<reco::PFMETCollection> recoMetT1Token_;
-    edm::EDGetTokenT<reco::PFMETCollection> recoMetT1T0Token_;
-    // miniAOD tokens
+    //edm::EDGetTokenT<reco::PFCandidateCollection> recoPFCandsToken_;
+    //edm::EDGetTokenT<reco::PFMETCollection> recoMetToken_;
+    //edm::EDGetTokenT<reco::PFMETCollection> recoMetT1Token_;
+    //edm::EDGetTokenT<reco::PFMETCollection> recoMetT1T0Token_;
     edm::EDGetTokenT<pat::PackedCandidateCollection> lostTracksToken_;
     edm::EDGetTokenT<reco::TrackCollection> unpackedTracksToken_;
     edm::EDGetTokenT<pat::MuonCollection> patMuonsToken_;
@@ -282,21 +271,12 @@ class RootMaker : public edm::EDAnalyzer {
 
     bool AddTracks(const edm::Event &iEvent);
     bool AddElectrons(const edm::Event &iEvent);
-    bool AddPatElectrons(const edm::Event &iEvent);
     bool AddMuons(const edm::Event &iEvent);
-    bool AddPatMuons(const edm::Event &iEvent);
     bool AddPhotons(const edm::Event &iEvent, const edm::EventSetup &iSetup);
-    bool AddPatPhotons(const edm::Event &iEvent, const edm::EventSetup &iSetup);
     bool AddAllConversions(const edm::Event &iEvent);
     bool AddTaus(const edm::Event &iEvent);
-    bool AddPatTaus(const edm::Event &iEvent);
-    bool AddAK4CaloJets(const edm::Event &iEvent, const edm::EventSetup &iSetup);
-    bool AddAK4JPTJets(const edm::Event &iEvent, const edm::EventSetup &iSetup);
-    bool AddAK4PFJets(const edm::Event &iEvent, const edm::EventSetup &iSetup);
     bool AddAK4PFCHSJets(const edm::Event &iEvent, const edm::EventSetup &iSetup);
     bool AddAK4PFCHSPuppiJets(const edm::Event &iEvent, const edm::EventSetup &iSetup);
-    bool AddVertices(const edm::Event &iEvent);
-    bool AddMuVertices(const edm::Event &iEvent);
     bool AddConvPhotons(const edm::Event &iEvent);
     bool AddCaloPhotons(const edm::Event &iEvent);
     bool foundCompatibleInnerHits(const reco::HitPattern &hitPatA, const reco::HitPattern &hitPatB);
@@ -310,7 +290,6 @@ class RootMaker : public edm::EDAnalyzer {
         float allb;
         float chargedfractionmv;
     };
-    JetShape getJetShape(const PFJet &jet);
     JetShape getJetShape(const pat::Jet &jet);
     JetShape getSlimmedJetShape(const pat::Jet &jet);
     UInt_t GenParticleInfo(const GenParticle *particle);
@@ -323,7 +302,6 @@ class RootMaker : public edm::EDAnalyzer {
     Int_t getSuperClusterEl(const SuperClusterRef &A);
     Int_t getPrimVertex(const pat::PackedCandidate *con);
     Int_t getPrimVertex(const Track &trk);
-    //Int_t getSuperCluster(const Candidate& A);
 
     TTree *tree;
     TTree *lumitree;
@@ -331,7 +309,6 @@ class RootMaker : public edm::EDAnalyzer {
     TH1D *drhist;
 
     //Configuration
-    bool cisMiniAOD;
     bool cisMC;
     bool cdebug;
     bool cgen;
@@ -351,15 +328,10 @@ class RootMaker : public edm::EDAnalyzer {
     bool crecelectron;
     bool crecphoton;
     bool crecallconversion;
-    bool crecak4calojet;
-    bool crecak4jptjet;
-    bool crecak4pfjet;
     bool crecak4pfchsjet;
     bool crecak4pfchspuppijet;
     bool crecjettrigger;
     bool crecpfmet;
-    bool crecsecvertices;
-    bool crecmusecvertices;
     vector<string> cHLTriggerNamesSelection;
     string cTriggerProcess;
 
@@ -390,14 +362,6 @@ class RootMaker : public edm::EDAnalyzer {
     int cPhotonNum;
     double cPhotonFilterPtMin;
     double cPhotonFilterEtaMax;
-    double cAK4CaloFilterPtMin;
-    double cAK4CaloPtMin;
-    double cAK4CaloEtaMax;
-    int cAK4CaloNum;
-    double cAK4JPTFilterPtMin;
-    double cAK4JPTPtMin;
-    double cAK4JPTEtaMax;
-    int cAK4JPTNum;
     double cAK4PFCHSFilterPtMin;
     double cAK4PFCHSPtMin;
     double cAK4PFCHSEtaMax;
@@ -406,10 +370,6 @@ class RootMaker : public edm::EDAnalyzer {
     double cAK4PFCHSPuppiPtMin;
     double cAK4PFCHSPuppiEtaMax;
     int cAK4PFCHSPuppiNum;
-    double cAK4PFFilterPtMin;
-    double cAK4PFPtMin;
-    double cAK4PFEtaMax;
-    int cAK4PFNum;
     string cJetCorrection;
     vector<string> cJetHLTriggerMatching;
 
@@ -632,77 +592,6 @@ class RootMaker : public edm::EDAnalyzer {
     UInt_t muon_trigger[M_muonmaxcount];
     UInt_t muon_trackermuonquality[M_muonmaxcount];
 
-    UInt_t ak4calojet_count;
-    Float_t ak4calojet_e[M_jetmaxcount];
-    Float_t ak4calojet_px[M_jetmaxcount];
-    Float_t ak4calojet_py[M_jetmaxcount];
-    Float_t ak4calojet_pz[M_jetmaxcount];
-    Float_t ak4calojet_hadronicenergy[M_jetmaxcount];
-    Float_t ak4calojet_emenergy[M_jetmaxcount];
-    Float_t ak4calojet_energycorr[M_jetmaxcount];
-    Float_t ak4calojet_energycorrl7uds[M_jetmaxcount];
-    Float_t ak4calojet_energycorrl7bottom[M_jetmaxcount];
-    Float_t ak4calojet_fhpd[M_jetmaxcount];
-    Float_t ak4calojet_restrictedemf[M_jetmaxcount];
-    Float_t ak4calojet_btag[M_jetmaxcount][M_btagmax];
-    UInt_t ak4calojet_n90[M_jetmaxcount];
-    UInt_t ak4calojet_n60[M_jetmaxcount];
-
-    UInt_t ak4jptjet_count;
-    Float_t ak4jptjet_e[M_jetmaxcount];
-    Float_t ak4jptjet_px[M_jetmaxcount];
-    Float_t ak4jptjet_py[M_jetmaxcount];
-    Float_t ak4jptjet_pz[M_jetmaxcount];
-    Float_t ak4jptjet_hadronicenergy[M_jetmaxcount];
-    Float_t ak4jptjet_chargedhadronicenergy[M_jetmaxcount];
-    Float_t ak4jptjet_emenergy[M_jetmaxcount];
-    Float_t ak4jptjet_chargedemenergy[M_jetmaxcount];
-    UInt_t ak4jptjet_chargedmulti[M_jetmaxcount];
-    Float_t ak4jptjet_energycorr[M_jetmaxcount];
-    Float_t ak4jptjet_energycorrl7uds[M_jetmaxcount];
-    Float_t ak4jptjet_energycorrl7bottom[M_jetmaxcount];
-    Float_t ak4jptjet_fhpd[M_jetmaxcount];
-    Float_t ak4jptjet_restrictedemf[M_jetmaxcount];
-    Float_t ak4jptjet_btag[M_jetmaxcount][M_btagmax];
-    UInt_t ak4jptjet_n90[M_jetmaxcount];
-
-    UInt_t ak4pfjet_count;
-    Float_t ak4pfjet_e[M_jetmaxcount];
-    Float_t ak4pfjet_px[M_jetmaxcount];
-    Float_t ak4pfjet_py[M_jetmaxcount];
-    Float_t ak4pfjet_pz[M_jetmaxcount];
-    Float_t ak4pfjet_area[M_jetmaxcount];
-    Float_t ak4pfjet_hadronicenergy[M_jetmaxcount];
-    Float_t ak4pfjet_chargedhadronicenergy[M_jetmaxcount];
-    Float_t ak4pfjet_emenergy[M_jetmaxcount];
-    Float_t ak4pfjet_chargedemenergy[M_jetmaxcount];
-    Float_t ak4pfjet_hfemenergy[M_jetmaxcount];
-    Float_t ak4pfjet_hfhadronicenergy[M_jetmaxcount];
-    Float_t ak4pfjet_electronenergy[M_jetmaxcount];
-    Float_t ak4pfjet_muonenergy[M_jetmaxcount];
-    UInt_t ak4pfjet_chargedmulti[M_jetmaxcount];
-    UInt_t ak4pfjet_neutralmulti[M_jetmaxcount];
-    UInt_t ak4pfjet_hfhadronicmulti[M_jetmaxcount];
-    UInt_t ak4pfjet_hfemmulti[M_jetmaxcount];
-    UInt_t ak4pfjet_electronmulti[M_jetmaxcount];
-    UInt_t ak4pfjet_muonmulti[M_jetmaxcount];
-    Float_t ak4pfjet_chargeda[M_jetmaxcount];
-    Float_t ak4pfjet_chargedb[M_jetmaxcount];
-    Float_t ak4pfjet_neutrala[M_jetmaxcount];
-    Float_t ak4pfjet_neutralb[M_jetmaxcount];
-    Float_t ak4pfjet_alla[M_jetmaxcount];
-    Float_t ak4pfjet_allb[M_jetmaxcount];
-    Float_t ak4pfjet_chargedfractionmv[M_jetmaxcount];
-    Float_t ak4pfjet_energycorr[M_jetmaxcount];
-    Float_t ak4pfjet_energycorrunc[M_jetmaxcount];
-    Float_t ak4pfjet_energycorrl7uds[M_jetmaxcount];
-    Float_t ak4pfjet_energycorrl7bottom[M_jetmaxcount];
-    Float_t ak4pfjet_puidfull[M_jetmaxcount];
-    Float_t ak4pfjet_puidsimple[M_jetmaxcount];
-    Float_t ak4pfjet_puidcutbased[M_jetmaxcount];
-    Float_t ak4pfjet_btag[M_jetmaxcount][M_btagmax];
-    UInt_t ak4pfjet_trigger[M_jetmaxcount];
-    Int_t ak4pfjet_mcflavour[M_jetmaxcount];
 
     UInt_t ak4pfchsjet_count;
     Float_t ak4pfchsjet_e[M_jetmaxcount];
@@ -1089,59 +978,6 @@ class RootMaker : public edm::EDAnalyzer {
     Float_t pfmettype0type1_ex;
     Float_t pfmettype0type1_ey;
 
-    UInt_t secvertices_count;
-    Float_t secvertices_vx[M_secverticesmaxcount];
-    Float_t secvertices_vy[M_secverticesmaxcount];
-    Float_t secvertices_vz[M_secverticesmaxcount];
-    Float_t secvertices_chi2[M_secverticesmaxcount];
-    Float_t secvertices_ndof[M_secverticesmaxcount];
-    Float_t secvertices_cov[M_secverticesmaxcount][6];
-    Float_t secvertices_track_px[M_secverticesmaxcount][2];
-    Float_t secvertices_track_py[M_secverticesmaxcount][2];
-    Float_t secvertices_track_pz[M_secverticesmaxcount][2];
-    Float_t secvertices_track_closestpointx[M_secverticesmaxcount][2];
-    Float_t secvertices_track_closestpointy[M_secverticesmaxcount][2];
-    Float_t secvertices_track_closestpointz[M_secverticesmaxcount][2];
-    Float_t secvertices_track_chi2[M_secverticesmaxcount][2];
-    Float_t secvertices_track_ndof[M_secverticesmaxcount][2];
-    Float_t secvertices_track_dxy[M_secverticesmaxcount][2];
-    Float_t secvertices_track_dxyerr[M_secverticesmaxcount][2];
-    Float_t secvertices_track_dz[M_secverticesmaxcount][2];
-    Float_t secvertices_track_dzerr[M_secverticesmaxcount][2];
-    Float_t secvertices_track_dedxharmonic2[M_secverticesmaxcount][2];
-    Int_t secvertices_track_charge[M_secverticesmaxcount][2];
-    UChar_t secvertices_track_nhits[M_secverticesmaxcount][2];
-    UChar_t secvertices_track_nmissinghits[M_secverticesmaxcount][2];
-    UChar_t secvertices_track_npixelhits[M_secverticesmaxcount][2];
-    UChar_t secvertices_track_npixellayers[M_secverticesmaxcount][2];
-    UChar_t secvertices_track_nstriplayers[M_secverticesmaxcount][2];
-
-    UInt_t musecvertices_count;
-    Float_t musecvertices_vx[M_musecverticesmaxcount];
-    Float_t musecvertices_vy[M_musecverticesmaxcount];
-    Float_t musecvertices_vz[M_musecverticesmaxcount];
-    Float_t musecvertices_chi2[M_musecverticesmaxcount];
-    Float_t musecvertices_ndof[M_musecverticesmaxcount];
-    Float_t musecvertices_cov[M_musecverticesmaxcount][6];
-    Float_t musecvertices_track_px[M_musecverticesmaxcount][2];
-    Float_t musecvertices_track_py[M_musecverticesmaxcount][2];
-    Float_t musecvertices_track_pz[M_musecverticesmaxcount][2];
-    Float_t musecvertices_track_closestpointx[M_musecverticesmaxcount][2];
-    Float_t musecvertices_track_closestpointy[M_musecverticesmaxcount][2];
-    Float_t musecvertices_track_closestpointz[M_musecverticesmaxcount][2];
-    Float_t musecvertices_track_chi2[M_musecverticesmaxcount][2];
-    Float_t musecvertices_track_ndof[M_musecverticesmaxcount][2];
-    Float_t musecvertices_track_dxy[M_musecverticesmaxcount][2];
-    Float_t musecvertices_track_dxyerr[M_musecverticesmaxcount][2];
-    Float_t musecvertices_track_dz[M_musecverticesmaxcount][2];
-    Float_t musecvertices_track_dzerr[M_musecverticesmaxcount][2];
-    Float_t musecvertices_track_dedxharmonic2[M_musecverticesmaxcount][2];
-    Int_t musecvertices_track_charge[M_musecverticesmaxcount][2];
-    UChar_t musecvertices_track_nhits[M_musecverticesmaxcount][2];
-    UChar_t musecvertices_track_nmissinghits[M_musecverticesmaxcount][2];
-    UChar_t musecvertices_track_npixelhits[M_musecverticesmaxcount][2];
-    UChar_t musecvertices_track_npixellayers[M_musecverticesmaxcount][2];
-    UChar_t musecvertices_track_nstriplayers[M_musecverticesmaxcount][2];
     //Generator Information
     Float_t genweight;
     Float_t genid1;

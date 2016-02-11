@@ -34,40 +34,33 @@ RootMaker::RootMaker(const edm::ParameterSet &iConfig) :
     ebRecHitsToken_(consumes<edm::SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit> > >(iConfig.getParameter<edm::InputTag>("barrelHits"))),
     eeRecHitsToken_(consumes<edm::SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit> > >(iConfig.getParameter<edm::InputTag>("endcapHits"))),
     esRecHitsToken_(consumes<edm::SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit> > >(iConfig.getParameter<edm::InputTag>("esHits"))),
-
-    // AOD mayConsume
-    recoTracksToken_(mayConsume<reco::TrackCollection>(iConfig.getParameter<edm::InputTag>("generalTracks"))),
-    recoMuonsToken_(mayConsume<reco::MuonCollection>(iConfig.getParameter<edm::InputTag>("muons"))),
-    recoElectronsToken_(mayConsume<reco::GsfElectronCollection>(iConfig.getParameter<edm::InputTag>("electrons"))),
-    recoPhotonsToken_(mayConsume<reco::PhotonCollection>(iConfig.getParameter<edm::InputTag>("photons"))),
-    recoTausToken_(mayConsume<reco::PFTauCollection>(iConfig.getParameter<edm::InputTag>("taus"))),
-    tauJetsToken_(mayConsume<pat::JetCollection>(iConfig.getParameter<edm::InputTag>("taujets"))),
-    ak4caloJetsToken_(mayConsume<pat::JetCollection>(iConfig.getParameter<edm::InputTag>("ak4calojets"))),
-    ak4jptJetsToken_(mayConsume<pat::JetCollection>(iConfig.getParameter<edm::InputTag>("ak4jptjets"))),
-    ak4pfJetsToken_(mayConsume<reco::PFJetCollection>(iConfig.getParameter<edm::InputTag>("ak4pfjets"))),
-    recoPFCandsToken_(mayConsume<reco::PFCandidateCollection>(iConfig.getParameter<edm::InputTag>("PfCands"))),
-    recoMetToken_(mayConsume<reco::PFMETCollection>(iConfig.getParameter<edm::InputTag>("pfmet"))),
-    recoMetT1Token_(mayConsume<reco::PFMETCollection>(iConfig.getParameter<edm::InputTag>("pfmett1"))),
-    recoMetT1T0Token_(mayConsume<reco::PFMETCollection>(iConfig.getParameter<edm::InputTag>("pfmett1t0"))),
-
-    // miniAOD mayConsume
-    lostTracksToken_(mayConsume<vector<pat::PackedCandidate> >(iConfig.getParameter<edm::InputTag>("lostTracks"))),
-    unpackedTracksToken_(mayConsume<reco::TrackCollection>(iConfig.getParameter<edm::InputTag>("unpackedTracks"))),
-    patMuonsToken_(mayConsume<pat::MuonCollection>(iConfig.getParameter<edm::InputTag>("muons"))),
-    patElectronsToken_(mayConsume<pat::ElectronCollection>(iConfig.getParameter<edm::InputTag>("electrons"))),
-    patPhotonsToken_(mayConsume<pat::PhotonCollection>(iConfig.getParameter<edm::InputTag>("photons"))),
-    patTausToken_(mayConsume<pat::TauCollection>(iConfig.getParameter<edm::InputTag>("taus"))),
-    packedPFCandsToken_(mayConsume<pat::PackedCandidateCollection>(iConfig.getParameter<edm::InputTag>("packedPfCands"))),
+    recoTracksToken_(consumes<reco::TrackCollection>(iConfig.getParameter<edm::InputTag>("generalTracks"))),
+    //recoMuonsToken_(consumes<reco::MuonCollection>(iConfig.getParameter<edm::InputTag>("muons"))),
+    //recoElectronsToken_(consumes<reco::GsfElectronCollection>(iConfig.getParameter<edm::InputTag>("electrons"))),
+    //recoPhotonsToken_(consumes<reco::PhotonCollection>(iConfig.getParameter<edm::InputTag>("photons"))),
+    //recoTausToken_(consumes<reco::PFTauCollection>(iConfig.getParameter<edm::InputTag>("taus"))),
+    tauJetsToken_(consumes<pat::JetCollection>(iConfig.getParameter<edm::InputTag>("taujets"))),
+    //recoPFCandsToken_(consumes<reco::PFCandidateCollection>(iConfig.getParameter<edm::InputTag>("PfCands"))),
+    //recoMetToken_(consumes<reco::PFMETCollection>(iConfig.getParameter<edm::InputTag>("pfmet"))),
+    //recoMetT1Token_(consumes<reco::PFMETCollection>(iConfig.getParameter<edm::InputTag>("pfmett1"))),
+    //recoMetT1T0Token_(consumes<reco::PFMETCollection>(iConfig.getParameter<edm::InputTag>("pfmett1t0"))),
+    lostTracksToken_(consumes<vector<pat::PackedCandidate> >(iConfig.getParameter<edm::InputTag>("lostTracks"))),
+    unpackedTracksToken_(consumes<reco::TrackCollection>(iConfig.getParameter<edm::InputTag>("unpackedTracks"))),
+    patMuonsToken_(consumes<pat::MuonCollection>(iConfig.getParameter<edm::InputTag>("muons"))),
+    patElectronsToken_(consumes<pat::ElectronCollection>(iConfig.getParameter<edm::InputTag>("electrons"))),
+    patPhotonsToken_(consumes<pat::PhotonCollection>(iConfig.getParameter<edm::InputTag>("photons"))),
+    patTausToken_(consumes<pat::TauCollection>(iConfig.getParameter<edm::InputTag>("taus"))),
+    packedPFCandsToken_(consumes<pat::PackedCandidateCollection>(iConfig.getParameter<edm::InputTag>("packedPfCands"))),
     patMVAMetEMTToken_(iConfig.getParameter<edm::InputTag>("pfMetMVAEMT")),
     patMVAMetEMToken_(iConfig.getParameter<edm::InputTag>("pfMetMVAEM")),
     patMVAMetETToken_(iConfig.getParameter<edm::InputTag>("pfMetMVAET")),
     patMVAMetMTToken_(iConfig.getParameter<edm::InputTag>("pfMetMVAMT")),
     patMVAMetTTToken_(iConfig.getParameter<edm::InputTag>("pfMetMVATT")),
     newMetLabel_(iConfig.getParameter<edm::InputTag>("patMETs")),
-    patMetToken_(mayConsume<pat::METCollection>(iConfig.getParameter<edm::InputTag>("mets"))),
-    patMetPuppiToken_(mayConsume<pat::METCollection>(iConfig.getParameter<edm::InputTag>("metspuppi"))),
-    rhoToken_(mayConsume<double>(iConfig.getParameter<edm::InputTag>("rhoAll"))),
-    gedGsfElectronCoresToken_(mayConsume<vector<reco::GsfElectronCore> >(iConfig.getParameter<edm::InputTag>("gedGsfElectronCores"))),
+    patMetToken_(consumes<pat::METCollection>(iConfig.getParameter<edm::InputTag>("mets"))),
+    patMetPuppiToken_(consumes<pat::METCollection>(iConfig.getParameter<edm::InputTag>("metspuppi"))),
+    rhoToken_(consumes<double>(iConfig.getParameter<edm::InputTag>("rhoAll"))),
+    gedGsfElectronCoresToken_(consumes<vector<reco::GsfElectronCore> >(iConfig.getParameter<edm::InputTag>("gedGsfElectronCores"))),
     eleVetoIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleVetoIdMap"))),
     eleLooseIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleLooseIdMap"))),
     eleMediumIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMediumIdMap"))),
@@ -75,10 +68,10 @@ RootMaker::RootMaker(const edm::ParameterSet &iConfig) :
     eleHeepV60IdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleHeepV60IdMap"))),
     eleMVAIdMap_wp80Token_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMVAIdMap_wp80"))),
     eleMVAIdMap_wp90Token_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMVAIdMap_wp90"))),
-    gedPhotonCoresToken_(mayConsume<vector<reco::PhotonCore> >(iConfig.getParameter<edm::InputTag>("gedPhotonCores"))),
+    gedPhotonCoresToken_(consumes<vector<reco::PhotonCore> >(iConfig.getParameter<edm::InputTag>("gedPhotonCores"))),
 
 
-    cisMiniAOD(iConfig.getUntrackedParameter<bool> ("isMiniAOD", false)),
+    // input variables
     cisMC(iConfig.getUntrackedParameter<bool> ("isMC", false)),
     cdebug(iConfig.getUntrackedParameter<bool> ("debug", false)),
     cgen(iConfig.getUntrackedParameter<bool> ("GenSomeParticles", false)),
@@ -98,14 +91,9 @@ RootMaker::RootMaker(const edm::ParameterSet &iConfig) :
     crecelectron(iConfig.getUntrackedParameter<bool> ("RecElectron", false)),
     crecphoton(iConfig.getUntrackedParameter<bool> ("RecPhoton", false)),
     crecallconversion(iConfig.getUntrackedParameter<bool> ("RecAllConversion", false)),
-    crecak4calojet(iConfig.getUntrackedParameter<bool> ("RecAK4CaloJet", false)),
-    crecak4jptjet(iConfig.getUntrackedParameter<bool> ("RecAK4JPTJet", false)),
-    crecak4pfjet(iConfig.getUntrackedParameter<bool> ("RecAK4PFJet", false)),
     crecak4pfchsjet(iConfig.getUntrackedParameter<bool> ("RecAK4PFCHSJet", false)),
     crecak4pfchspuppijet(iConfig.getUntrackedParameter<bool> ("RecAK4PFCHSPuppiJet", false)),
     crecpfmet(iConfig.getUntrackedParameter<bool> ("RecPFMet", false)),
-    crecsecvertices(iConfig.getUntrackedParameter<bool> ("RecSecVertices", false)),
-    crecmusecvertices(iConfig.getUntrackedParameter<bool> ("RecMuSecVertices", false)),
     cHLTriggerNamesSelection(iConfig.getUntrackedParameter<vector<string> > ("HLTriggerSelection")),
     cTriggerProcess(iConfig.getUntrackedParameter<string> ("TriggerProcess", "HLT")),
     cMuPtMin(iConfig.getUntrackedParameter<double> ("RecMuonPtMin", 0.)),
@@ -135,14 +123,6 @@ RootMaker::RootMaker(const edm::ParameterSet &iConfig) :
     cPhotonNum(iConfig.getUntrackedParameter<int> ("RecPhotonNum", 0)),
     cPhotonFilterPtMin(iConfig.getUntrackedParameter<double> ("RecPhotonFilterPtMin", 0.)),
     cPhotonFilterEtaMax(iConfig.getUntrackedParameter<double> ("RecPhotonFilterEtaMax", 1000000.)),
-    cAK4CaloFilterPtMin(iConfig.getUntrackedParameter<double> ("RecAK4CaloFilterPtMin", 0.)),
-    cAK4CaloPtMin(iConfig.getUntrackedParameter<double> ("RecAK4CaloPtMin", 0.)),
-    cAK4CaloEtaMax(iConfig.getUntrackedParameter<double> ("RecAK4CaloEtaMax", 1000000.)),
-    cAK4CaloNum(iConfig.getUntrackedParameter<int> ("RecAK4CaloNum", 0)),
-    cAK4JPTFilterPtMin(iConfig.getUntrackedParameter<double> ("RecAK4JPTFilterPtMin", 0.)),
-    cAK4JPTPtMin(iConfig.getUntrackedParameter<double> ("RecAK4JPTPtMin", 0.)),
-    cAK4JPTEtaMax(iConfig.getUntrackedParameter<double> ("RecAK4JPTEtaMax", 1000000.)),
-    cAK4JPTNum(iConfig.getUntrackedParameter<int> ("RecAK4JPTNum", 0)),
     cAK4PFCHSFilterPtMin(iConfig.getUntrackedParameter<double> ("RecAK4PFCHSFilterPtMin", 0.)),
     cAK4PFCHSPtMin(iConfig.getUntrackedParameter<double> ("RecAK4PFCHSPtMin", 0.)),
     cAK4PFCHSEtaMax(iConfig.getUntrackedParameter<double> ("RecAK4PFCHSEtaMax", 1000000.)),
@@ -151,10 +131,6 @@ RootMaker::RootMaker(const edm::ParameterSet &iConfig) :
     cAK4PFCHSPuppiPtMin(iConfig.getUntrackedParameter<double> ("RecAK4PFCHSPuppiPtMin", 0.)),
     cAK4PFCHSPuppiEtaMax(iConfig.getUntrackedParameter<double> ("RecAK4PFCHSPuppiEtaMax", 1000000.)),
     cAK4PFCHSPuppiNum(iConfig.getUntrackedParameter<int> ("RecAK4PFCHSPuppiNum", 0)),
-    cAK4PFFilterPtMin(iConfig.getUntrackedParameter<double> ("RecAK4PFFilterPtMin", 0.)),
-    cAK4PFPtMin(iConfig.getUntrackedParameter<double> ("RecAK4PFPtMin", 0.)),
-    cAK4PFEtaMax(iConfig.getUntrackedParameter<double> ("RecAK4PFEtaMax", 1000000.)),
-    cAK4PFNum(iConfig.getUntrackedParameter<int> ("RecAK4PFNum", 0)),
     cJetCorrection(iConfig.getUntrackedParameter<string> ("JetCorrection", "L1FastL2L3Residual")),
     cJetHLTriggerMatching(iConfig.getUntrackedParameter<vector<string> > ("RecJetHLTriggerMatching")),
     cMassMuMuMin(iConfig.getUntrackedParameter<double> ("RecMassMuMuMin", 0.)),
@@ -165,7 +141,9 @@ RootMaker::RootMaker(const edm::ParameterSet &iConfig) :
     cVertexSig2D(iConfig.getUntrackedParameter<double> ("RecVertexSig2D", 15.)),
     cKaonMassWindow(iConfig.getUntrackedParameter<double> ("RecVertexKaonMassWin", 0.05)),
     cLambdaMassWindow(iConfig.getUntrackedParameter<double> ("RecVertexLambdaMassWin", 0.02)),
-    propagatorWithMaterial(0) {
+
+    propagatorWithMaterial(0)
+{
     testids.push_back(24);  //0
     testids.push_back(-24);  //1
     testids.push_back(22);  //2
@@ -225,7 +203,6 @@ std::vector<double> RootMaker::extract(const Collection &cands, Function func) {
 void RootMaker::beginJob() {
     if(cdebug) { cout<<"begin job..."<<endl; }
 
-    cout<<"isMiniAOD = "<<cisMiniAOD<<endl;
     cout<<"is monte carlo = "<<cisMC<<endl;
     cout<<"debug = "<<cdebug<<endl;
     edm::Service<TFileService> FS;
@@ -406,78 +383,6 @@ void RootMaker::beginJob() {
     tree->Branch("muon_type", muon_type, "muon_type[muon_count]/b");
     tree->Branch("muon_trigger", muon_trigger, "muon_trigger[muon_count]/i");
     tree->Branch("muon_trackermuonquality", muon_trackermuonquality, "muon_trackermuonquality[muon_count]/i");
-
-    tree->Branch("ak4calojet_count", &ak4calojet_count, "ak4calojet_count/i");
-    tree->Branch("ak4calojet_e", ak4calojet_e, "ak4calojet_e[ak4calojet_count]/F");
-    tree->Branch("ak4calojet_px", ak4calojet_px, "ak4calojet_px[ak4calojet_count]/F");
-    tree->Branch("ak4calojet_py", ak4calojet_py, "ak4calojet_py[ak4calojet_count]/F");
-    tree->Branch("ak4calojet_pz", ak4calojet_pz, "ak4calojet_pz[ak4calojet_count]/F");
-    tree->Branch("ak4calojet_hadronicenergy", ak4calojet_hadronicenergy, "ak4calojet_hadronicenergy[ak4calojet_count]/F");
-    tree->Branch("ak4calojet_emenergy", ak4calojet_emenergy, "ak4calojet_emenergy[ak4calojet_count]/F");
-    tree->Branch("ak4calojet_energycorr", ak4calojet_energycorr, "ak4calojet_energycorr[ak4calojet_count]/F");
-    tree->Branch("ak4calojet_energycorrl7uds", ak4calojet_energycorrl7uds, "ak4calojet_energycorrl7uds[ak4calojet_count]/F");
-    tree->Branch("ak4calojet_energycorrl7bottom", ak4calojet_energycorrl7bottom, "ak4calojet_energycorrl7bottom[ak4calojet_count]/F");
-    tree->Branch("ak4calojet_fhpd", ak4calojet_fhpd, "ak4calojet_fhpd[ak4calojet_count]/F");
-    tree->Branch("ak4calojet_restrictedemf", ak4calojet_restrictedemf, "ak4calojet_restrictedemf[ak4calojet_count]/F");
-    tree->Branch("ak4calojet_btag", ak4calojet_btag, "ak4calojet_btag[ak4calojet_count][4]/F");
-    tree->Branch("ak4calojet_n90", ak4calojet_n90, "ak4calojet_n90[ak4calojet_count]/i");
-    tree->Branch("ak4calojet_n60", ak4calojet_n60, "ak4calojet_n60[ak4calojet_count]/i");
-
-    tree->Branch("ak4jptjet_count", &ak4jptjet_count, "ak4jptjet_count/i");
-    tree->Branch("ak4jptjet_e", ak4jptjet_e, "ak4jptjet_e[ak4jptjet_count]/F");
-    tree->Branch("ak4jptjet_px", ak4jptjet_px, "ak4jptjet_px[ak4jptjet_count]/F");
-    tree->Branch("ak4jptjet_py", ak4jptjet_py, "ak4jptjet_py[ak4jptjet_count]/F");
-    tree->Branch("ak4jptjet_pz", ak4jptjet_pz, "ak4jptjet_pz[ak4jptjet_count]/F");
-    tree->Branch("ak4jptjet_hadronicenergy", ak4jptjet_hadronicenergy, "ak4jptjet_hadronicenergy[ak4jptjet_count]/F");
-    tree->Branch("ak4jptjet_chargedhadronicenergy", ak4jptjet_chargedhadronicenergy, "ak4jptjet_chargedhadronicenergy[ak4jptjet_count]/F");
-    tree->Branch("ak4jptjet_emenergy", ak4jptjet_emenergy, "ak4jptjet_emenergy[ak4jptjet_count]/F");
-    tree->Branch("ak4jptjet_chargedemenergy", ak4jptjet_chargedemenergy, "ak4jptjet_chargedemenergy[ak4jptjet_count]/F");
-    tree->Branch("ak4jptjet_chargedmulti", ak4jptjet_chargedmulti, "ak4jptjet_chargedmulti[ak4jptjet_count]/i");
-    tree->Branch("ak4jptjet_energycorr", ak4jptjet_energycorr, "ak4jptjet_energycorr[ak4jptjet_count]/F");
-    tree->Branch("ak4jptjet_energycorrl7uds", ak4jptjet_energycorrl7uds, "ak4jptjet_energycorrl7uds[ak4jptjet_count]/F");
-    tree->Branch("ak4jptjet_energycorrl7bottom", ak4jptjet_energycorrl7bottom, "ak4jptjet_energycorrl7bottom[ak4jptjet_count]/F");
-    tree->Branch("ak4jptjet_fhpd", ak4jptjet_fhpd, "ak4jptjet_fhpd[ak4jptjet_count]/F");
-    tree->Branch("ak4jptjet_restrictedemf", ak4jptjet_restrictedemf, "ak4jptjet_restrictedemf[ak4jptjet_count]/F");
-    tree->Branch("ak4jptjet_btag", ak4jptjet_btag, "ak4jptjet_btag[ak4jptjet_count][4]/F");
-    tree->Branch("ak4jptjet_n90", ak4jptjet_n90, "ak4jptjet_n90[ak4jptjet_count]/i");
-
-    tree->Branch("ak4pfjet_count", &ak4pfjet_count, "ak4pfjet_count/i");
-    tree->Branch("ak4pfjet_e", ak4pfjet_e, "ak4pfjet_e[ak4pfjet_count]/F");
-    tree->Branch("ak4pfjet_px", ak4pfjet_px, "ak4pfjet_px[ak4pfjet_count]/F");
-    tree->Branch("ak4pfjet_py", ak4pfjet_py, "ak4pfjet_py[ak4pfjet_count]/F");
-    tree->Branch("ak4pfjet_pz", ak4pfjet_pz, "ak4pfjet_pz[ak4pfjet_count]/F");
-    tree->Branch("ak4pfjet_area", ak4pfjet_area, "ak4pfjet_area[ak4pfjet_count]/F");
-    tree->Branch("ak4pfjet_hadronicenergy", ak4pfjet_hadronicenergy, "ak4pfjet_hadronicenergy[ak4pfjet_count]/F");
-    tree->Branch("ak4pfjet_chargedhadronicenergy", ak4pfjet_chargedhadronicenergy, "ak4pfjet_chargedhadronicenergy[ak4pfjet_count]/F");
-    tree->Branch("ak4pfjet_emenergy", ak4pfjet_emenergy, "ak4pfjet_emenergy[ak4pfjet_count]/F");
-    tree->Branch("ak4pfjet_chargedemenergy", ak4pfjet_chargedemenergy, "ak4pfjet_chargedemenergy[ak4pfjet_count]/F");
-    tree->Branch("ak4pfjet_hfhadronicenergy", ak4pfjet_hfhadronicenergy, "ak4pfjet_hfhadronicenergy[ak4pfjet_count]/F");
-    tree->Branch("ak4pfjet_hfemenergy", ak4pfjet_hfemenergy, "ak4pfjet_hfemenergy[ak4pfjet_count]/F");
-    tree->Branch("ak4pfjet_electronenergy", ak4pfjet_electronenergy, "ak4pfjet_electronenergy[ak4pfjet_count]/F");
-    tree->Branch("ak4pfjet_muonenergy", ak4pfjet_muonenergy, "ak4pfjet_muonenergy[ak4pfjet_count]/F");
-    tree->Branch("ak4pfjet_chargedmulti", ak4pfjet_chargedmulti, "ak4pfjet_chargedmulti[ak4pfjet_count]/i");
-    tree->Branch("ak4pfjet_neutralmulti", ak4pfjet_neutralmulti, "ak4pfjet_neutralmulti[ak4pfjet_count]/i");
-    tree->Branch("ak4pfjet_hfhadronicmulti", ak4pfjet_hfhadronicmulti, "ak4pfjet_hfhadronicmulti[ak4pfjet_count]/i");
-    tree->Branch("ak4pfjet_hfemmulti", ak4pfjet_hfemmulti, "ak4pfjet_hfemmulti[ak4pfjet_count]/i");
-    tree->Branch("ak4pfjet_electronmulti", ak4pfjet_electronmulti, "ak4pfjet_electronmulti[ak4pfjet_count]/i");
-    tree->Branch("ak4pfjet_muonmulti", ak4pfjet_muonmulti, "ak4pfjet_muonmulti[ak4pfjet_count]/i");
-    tree->Branch("ak4pfjet_chargeda", ak4pfjet_chargeda, "ak4pfjet_chargeda[ak4pfjet_count]/F");
-    tree->Branch("ak4pfjet_chargedb", ak4pfjet_chargedb, "ak4pfjet_chargedb[ak4pfjet_count]/F");
-    tree->Branch("ak4pfjet_neutrala", ak4pfjet_neutrala, "ak4pfjet_neutrala[ak4pfjet_count]/F");
-    tree->Branch("ak4pfjet_neutralb", ak4pfjet_neutralb, "ak4pfjet_neutralb[ak4pfjet_count]/F");
-    tree->Branch("ak4pfjet_alla", ak4pfjet_alla, "ak4pfjet_alla[ak4pfjet_count]/F");
-    tree->Branch("ak4pfjet_allb", ak4pfjet_allb, "ak4pfjet_allb[ak4pfjet_count]/F");
-    tree->Branch("ak4pfjet_chargedfractionmv", ak4pfjet_chargedfractionmv, "ak4pfjet_chargedfractionmv[ak4pfjet_count]/F");
-    tree->Branch("ak4pfjet_energycorr", ak4pfjet_energycorr, "ak4pfjet_energycorr[ak4pfjet_count]/F");
-    tree->Branch("ak4pfjet_energycorrunc", ak4pfjet_energycorrunc, "ak4pfjet_energycorrunc[ak4pfjet_count]/F");
-    tree->Branch("ak4pfjet_energycorrl7uds", ak4pfjet_energycorrl7uds, "ak4pfjet_energycorrl7uds[ak4pfjet_count]/F");
-    tree->Branch("ak4pfjet_energycorrl7bottom", ak4pfjet_energycorrl7bottom, "ak4pfjet_energycorrl7bottom[ak4pfjet_count]/F");
-    tree->Branch("ak4pfjet_puidfull", ak4pfjet_puidfull, "ak4pfjet_puidfull[ak4pfjet_count]/F");
-    tree->Branch("ak4pfjet_puidsimple", ak4pfjet_puidsimple, "ak4pfjet_puidsimple[ak4pfjet_count]/F");
-    tree->Branch("ak4pfjet_puidcutbased", ak4pfjet_puidcutbased, "ak4pfjet_puidcutbased[ak4pfjet_count]/F");
-    tree->Branch("ak4pfjet_btag", ak4pfjet_btag, "ak4pfjet_btag[ak4pfjet_count][6]/F");
-    tree->Branch("ak4pfjet_trigger", ak4pfjet_trigger, "ak4pfjet_trigger[ak4pfjet_count]/i");
-    tree->Branch("ak4pfjet_mcflavour", ak4pfjet_mcflavour, "ak4pfjet_mcflavour[ak4pfjet_count]/I");
 
     tree->Branch("ak4pfchsjet_count", &ak4pfchsjet_count, "ak4pfchsjet_count/i");
     tree->Branch("ak4pfchsjet_e", ak4pfchsjet_e, "ak4pfchsjet_e[ak4pfchsjet_count]/F");
@@ -894,60 +799,6 @@ void RootMaker::beginJob() {
     tree->Branch("pfmettype0type1_ex", &pfmettype0type1_ex, "pfmettype0type1_ex/F");
     tree->Branch("pfmettype0type1_ey", &pfmettype0type1_ey, "pfmettype0type1_ey/F");
 
-    tree->Branch("secvertices_count", &secvertices_count, "secvertices_count/i");
-    tree->Branch("secvertices_vx", secvertices_vx, "secvertices_vx[secvertices_count]/F");
-    tree->Branch("secvertices_vy", secvertices_vy, "secvertices_vy[secvertices_count]/F");
-    tree->Branch("secvertices_vz", secvertices_vz, "secvertices_vz[secvertices_count]/F");
-    tree->Branch("secvertices_chi2", secvertices_chi2, "secvertices_chi2[secvertices_count]/F");
-    tree->Branch("secvertices_ndof", secvertices_ndof, "secvertices_ndof[secvertices_count]/F");
-    tree->Branch("secvertices_cov", secvertices_cov, "secvertices_cov[secvertices_count][6]/F");
-    tree->Branch("secvertices_track_px", secvertices_track_px, "secvertices_track_px[secvertices_count][2]/F");
-    tree->Branch("secvertices_track_py", secvertices_track_py, "secvertices_track_py[secvertices_count][2]/F");
-    tree->Branch("secvertices_track_pz", secvertices_track_pz, "secvertices_track_pz[secvertices_count][2]/F");
-    tree->Branch("secvertices_track_closestpointx", secvertices_track_closestpointx, "secvertices_track_closestpointx[secvertices_count][2]/F");
-    tree->Branch("secvertices_track_closestpointy", secvertices_track_closestpointy, "secvertices_track_closestpointy[secvertices_count][2]/F");
-    tree->Branch("secvertices_track_closestpointz", secvertices_track_closestpointz, "secvertices_track_closestpointz[secvertices_count][2]/F");
-    tree->Branch("secvertices_track_chi2", secvertices_track_chi2, "secvertices_track_chi2[secvertices_count][2]/F");
-    tree->Branch("secvertices_track_ndof", secvertices_track_ndof, "secvertices_track_ndof[secvertices_count][2]/F");
-    tree->Branch("secvertices_track_dxy", secvertices_track_dxy, "secvertices_track_dxy[secvertices_count][2]/F");
-    tree->Branch("secvertices_track_dxyerr", secvertices_track_dxyerr, "secvertices_track_dxyerr[secvertices_count][2]/F");
-    tree->Branch("secvertices_track_dz", secvertices_track_dz, "secvertices_track_dz[secvertices_count][2]/F");
-    tree->Branch("secvertices_track_dzerr", secvertices_track_dzerr, "secvertices_track_dzerr[secvertices_count][2]/F");
-    tree->Branch("secvertices_track_dedxharmonic2", secvertices_track_dedxharmonic2, "secvertices_track_dedxharmonic2[track_count][2]/F");
-    tree->Branch("secvertices_track_charge", secvertices_track_charge, "secvertices_track_charge[secvertices_count][2]/I");
-    tree->Branch("secvertices_track_nhits", secvertices_track_nhits, "secvertices_track_nhits[secvertices_count][2]/b");
-    tree->Branch("secvertices_track_nmissinghits", secvertices_track_nmissinghits, "secvertices_track_nmissinghits[secvertices_count][2]/b");
-    tree->Branch("secvertices_track_npixelhits", secvertices_track_npixelhits, "secvertices_track_npixelhits[secvertices_count][2]/b");
-    tree->Branch("secvertices_track_npixellayers", secvertices_track_npixellayers, "secvertices_track_npixellayers[secvertices_count][2]/b");
-    tree->Branch("secvertices_track_nstriplayers", secvertices_track_nstriplayers, "secvertices_track_nstriplayers[secvertices_count][2]/b");
-
-    tree->Branch("musecvertices_count", &musecvertices_count, "musecvertices_count/i");
-    tree->Branch("musecvertices_vx", musecvertices_vx, "musecvertices_vx[musecvertices_count]/F");
-    tree->Branch("musecvertices_vy", musecvertices_vy, "musecvertices_vy[musecvertices_count]/F");
-    tree->Branch("musecvertices_vz", musecvertices_vz, "musecvertices_vz[musecvertices_count]/F");
-    tree->Branch("musecvertices_chi2", musecvertices_chi2, "musecvertices_chi2[musecvertices_count]/F");
-    tree->Branch("musecvertices_ndof", musecvertices_ndof, "musecvertices_ndof[musecvertices_count]/F");
-    tree->Branch("musecvertices_cov", musecvertices_cov, "musecvertices_cov[musecvertices_count][6]/F");
-    tree->Branch("musecvertices_track_px", musecvertices_track_px, "musecvertices_track_px[musecvertices_count][2]/F");
-    tree->Branch("musecvertices_track_py", musecvertices_track_py, "musecvertices_track_py[musecvertices_count][2]/F");
-    tree->Branch("musecvertices_track_pz", musecvertices_track_pz, "musecvertices_track_pz[musecvertices_count][2]/F");
-    tree->Branch("musecvertices_track_closestpointx", musecvertices_track_closestpointx, "musecvertices_track_closestpointx[musecvertices_count][2]/F");
-    tree->Branch("musecvertices_track_closestpointy", musecvertices_track_closestpointy, "musecvertices_track_closestpointy[musecvertices_count][2]/F");
-    tree->Branch("musecvertices_track_closestpointz", musecvertices_track_closestpointz, "musecvertices_track_closestpointz[musecvertices_count][2]/F");
-    tree->Branch("musecvertices_track_chi2", musecvertices_track_chi2, "musecvertices_track_chi2[musecvertices_count][2]/F");
-    tree->Branch("musecvertices_track_ndof", musecvertices_track_ndof, "musecvertices_track_ndof[musecvertices_count][2]/F");
-    tree->Branch("musecvertices_track_dxy", musecvertices_track_dxy, "musecvertices_track_dxy[musecvertices_count][2]/F");
-    tree->Branch("musecvertices_track_dxyerr", musecvertices_track_dxyerr, "musecvertices_track_dxyerr[musecvertices_count][2]/F");
-    tree->Branch("musecvertices_track_dz", musecvertices_track_dz, "musecvertices_track_dz[musecvertices_count][2]/F");
-    tree->Branch("musecvertices_track_dzerr", musecvertices_track_dzerr, "musecvertices_track_dzerr[musecvertices_count][2]/F");
-    tree->Branch("musecvertices_track_dedxharmonic2", musecvertices_track_dedxharmonic2, "musecvertices_track_dedxharmonic2[track_count][2]/F");
-    tree->Branch("musecvertices_track_charge", musecvertices_track_charge, "musecvertices_track_charge[musecvertices_count][2]/I");
-    tree->Branch("musecvertices_track_nhits", musecvertices_track_nhits, "musecvertices_track_nhits[musecvertices_count][2]/b");
-    tree->Branch("musecvertices_track_nmissinghits", musecvertices_track_nmissinghits, "musecvertices_track_nmissinghits[musecvertices_count][2]/b");
-    tree->Branch("musecvertices_track_npixelhits", musecvertices_track_npixelhits, "musecvertices_track_npixelhits[musecvertices_count][2]/b");
-    tree->Branch("musecvertices_track_npixellayers", musecvertices_track_npixellayers, "musecvertices_track_npixellayers[musecvertices_count][2]/b");
-    tree->Branch("musecvertices_track_nstriplayers", musecvertices_track_nstriplayers, "musecvertices_track_nstriplayers[musecvertices_count][2]/b");
-
     tree->Branch("genweight", &genweight, "genweight/F");
     tree->Branch("genid1", &genid1, "genid1/F");
     tree->Branch("genx1", &genx1, "genx1/F");
@@ -1154,16 +1005,16 @@ void RootMaker::beginRun(const edm::Run &iRun, const edm::EventSetup &iSetup) {
     }
 
     strcpy(run_taudiscriminators, alltaudiscriminators.c_str());
-    L1GtUtils l1info;
-    l1info.retrieveL1EventSetup(iSetup);
+    //*/L1GtUtils l1info;
+    //*/l1info.retrieveL1EventSetup(iSetup);
 
-    run_hltprescaletablescount = HLTConfiguration.prescaleSize()*HLTConfiguration.size();
+    //*/run_hltprescaletablescount = HLTConfiguration.prescaleSize()*HLTConfiguration.size();
 
     for(unsigned j = 0 ; j < HLTConfiguration.prescaleSize() ; j++) {
         for(unsigned i = 0 ; i < HLTConfiguration.size() ; i++) {
             int l1bit = -1;
             int l1prescale = 0;
-            L1GtUtils::TriggerCategory trigCategory;
+            //*/L1GtUtils::TriggerCategory trigCategory;
             const vector<pair<bool, string> > l1seed = HLTConfiguration.hltL1GTSeeds(i);
 
             if(l1seed.size() == 1) {
@@ -1174,7 +1025,7 @@ void RootMaker::beginRun(const edm::Run &iRun, const edm::EventSetup &iSetup) {
                 //    cout<<"l1bit = "<<l1bit <<endl;
                 //    cout<<"(l1GtPfAlgo.product()->gtPrescaleFactors())["<<j<<"][l1bit] = "<<(l1GtPfAlgo.product()->gtPrescaleFactors())[j][l1bit]<<"\n"<<endl;
                 //}
-                l1info.l1AlgoTechTrigBitNumber(l1seed[0].second, trigCategory, l1bit);
+                //*/l1info.l1AlgoTechTrigBitNumber(l1seed[0].second, trigCategory, l1bit);
                 l1prescale = (l1GtPfAlgo.product()->gtPrescaleFactors())[j][l1bit];
             }
 
@@ -1241,16 +1092,11 @@ void RootMaker::analyze(const edm::Event &iEvent, const edm::EventSetup &iSetup)
     muon_count = 0;
     tau_count = 0;
     tau_charged_count = 0;
-    ak4calojet_count = 0;
-    ak4jptjet_count = 0;
-    ak4pfjet_count = 0;
     ak4pfchsjet_count = 0;
     ak4pfchspuppijet_count = 0;
     electron_count = 0;
     photon_count = 0;
     conversion_count = 0;
-    secvertices_count = 0;
-    musecvertices_count = 0;
     allconversion_count = 0;
     genallparticles_count = 0;
     genparticles_count = 0;
@@ -1299,7 +1145,7 @@ void RootMaker::analyze(const edm::Event &iEvent, const edm::EventSetup &iSetup)
 
     lumi_l1techprescaletable = (L1trigger->gtFdlWord()).gtPrescaleFactorIndexTech();
     lumi_l1algoprescaletable = (L1trigger->gtFdlWord()).gtPrescaleFactorIndexAlgo();
-    lumi_hltprescaletable = HLTConfiguration.prescaleSet(iEvent, iSetup);
+    //*/lumi_hltprescaletable = HLTConfiguration.prescaleSet(iEvent, iSetup);
     //if (cdebug) {
     //    cout<<"lumi_l1techprescaletable = "<<lumi_l1techprescaletable<<endl;
     //    cout<<"lumi_l1algoprescaletable = "<<lumi_l1algoprescaletable<<endl;
@@ -1326,74 +1172,65 @@ void RootMaker::analyze(const edm::Event &iEvent, const edm::EventSetup &iSetup)
     //TriggerEvent for matching
     iEvent.getByLabel(edm::InputTag("hltTriggerSummaryAOD", "", cTriggerProcess), HLTriggerEvent);
 
-    if(!cisMiniAOD) {
-        iEvent.getByLabel(edm::InputTag("hltTriggerSummaryAOD", "", cTriggerProcess), HLTriggerEvent);
+    // TRIGGER MINIAOD ////////////////////////////////////////////////////////////////////////////////
+    edm::Handle<edm::TriggerResults> triggerBits;
+    edm::Handle<pat::TriggerObjectStandAloneCollection> triggerObjects;
+    edm::Handle<pat::PackedTriggerPrescales> triggerPrescales;
+
+    iEvent.getByToken(triggerBits_, triggerBits);
+    iEvent.getByToken(triggerObjects_, triggerObjects);
+    iEvent.getByToken(triggerPrescales_, triggerPrescales);
+
+    const edm::TriggerNames &names = iEvent.triggerNames(*triggerBits);
+    if (cdebug) {
+        std::cout << "\n === TRIGGER PATHS === " << std::endl;
+        for(unsigned int i = 0, n = triggerBits->size(); i < n; ++i) {
+            std::cout << "Trigger " << names.triggerName(i) <<
+                      ", prescale " << triggerPrescales->getPrescaleForIndex(i) <<
+                      ": " << (triggerBits->accept(i) ? "PASS" : "fail (or not run)")
+                      << std::endl;
+        }
     }
 
-    //cout<<"PASSED! hlt"<<endl;
-    if(cisMiniAOD) {
-        // TRIGGER MINIAOD ////////////////////////////////////////////////////////////////////////////////
-        edm::Handle<edm::TriggerResults> triggerBits;
-        edm::Handle<pat::TriggerObjectStandAloneCollection> triggerObjects;
-        edm::Handle<pat::PackedTriggerPrescales> triggerPrescales;
-
-        iEvent.getByToken(triggerBits_, triggerBits);
-        iEvent.getByToken(triggerObjects_, triggerObjects);
-        iEvent.getByToken(triggerPrescales_, triggerPrescales);
-
-        const edm::TriggerNames &names = iEvent.triggerNames(*triggerBits);
+    // Trigger Objects
+    for(pat::TriggerObjectStandAlone obj : *triggerObjects) {  // note: not "const &" since we want to call unpackPathNames
+        obj.unpackPathNames(names);
         if (cdebug) {
-            std::cout << "\n === TRIGGER PATHS === " << std::endl;
-            for(unsigned int i = 0, n = triggerBits->size(); i < n; ++i) {
-                std::cout << "Trigger " << names.triggerName(i) <<
-                          ", prescale " << triggerPrescales->getPrescaleForIndex(i) <<
-                          ": " << (triggerBits->accept(i) ? "PASS" : "fail (or not run)")
-                          << std::endl;
+            std::cout << "\tTrigger object:  pt " << obj.pt() << ", eta " << obj.eta() << ", phi " << obj.phi() << std::endl;
+            // Print trigger object collection and type
+            std::cout << "\t   Collection: " << obj.collection() << std::endl;
+            std::cout << "\t   Type IDs:   ";
+            for (unsigned h = 0; h < obj.filterIds().size(); ++h) {
+                std::cout << " " << obj.filterIds()[h];
             }
+
+           // Print associated trigger filters
+           std::cout << "\t   Filters:    ";
+           for (unsigned h = 0; h < obj.filterLabels().size(); ++h) {
+               std::cout << " " << obj.filterLabels()[h];
+           }
+           std::cout << std::endl;
         }
-
-        // Trigger Objects
-        for(pat::TriggerObjectStandAlone obj : *triggerObjects) {  // note: not "const &" since we want to call unpackPathNames
-            obj.unpackPathNames(names);
-            if (cdebug) {
-                std::cout << "\tTrigger object:  pt " << obj.pt() << ", eta " << obj.eta() << ", phi " << obj.phi() << std::endl;
-                // Print trigger object collection and type
-                std::cout << "\t   Collection: " << obj.collection() << std::endl;
-                std::cout << "\t   Type IDs:   ";
-                for (unsigned h = 0; h < obj.filterIds().size(); ++h) {
-                    std::cout << " " << obj.filterIds()[h];
-                }
-
-               // Print associated trigger filters
-               std::cout << "\t   Filters:    ";
-               for (unsigned h = 0; h < obj.filterLabels().size(); ++h) {
-                   std::cout << " " << obj.filterLabels()[h];
-               }
-               std::cout << std::endl;
+        std::vector<std::string> pathNamesAll  = obj.pathNames(false);
+        std::vector<std::string> pathNamesLast = obj.pathNames(true);
+        // Print all trigger paths, for each one record also if the object is associated to a 'l3' filter (always true for the
+        // definition used in the PAT trigger producer) and if it's associated to the last filter of a successfull path (which
+        // means that this object did cause this trigger to succeed; however, it doesn't work on some multi-object triggers)
+        if (cdebug) {
+            std::cout << "\t   Paths (" << pathNamesAll.size()<<"/"<<pathNamesLast.size()<<"):    ";
+            for (unsigned h = 0, n = pathNamesAll.size(); h < n; ++h) {
+                bool isBoth = obj.hasPathName( pathNamesAll[h], true, true );
+                bool isL3   = obj.hasPathName( pathNamesAll[h], false, true );
+                bool isLF   = obj.hasPathName( pathNamesAll[h], true, false );
+                bool isNone = obj.hasPathName( pathNamesAll[h], false, false );
+                std::cout << "   " << pathNamesAll[h];
+                if (isBoth) std::cout << "(L,3)";
+                if (isL3 && !isBoth) std::cout << "(*,3)";
+                if (isLF && !isBoth) std::cout << "(L,*)";
+                if (isNone && !isBoth && !isL3 && !isLF) std::cout << "(*,*)";
             }
-            std::vector<std::string> pathNamesAll  = obj.pathNames(false);
-            std::vector<std::string> pathNamesLast = obj.pathNames(true);
-            // Print all trigger paths, for each one record also if the object is associated to a 'l3' filter (always true for the
-            // definition used in the PAT trigger producer) and if it's associated to the last filter of a successfull path (which
-            // means that this object did cause this trigger to succeed; however, it doesn't work on some multi-object triggers)
-            if (cdebug) {
-                std::cout << "\t   Paths (" << pathNamesAll.size()<<"/"<<pathNamesLast.size()<<"):    ";
-                for (unsigned h = 0, n = pathNamesAll.size(); h < n; ++h) {
-                    bool isBoth = obj.hasPathName( pathNamesAll[h], true, true );
-                    bool isL3   = obj.hasPathName( pathNamesAll[h], false, true );
-                    bool isLF   = obj.hasPathName( pathNamesAll[h], true, false );
-                    bool isNone = obj.hasPathName( pathNamesAll[h], false, false );
-                    std::cout << "   " << pathNamesAll[h];
-                    if (isBoth) std::cout << "(L,3)";
-                    if (isL3 && !isBoth) std::cout << "(*,3)";
-                    if (isLF && !isBoth) std::cout << "(L,*)";
-                    if (isNone && !isBoth && !isL3 && !isLF) std::cout << "(*,*)";
-                }
-                std::cout << std::endl;
-            }
+            std::cout << std::endl;
         }
-
-        ///////////////////////////////////////////////////////////////////////////////////////////////////
     }
 
     if(HLTriggerIndexSelection.size() == 0 || !ctrigger) {
@@ -1493,10 +1330,8 @@ void RootMaker::analyze(const edm::Event &iEvent, const edm::EventSetup &iSetup)
     if(crecsupercluster) {
         bool error = false;
         edm::Handle<SuperClusterCollection> SCbarrel;
-        // (edm::InputTag("correctedHybridSuperClusters"), SCbarrel);
         iEvent.getByToken(superClustersToken_, SCbarrel);
         edm::Handle<SuperClusterCollection> SCendcap;
-        // (edm::InputTag("correctedMulti5x5SuperClustersWithPreshower"), SCendcap);
         iEvent.getByToken(superClustersToken_, SCendcap);
 
         edm::ESHandle<CaloGeometry> caloGeo;
@@ -1709,89 +1544,34 @@ void RootMaker::analyze(const edm::Event &iEvent, const edm::EventSetup &iSetup)
 
     takeevent = false;
 
-    if(crectrack) {
-        takeevent = AddTracks(iEvent) || takeevent;
-    }
-
-    if(crecmuon && !cisMiniAOD) {
+    if(crecmuon) {
         takeevent = AddMuons(iEvent) || takeevent;
     }
-
-    if(crecmuon && cisMiniAOD) {
-        takeevent = AddPatMuons(iEvent) || takeevent;
-    }
-
-    if(crecelectron && !cisMiniAOD) {
+    if(crecelectron) {
         takeevent = AddElectrons(iEvent) || takeevent;
     }
-
-    if(crecelectron && cisMiniAOD) {
-        takeevent = AddPatElectrons(iEvent) || takeevent;
-    }
-
-    if(crecphoton && !cisMiniAOD) {
+    if(crecphoton) {
         takeevent = AddPhotons(iEvent, iSetup) || takeevent;
     }
-
-    if(crecphoton && cisMiniAOD) {
-        takeevent = AddPatPhotons(iEvent, iSetup) || takeevent;
-    }
-
-    if(crectau && !cisMiniAOD) {
+    if(crectau) {
         takeevent = AddTaus(iEvent) || takeevent;
     }
-
-    if(crectau && cisMiniAOD) {
-        takeevent = AddPatTaus(iEvent) || takeevent;
-    }
-
-    if(crecak4calojet && !cisMiniAOD) {
-        takeevent = AddAK4CaloJets(iEvent, iSetup) || takeevent;
-    }
-
-    if(crecak4jptjet && !cisMiniAOD) {
-        takeevent = AddAK4JPTJets(iEvent, iSetup) || takeevent;
-    }
-
-    if(crecak4pfjet && !cisMiniAOD) {
-        takeevent = AddAK4PFJets(iEvent, iSetup) || takeevent;
-    }
-
     if(crecak4pfchsjet) {
         takeevent = AddAK4PFCHSJets(iEvent, iSetup) || takeevent;
     }
-
     if(crecak4pfchspuppijet) {
         takeevent = AddAK4PFCHSPuppiJets(iEvent, iSetup) || takeevent;
     }
-
-    if(crecmusecvertices) {
-        AddMuVertices(iEvent);
-    }
-
     if(crecallconversion) {
         AddAllConversions(iEvent);
     }
-
     if(!takeevent) {
         return;
     }
 
-    if(cisMiniAOD) {
-        edm::Handle<double> rho;
-        iEvent.getByToken(rhoToken_, rho);
-        ak4pfjet_rho = *rho;
-    } else if(!cisMiniAOD) {
-        edm::Handle<double> rho;
-        iEvent.getByLabel(edm::InputTag("kt6PFJets", "rho", "ROOTMAKER"), rho);
-        //edm::Handle<double> rho2;
-        //iEvent.getByLabel(edm::InputTag("kt6PFJets", "rho", "RECO"), rho2);
-        //cout << *rho << " " << *rho2 << endl;
-        ak4pfjet_rho = *rho;
-        edm::Handle<double> sigma;
-        iEvent.getByLabel(edm::InputTag("kt6PFJets", "sigma", "ROOTMAKER"), sigma);
-        ak4pfjet_sigma = *sigma;
-    }
+    edm::Handle<double> rho;
+    iEvent.getByToken(rhoToken_, rho);
+    ak4pfjet_rho = *rho;
 
     if(cMassMuMuMax != cMassMuMuMin) {
         takeevent = false;
@@ -1831,166 +1611,126 @@ void RootMaker::analyze(const edm::Event &iEvent, const edm::EventSetup &iSetup)
 
 
     if(crecpfmet) {
-        if(cisMiniAOD) {
-            // mvaMET considering: ele, mu and tau leptons
-            edm::Handle<std::vector<reco::PFMET> > mvaMetEMT;
-            iEvent.getByLabel(patMVAMetEMTToken_, mvaMetEMT);
+        // mvaMET considering: ele, mu and tau leptons
+        edm::Handle<std::vector<reco::PFMET> > mvaMetEMT;
+        iEvent.getByLabel(patMVAMetEMTToken_, mvaMetEMT);
 
-            if(cdebug) { cout<<"mini mvaMetEMT.isValid() = "<<mvaMetEMT.isValid()<<endl; }
+        if(cdebug) { cout<<"mini mvaMetEMT.isValid() = "<<mvaMetEMT.isValid()<<endl; }
 
-            if(mvaMetEMT.isValid() && mvaMetEMT->size() > 0) {
-                patmvamet_emt_ex = (*mvaMetEMT)[0].px();
-                patmvamet_emt_ey = (*mvaMetEMT)[0].py();
-                patmvamet_emt_cov_00 = (*mvaMetEMT)[0].getSignificanceMatrix()(0,0);
-                patmvamet_emt_cov_01 = (*mvaMetEMT)[0].getSignificanceMatrix()(0,1);
-                patmvamet_emt_cov_10 = (*mvaMetEMT)[0].getSignificanceMatrix()(1,0);
-                patmvamet_emt_cov_11 = (*mvaMetEMT)[0].getSignificanceMatrix()(1,1);
-            } else {
-                errors |= 1<<24;
-            }
+        if(mvaMetEMT.isValid() && mvaMetEMT->size() > 0) {
+            patmvamet_emt_ex = (*mvaMetEMT)[0].px();
+            patmvamet_emt_ey = (*mvaMetEMT)[0].py();
+            patmvamet_emt_cov_00 = (*mvaMetEMT)[0].getSignificanceMatrix()(0,0);
+            patmvamet_emt_cov_01 = (*mvaMetEMT)[0].getSignificanceMatrix()(0,1);
+            patmvamet_emt_cov_10 = (*mvaMetEMT)[0].getSignificanceMatrix()(1,0);
+            patmvamet_emt_cov_11 = (*mvaMetEMT)[0].getSignificanceMatrix()(1,1);
+        } else {
+            errors |= 1<<24;
+        }
 
-            // mvaMET considering: ele and mu leptons
-            edm::Handle<std::vector<reco::PFMET> > mvaMetEM;
-            iEvent.getByLabel(patMVAMetEMToken_, mvaMetEM);
+        // mvaMET considering: ele and mu leptons
+        edm::Handle<std::vector<reco::PFMET> > mvaMetEM;
+        iEvent.getByLabel(patMVAMetEMToken_, mvaMetEM);
 
-            if(cdebug) { cout<<"mini mvaMetEM.isValid() = "<<mvaMetEM.isValid()<<endl; }
+        if(cdebug) { cout<<"mini mvaMetEM.isValid() = "<<mvaMetEM.isValid()<<endl; }
 
-            if(mvaMetEM.isValid() && mvaMetEM->size() > 0) {
-                patmvamet_em_ex = (*mvaMetEM)[0].px();
-                patmvamet_em_ey = (*mvaMetEM)[0].py();
-                patmvamet_em_cov_00 = (*mvaMetEM)[0].getSignificanceMatrix()(0,0);
-                patmvamet_em_cov_01 = (*mvaMetEM)[0].getSignificanceMatrix()(0,1);
-                patmvamet_em_cov_10 = (*mvaMetEM)[0].getSignificanceMatrix()(1,0);
-                patmvamet_em_cov_11 = (*mvaMetEM)[0].getSignificanceMatrix()(1,1);
-            } else {
-                errors |= 1<<24;
-            }
+        if(mvaMetEM.isValid() && mvaMetEM->size() > 0) {
+            patmvamet_em_ex = (*mvaMetEM)[0].px();
+            patmvamet_em_ey = (*mvaMetEM)[0].py();
+            patmvamet_em_cov_00 = (*mvaMetEM)[0].getSignificanceMatrix()(0,0);
+            patmvamet_em_cov_01 = (*mvaMetEM)[0].getSignificanceMatrix()(0,1);
+            patmvamet_em_cov_10 = (*mvaMetEM)[0].getSignificanceMatrix()(1,0);
+            patmvamet_em_cov_11 = (*mvaMetEM)[0].getSignificanceMatrix()(1,1);
+        } else {
+            errors |= 1<<24;
+        }
 
-            // mvaMET considering: ele and tau leptons
-            edm::Handle<std::vector<reco::PFMET> > mvaMetET;
-            iEvent.getByLabel(patMVAMetETToken_, mvaMetET);
+        // mvaMET considering: ele and tau leptons
+        edm::Handle<std::vector<reco::PFMET> > mvaMetET;
+        iEvent.getByLabel(patMVAMetETToken_, mvaMetET);
 
-            if(cdebug) {
-                cout<<"mini mvaMetET.isValid() = "<<mvaMetET.isValid()<<endl;
-            }
+        if(cdebug) {
+            cout<<"mini mvaMetET.isValid() = "<<mvaMetET.isValid()<<endl;
+        }
 
-            if(mvaMetET.isValid() && mvaMetET->size() > 0) {
-                patmvamet_et_ex = (*mvaMetET)[0].px();
-                patmvamet_et_ey = (*mvaMetET)[0].py();
-                patmvamet_et_cov_00 = (*mvaMetET)[0].getSignificanceMatrix()(0,0);
-                patmvamet_et_cov_01 = (*mvaMetET)[0].getSignificanceMatrix()(0,1);
-                patmvamet_et_cov_10 = (*mvaMetET)[0].getSignificanceMatrix()(1,0);
-                patmvamet_et_cov_11 = (*mvaMetET)[0].getSignificanceMatrix()(1,1);
-            } else {
-                errors |= 1<<24;
-            }
+        if(mvaMetET.isValid() && mvaMetET->size() > 0) {
+            patmvamet_et_ex = (*mvaMetET)[0].px();
+            patmvamet_et_ey = (*mvaMetET)[0].py();
+            patmvamet_et_cov_00 = (*mvaMetET)[0].getSignificanceMatrix()(0,0);
+            patmvamet_et_cov_01 = (*mvaMetET)[0].getSignificanceMatrix()(0,1);
+            patmvamet_et_cov_10 = (*mvaMetET)[0].getSignificanceMatrix()(1,0);
+            patmvamet_et_cov_11 = (*mvaMetET)[0].getSignificanceMatrix()(1,1);
+        } else {
+            errors |= 1<<24;
+        }
 
-            // mvaMET considering: mu and tau leptons
-            edm::Handle<std::vector<reco::PFMET> > mvaMetMT;
-            iEvent.getByLabel(patMVAMetMTToken_, mvaMetMT);
+        // mvaMET considering: mu and tau leptons
+        edm::Handle<std::vector<reco::PFMET> > mvaMetMT;
+        iEvent.getByLabel(patMVAMetMTToken_, mvaMetMT);
 
-            if(cdebug) {
-                cout<<"mini mvaMetMT.isValid() = "<<mvaMetMT.isValid()<<endl;
-            }
+        if(cdebug) {
+            cout<<"mini mvaMetMT.isValid() = "<<mvaMetMT.isValid()<<endl;
+        }
 
-            if(mvaMetMT.isValid() && mvaMetMT->size() > 0) {
-                patmvamet_mt_ex = (*mvaMetMT)[0].px();
-                patmvamet_mt_ey = (*mvaMetMT)[0].py();
-                patmvamet_mt_cov_00 = (*mvaMetMT)[0].getSignificanceMatrix()(0,0);
-                patmvamet_mt_cov_01 = (*mvaMetMT)[0].getSignificanceMatrix()(0,1);
-                patmvamet_mt_cov_10 = (*mvaMetMT)[0].getSignificanceMatrix()(1,0);
-                patmvamet_mt_cov_11 = (*mvaMetMT)[0].getSignificanceMatrix()(1,1);
-            } else {
-                errors |= 1<<24;
-            }
+        if(mvaMetMT.isValid() && mvaMetMT->size() > 0) {
+            patmvamet_mt_ex = (*mvaMetMT)[0].px();
+            patmvamet_mt_ey = (*mvaMetMT)[0].py();
+            patmvamet_mt_cov_00 = (*mvaMetMT)[0].getSignificanceMatrix()(0,0);
+            patmvamet_mt_cov_01 = (*mvaMetMT)[0].getSignificanceMatrix()(0,1);
+            patmvamet_mt_cov_10 = (*mvaMetMT)[0].getSignificanceMatrix()(1,0);
+            patmvamet_mt_cov_11 = (*mvaMetMT)[0].getSignificanceMatrix()(1,1);
+        } else {
+            errors |= 1<<24;
+        }
 
-            // mvaMET considering: tau and tau leptons
-            edm::Handle<std::vector<reco::PFMET> > mvaMetTT;
-            iEvent.getByLabel(patMVAMetTTToken_, mvaMetTT);
+        // mvaMET considering: tau and tau leptons
+        edm::Handle<std::vector<reco::PFMET> > mvaMetTT;
+        iEvent.getByLabel(patMVAMetTTToken_, mvaMetTT);
 
-            if(cdebug) {
-                cout<<"mini mvaMetTT.isValid() = "<<mvaMetTT.isValid()<<endl;
-            }
+        if(cdebug) {
+            cout<<"mini mvaMetTT.isValid() = "<<mvaMetTT.isValid()<<endl;
+        }
 
-            if(mvaMetTT.isValid() && mvaMetTT->size() > 0) {
-                patmvamet_tt_ex = (*mvaMetTT)[0].px();
-                patmvamet_tt_ey = (*mvaMetTT)[0].py();
-                patmvamet_tt_cov_00 = (*mvaMetTT)[0].getSignificanceMatrix()(0,0);
-                patmvamet_tt_cov_01 = (*mvaMetTT)[0].getSignificanceMatrix()(0,1);
-                patmvamet_tt_cov_10 = (*mvaMetTT)[0].getSignificanceMatrix()(1,0);
-                patmvamet_tt_cov_11 = (*mvaMetTT)[0].getSignificanceMatrix()(1,1);
-            } else {
-                errors |= 1<<24;
-            }
+        if(mvaMetTT.isValid() && mvaMetTT->size() > 0) {
+            patmvamet_tt_ex = (*mvaMetTT)[0].px();
+            patmvamet_tt_ey = (*mvaMetTT)[0].py();
+            patmvamet_tt_cov_00 = (*mvaMetTT)[0].getSignificanceMatrix()(0,0);
+            patmvamet_tt_cov_01 = (*mvaMetTT)[0].getSignificanceMatrix()(0,1);
+            patmvamet_tt_cov_10 = (*mvaMetTT)[0].getSignificanceMatrix()(1,0);
+            patmvamet_tt_cov_11 = (*mvaMetTT)[0].getSignificanceMatrix()(1,1);
+        } else {
+            errors |= 1<<24;
+        }
 
-            edm::Handle<pat::METCollection> pfMetType1;
-            //iEvent.getByToken(patMetToken_, pfMetType1);
-            iEvent.getByLabel(newMetLabel_, pfMetType1);
+        edm::Handle<pat::METCollection> pfMetType1;
+        //iEvent.getByToken(patMetToken_, pfMetType1);
+        iEvent.getByLabel(newMetLabel_, pfMetType1);
 
-            //iEvent.getByLabel( "patMETs", pfMetType1);
-            if(cdebug) { cout<<"mini patMetType1.isValid() = "<<pfMetType1.isValid()<<endl; }
+        //iEvent.getByLabel( "patMETs", pfMetType1);
+        if(cdebug) { cout<<"mini patMetType1.isValid() = "<<pfMetType1.isValid()<<endl; }
 
-            if(pfMetType1.isValid() && pfMetType1->size() > 0) {
-                pfmettype1_ex = (*pfMetType1)[0].px();
-                pfmettype1_ey = (*pfMetType1)[0].py();
-                pfmettype1_cov_00 = (*pfMetType1)[0].getSignificanceMatrix()(0,0);
-                pfmettype1_cov_01 = (*pfMetType1)[0].getSignificanceMatrix()(0,1);
-                pfmettype1_cov_10 = (*pfMetType1)[0].getSignificanceMatrix()(1,0);
-                pfmettype1_cov_11 = (*pfMetType1)[0].getSignificanceMatrix()(1,1);
-            } else {
-                errors |= 1<<24;
-            }
+        if(pfMetType1.isValid() && pfMetType1->size() > 0) {
+            pfmettype1_ex = (*pfMetType1)[0].px();
+            pfmettype1_ey = (*pfMetType1)[0].py();
+            pfmettype1_cov_00 = (*pfMetType1)[0].getSignificanceMatrix()(0,0);
+            pfmettype1_cov_01 = (*pfMetType1)[0].getSignificanceMatrix()(0,1);
+            pfmettype1_cov_10 = (*pfMetType1)[0].getSignificanceMatrix()(1,0);
+            pfmettype1_cov_11 = (*pfMetType1)[0].getSignificanceMatrix()(1,1);
+        } else {
+            errors |= 1<<24;
+        }
 
-            //
-            edm::Handle<pat::METCollection> pfMetPuppiType1;
-            iEvent.getByToken(patMetPuppiToken_, pfMetPuppiType1);
+        //
+        edm::Handle<pat::METCollection> pfMetPuppiType1;
+        iEvent.getByToken(patMetPuppiToken_, pfMetPuppiType1);
 
-            if(cdebug) { cout<<"mini patMetPuppiType1.isValid() = "<<pfMetPuppiType1.isValid()<<endl; }
+        if(cdebug) { cout<<"mini patMetPuppiType1.isValid() = "<<pfMetPuppiType1.isValid()<<endl; }
 
-            if(pfMetPuppiType1.isValid() && pfMetPuppiType1->size() > 0) {
-                pfmetpuppitype1_ex = (*pfMetPuppiType1)[0].px();
-                pfmetpuppitype1_ey = (*pfMetPuppiType1)[0].py();
-            } else {
-                errors |= 1<<24;
-            }
-        } else if(!cisMiniAOD) {
-            edm::Handle<reco::PFMETCollection> pfMet;
-            iEvent.getByToken(recoMetToken_, pfMet);
-
-            if(cdebug) {
-                cout<<"pfMet.isValid() = "<<pfMet.isValid()<<endl;
-            }
-
-            if(pfMet.isValid() && pfMet->size() > 0) {
-                pfmet_ex = (*pfMet)[0].px();
-                pfmet_ey = (*pfMet)[0].py();
-            } else {
-                errors |= 1<<21;
-            }
-
-            edm::Handle<reco::PFMETCollection> pfMetType1;
-            iEvent.getByToken(recoMetT1Token_, pfMetType1);
-
-            if(cdebug) { cout<<"pfMetType1.isValid() = "<<pfMetType1.isValid()<<endl; }
-
-            if(pfMetType1.isValid() && pfMetType1->size() > 0) {
-                pfmettype1_ex = (*pfMetType1)[0].px();
-                pfmettype1_ey = (*pfMetType1)[0].py();
-            } else {
-                errors |= 1<<24;
-            }
-
-            edm::Handle<reco::PFMETCollection> pfMetType0Type1;
-            iEvent.getByToken(recoMetT1T0Token_, pfMetType0Type1);
-
-            if(cdebug) { cout<<"pfMetType0Type1.isValid() = "<<pfMetType0Type1.isValid()<<endl; }
-
-            if(pfMetType0Type1.isValid() && pfMetType0Type1->size() > 0) {
-                pfmettype0type1_ex = (*pfMetType0Type1)[0].px();
-                pfmettype0type1_ey = (*pfMetType0Type1)[0].py();
-            } else {
-                errors |= 1<<26;
-            }
+        if(pfMetPuppiType1.isValid() && pfMetPuppiType1->size() > 0) {
+            pfmetpuppitype1_ex = (*pfMetPuppiType1)[0].px();
+            pfmetpuppitype1_ey = (*pfMetPuppiType1)[0].py();
+        } else {
+            errors |= 1<<24;
         }
     }
 
@@ -2369,238 +2109,6 @@ math::XYZPoint RootMaker::PositionOnECalSurface(TransientTrack &trTrack) {
 }
 
 bool RootMaker::AddMuons(const edm::Event &iEvent) {
-    if(cdebug) { cout<<"AddMuons..."<<endl; }
-
-    int NumGood = 0;
-    edm::Handle<reco::MuonCollection> Muons;
-    iEvent.getByToken(recoMuonsToken_, Muons);
-
-    if(cdebug) { cout<<"Muons.isValid() = "<<Muons.isValid()<<endl; }
-
-    if(cdebug) { cout<<"Muons->size() = "<<Muons->size()<<endl; }
-
-    if(Muons.isValid()) {
-        for(unsigned i = 0 ; i < Muons->size() ; i++) {
-            const reco::Muon &themu = (*Muons)[i];
-            muon_px[muon_count] = themu.px();
-            muon_py[muon_count] = themu.py();
-            muon_pz[muon_count] = themu.pz();
-            muon_pt[muon_count] = themu.pt();
-            muon_phi[muon_count] = themu.phi();
-            muon_eta[muon_count] = themu.eta();
-
-            if(themu.globalTrack().isNonnull()) {
-                muon_pterror[muon_count] = themu.globalTrack()->ptError();
-                muon_chi2[muon_count] = themu.globalTrack()->chi2();
-                muon_ndof[muon_count] = themu.globalTrack()->ndof();
-                muon_numvalidmuonhits[muon_count] = themu.globalTrack()->hitPattern().numberOfValidMuonHits();
-            } else {
-                muon_pterror[muon_count] = -1.;
-                muon_chi2[muon_count] = -1.;
-                muon_ndof[muon_count] = 0;
-                muon_numvalidmuonhits[muon_count] = -1.;
-            }
-
-            muon_isolationr3track[muon_count]  = themu.isolationR03().sumPt;
-            muon_isolationr3ntrack[muon_count] = themu.isolationR03().nTracks;
-            muon_isolationr3ecal[muon_count]   = themu.isolationR03().emEt;
-            muon_isolationr3hcal[muon_count]   = themu.isolationR03().hadEt;
-
-            if(cdebug) { cout<<"themu.isPFIsolationValid() = "<<endl; }
-
-            if(themu.isPFIsolationValid()) {
-
-                const reco::MuonPFIsolation pfisor03 = themu.pfIsolationR03();
-                const reco::MuonPFIsolation pfisor04 = themu.pfIsolationR04();
-
-                muon_pfisolationr3_sumchargedhadronpt[muon_count] = pfisor03.sumChargedHadronPt;
-                muon_pfisolationr3_sumchargedparticlept[muon_count] = pfisor03.sumChargedParticlePt;
-                muon_pfisolationr3_sumneutralhadronet[muon_count] = pfisor03.sumNeutralHadronEt;
-                muon_pfisolationr3_sumphotonet[muon_count] = pfisor03.sumPhotonEt;
-                muon_pfisolationr3_sumneutralhadronethighthreshold[muon_count] = pfisor03.sumNeutralHadronEtHighThreshold;
-                muon_pfisolationr3_sumphotonethighthreshold[muon_count] = pfisor03.sumPhotonEtHighThreshold;
-                muon_pfisolationr3_sumpupt[muon_count] = pfisor03.sumPUPt;
-
-                muon_pfisolationr4_sumchargedhadronpt[muon_count] = pfisor04.sumChargedHadronPt;
-                muon_pfisolationr4_sumchargedparticlept[muon_count] = pfisor04.sumChargedParticlePt;
-                muon_pfisolationr4_sumneutralhadronet[muon_count] = pfisor04.sumNeutralHadronEt;
-                muon_pfisolationr4_sumphotonet[muon_count] = pfisor04.sumPhotonEt;
-                muon_pfisolationr4_sumneutralhadronethighthreshold[muon_count] = pfisor04.sumNeutralHadronEtHighThreshold;
-                muon_pfisolationr4_sumphotonethighthreshold[muon_count] = pfisor04.sumPhotonEtHighThreshold;
-                muon_pfisolationr4_sumpupt[muon_count] = pfisor04.sumPUPt;
-
-            }
-
-            muon_ecalenergy[muon_count] = themu.calEnergy().em;
-            muon_hcalenergy[muon_count] = themu.calEnergy().had;
-            muon_charge[muon_count] = themu.charge();
-            muon_type[muon_count] = 0;
-            muon_trackermuonquality[muon_count] = 0;
-
-            if(themu.isGlobalMuon()) { muon_type[muon_count] |= 1 << 0; }
-
-            if(themu.isTrackerMuon()) { muon_type[muon_count] |= 1 << 1; }
-
-            if(themu.isStandAloneMuon()) { muon_type[muon_count] |= 1 << 2; }
-
-            if(themu.isCaloMuon()) { muon_type[muon_count] |= 1 << 3; }
-
-            if(themu.isPFMuon()) { muon_type[muon_count] |= 1 << 6; }
-
-            {
-                using namespace muon;
-
-                if(isGoodMuon(themu, All))  { muon_trackermuonquality[muon_count] |= 1 << 0; }
-
-                if(isGoodMuon(themu, AllGlobalMuons)) { muon_trackermuonquality[muon_count] |= 1 << 1; }
-
-                if(isGoodMuon(themu, AllStandAloneMuons)) { muon_trackermuonquality[muon_count] |= 1 << 2; }
-
-                if(isGoodMuon(themu, AllTrackerMuons)) { muon_trackermuonquality[muon_count] |= 1 << 3; }
-
-                if(isGoodMuon(themu, TrackerMuonArbitrated)) { muon_trackermuonquality[muon_count] |= 1 << 4; }
-
-                if(isGoodMuon(themu, AllArbitrated)) { muon_trackermuonquality[muon_count] |= 1 << 5; }
-
-                if(isGoodMuon(themu, GlobalMuonPromptTight)) { muon_trackermuonquality[muon_count] |= 1 << 6; }
-
-                if(isGoodMuon(themu, TMLastStationLoose)) { muon_trackermuonquality[muon_count] |= 1 << 7; }
-
-                if(isGoodMuon(themu, TMLastStationTight)) { muon_trackermuonquality[muon_count] |= 1 << 8; }
-
-                if(isGoodMuon(themu, TM2DCompatibilityLoose)) { muon_trackermuonquality[muon_count] |= 1 << 9; }
-
-                if(isGoodMuon(themu, TM2DCompatibilityTight)) { muon_trackermuonquality[muon_count] |= 1 << 10; }
-
-                if(isGoodMuon(themu, TMOneStationLoose)) { muon_trackermuonquality[muon_count] |= 1 << 11; }
-
-                if(isGoodMuon(themu, TMOneStationTight)) { muon_trackermuonquality[muon_count] |= 1 << 12; }
-
-                if(isGoodMuon(themu, TMLastStationOptimizedLowPtLoose)) { muon_trackermuonquality[muon_count] |= 1 << 13; }
-
-                if(isGoodMuon(themu, TMLastStationOptimizedLowPtTight)) { muon_trackermuonquality[muon_count] |= 1 << 14; }
-
-                if(isGoodMuon(themu, GMTkChiCompatibility)) { muon_trackermuonquality[muon_count] |= 1 << 15; }
-
-                if(isGoodMuon(themu, GMStaChiCompatibility)) { muon_trackermuonquality[muon_count] |= 1 << 16; }
-
-                if(isGoodMuon(themu, GMTkKinkTight)) { muon_trackermuonquality[muon_count] |= 1 << 17; }
-
-                if(isGoodMuon(themu, TMLastStationAngLoose)) { muon_trackermuonquality[muon_count] |= 1 << 18; }
-
-                if(isGoodMuon(themu, TMLastStationAngTight)) { muon_trackermuonquality[muon_count] |= 1 << 19; }
-
-                if(isGoodMuon(themu, TMOneStationAngLoose)) { muon_trackermuonquality[muon_count] |= 1 << 20; }
-
-                if(isGoodMuon(themu, TMOneStationAngTight)) { muon_trackermuonquality[muon_count] |= 1 << 21; }
-
-                if(isGoodMuon(themu, TMLastStationOptimizedBarrelLowPtLoose)) { muon_trackermuonquality[muon_count] |= 1 << 22; }
-
-                if(isGoodMuon(themu, TMLastStationOptimizedBarrelLowPtTight)) { muon_trackermuonquality[muon_count] |= 1 << 23; }
-
-                muon_numchambers[muon_count] = themu.numberOfChambers();
-                muon_numchamberswithsegments[muon_count] = themu.numberOfMatches(reco::Muon::SegmentAndTrackArbitration);
-                muon_nummatchedstations[muon_count] = themu.numberOfMatchedStations();
-            }
-
-            if(themu.time().direction() == 1) {
-                muon_trackermuonquality[muon_count] |= 1<<30;
-            } else if(themu.time().direction() == -1) {
-                muon_trackermuonquality[muon_count] |= 1<<31;
-            }
-
-            TrackRef innertrack = themu.innerTrack();
-
-            if(innertrack.isNonnull()) {
-                muon_type[muon_count] |= 1 << 4;
-                int numvtx = getPrimVertex(*innertrack);
-                TransientTrack TTrack = TTrackBuilder->build(innertrack);
-                TrajectoryStateClosestToPoint TTrackState;
-
-                if(numvtx == -1) {
-                    TTrackState = TTrack.trajectoryStateClosestToPoint(GlobalPoint(pv_position.x(), pv_position.y(), pv_position.z()));
-                } else {
-                    TTrackState = TTrack.trajectoryStateClosestToPoint(GlobalPoint(primvertex_x[numvtx], primvertex_y[numvtx], primvertex_z[numvtx]));
-                }
-
-                edm::Handle<edm::ValueMap<DeDxData> > dEdxharmonic2;
-                iEvent.getByToken(dharmonicToken_, dEdxharmonic2);
-
-                muon_innertrack_vtx[muon_count] = numvtx;
-                muon_innertrack_px[muon_count] = innertrack->px();
-                muon_innertrack_py[muon_count] = innertrack->py();
-                muon_innertrack_pz[muon_count] = innertrack->pz();
-                muon_innertrack_closestpointx[muon_count] = TTrackState.position().x();
-                muon_innertrack_closestpointy[muon_count] = TTrackState.position().y();
-                muon_innertrack_closestpointz[muon_count] = TTrackState.position().z();
-                //muon_innertrack_dxy[muon_count]    = TTrackState.perigeeParameters().transverseImpactParameter();
-                //muon_innertrack_dxyerr[muon_count] = TTrackState.perigeeError().transverseImpactParameterError();
-                //muon_innertrack_dz[muon_count]     = TTrackState.perigeeParameters().longitudinalImpactParameter();
-                //muon_innertrack_dzerr[muon_count]  = TTrackState.perigeeError().longitudinalImpactParameterError();
-                muon_innertrack_dxy[muon_count]    = innertrack->dxy(pv_position);
-                muon_innertrack_dxyerr[muon_count] = innertrack->dxyError();
-                muon_innertrack_dz[muon_count]     = innertrack->dz(pv_position);
-                muon_innertrack_dzerr[muon_count]  = innertrack->dzError();
-                muon_innertrack_chi2[muon_count]   = innertrack->chi2();
-                muon_innertrack_ndof[muon_count]   = innertrack->ndof();
-                muon_innertrack_charge[muon_count] = innertrack->charge();
-                muon_innertrack_nhits[muon_count] = innertrack->numberOfValidHits();
-                muon_innertrack_nmissinghits[muon_count] = innertrack->numberOfLostHits();
-                muon_innertrack_npixelhits[muon_count] = innertrack->hitPattern().numberOfValidPixelHits();
-                muon_innertrack_npixellayers[muon_count] = innertrack->hitPattern().pixelLayersWithMeasurement();
-                muon_innertrack_nstriplayers[muon_count] = innertrack->hitPattern().stripLayersWithMeasurement();
-
-                if(dEdxharmonic2.isValid()) {
-                    muon_innertrack_dedxharmonic2[muon_count] = (*dEdxharmonic2)[innertrack].dEdx();
-                } else {
-                    muon_innertrack_dedxharmonic2[muon_count] = -1.;
-                }
-
-                math::XYZPoint ecalPos = PositionOnECalSurface(TTrack);
-                muon_innertrack_outerx[muon_count] = ecalPos.x();
-                muon_innertrack_outery[muon_count] = ecalPos.y();
-                muon_innertrack_outerz[muon_count] = ecalPos.z();
-            }
-
-            TrackRef muontrack = themu.outerTrack();
-
-            if(muontrack.isNonnull()) {
-                muon_type[muon_count] |= 1 << 5;
-                muon_outertrack_px[muon_count] = muontrack->px();
-                muon_outertrack_py[muon_count] = muontrack->py();
-                muon_outertrack_pz[muon_count] = muontrack->pz();
-                muon_outertrack_hits[muon_count] = muontrack->numberOfValidHits();
-                muon_outertrack_missinghits[muon_count] = muontrack->numberOfLostHits();
-                muon_outertrack_chi2[muon_count] = muontrack->chi2();
-                muon_outertrack_ndof[muon_count] = muontrack->ndof();
-            }
-
-            muon_trigger[muon_count] = GetTrigger(themu, muontriggers);
-            muon_count++;
-
-            if(muon_count == M_muonmaxcount) {
-                cerr << "number of muon > M_muonmaxcount. They are missing." << endl;
-                errors |= 1<<0;
-                break;
-            }
-
-            if(themu.isGlobalMuon() && themu.isTrackerMuon() && themu.pt() >= cMuPtMin && fabs(themu.eta()) <= cMuEtaMax && themu.isolationR03().sumPt/themu.pt() <= cMuTrackIso) {
-                NumGood++;
-                double energy = sqrt(pow(muon_px[i],2) + pow(muon_py[i],2) + pow(muon_pz[i],2));
-                MuVector.push_back(TLorentzVector(muon_px[i], muon_py[i], muon_pz[i], energy));
-
-            }
-        }
-    }
-
-    if(NumGood >= cMuNum) {
-        return (true);
-    }
-
-    return (false);
-}
-
-bool RootMaker::AddPatMuons(const edm::Event &iEvent) {
     if(cdebug) { cout<<"AddPatMuons..."<<endl; }
 
     int NumGood = 0;
@@ -2910,234 +2418,6 @@ UInt_t RootMaker::GetTrigger(const LeafCandidate &particle, vector<pair<unsigned
 }
 
 bool RootMaker::AddPhotons(const edm::Event &iEvent, const edm::EventSetup &iSetup) {
-    if(cdebug) { cout<<"AddPhotons..."<<endl; }
-
-    int NumGood = 0;
-    edm::Handle<reco::PhotonCollection> Photons;
-    iEvent.getByToken(recoPhotonsToken_, Photons);
-
-    if(cdebug) {
-        cout<<"Photons.isValid() = "<<Photons.isValid()<<endl;
-        cout<<"Photons->size() = "<<Photons->size()<<endl;
-    }
-
-    if(Photons.isValid() && Photons->size() > 0) {
-        edm::Handle<reco::GsfElectronCollection> Electrons;
-        iEvent.getByToken(recoElectronsToken_, Electrons);
-        edm::Handle<reco::ConversionCollection> Conversions;
-        iEvent.getByToken(conversionsToken_, Conversions);
-
-        PFIsolationEstimator isolator;
-        VertexRef myprimvertex(Vertices, 0);
-        edm::Handle<reco::PFCandidateCollection> PFCandidates;
-        iEvent.getByToken(recoPFCandsToken_, PFCandidates);
-        isolator.initializePhotonIsolation(kTRUE);
-
-        EcalClusterLazyTools lazyTools(iEvent, iSetup, ebRecHitsToken_, eeRecHitsToken_);
-        SuperClusterFootprintRemoval remover(iEvent, iSetup);
-
-        for(size_t n = 0 ; n < Photons->size() ; n++) {
-            const reco::Photon &theph = (*Photons)[n];
-            reco::PhotonRef refph(Photons, n);
-
-            if(theph.pt() > cPhotonFilterPtMin && TMath::Abs(theph.eta()) < cPhotonFilterEtaMax) {
-                photon_px[photon_count] = theph.px();
-                photon_py[photon_count] = theph.py();
-                photon_pz[photon_count] = theph.pz();
-                photon_pt[photon_count] = theph.pt();
-                photon_phi[photon_count] = theph.phi();
-                photon_eta[photon_count] = theph.eta();
-                photon_e1x5[photon_count] = theph.e1x5();
-                photon_e2x5[photon_count] = theph.e2x5();
-                photon_e3x3[photon_count] = theph.e3x3();
-                photon_e5x5[photon_count] = theph.e5x5();
-                photon_maxenergyxtal[photon_count] = theph.maxEnergyXtal();
-                photon_sigmaietaieta[photon_count] = theph.sigmaIetaIeta();
-                vector<float> localcovariances = lazyTools.localCovariances(* (theph.superCluster()->seed()));
-                photon_sigmaiphiiphi[photon_count] = TMath::Sqrt(localcovariances[2]);
-                photon_sigmaietaiphi[photon_count] = TMath::Sqrt(localcovariances[1]);
-                photon_ehcaloverecaldepth1[photon_count] = theph.hadronicDepth1OverEm();
-                photon_ehcaloverecaldepth2[photon_count] = theph.hadronicDepth2OverEm();
-                photon_ehcaltoweroverecaldepth1[photon_count] = theph.hadTowDepth1OverEm();
-                photon_ehcaltoweroverecaldepth2[photon_count] = theph.hadTowDepth2OverEm();
-                photon_isolationr3track[photon_count] = theph.trkSumPtSolidConeDR03();
-                photon_isolationr3trackhollow[photon_count] = theph.trkSumPtHollowConeDR03();
-                photon_isolationr3ecal[photon_count] = theph.ecalRecHitSumEtConeDR03();
-                photon_isolationr3hcal[photon_count] = theph.hcalTowerSumEtConeDR03();
-                photon_isolationr3ntrack[photon_count] = theph.nTrkSolidConeDR03();
-                photon_isolationr3ntrackhollow[photon_count] = theph.nTrkHollowConeDR03();
-                photon_isolationr4track[photon_count] = theph.trkSumPtSolidConeDR04();
-                photon_isolationr4trackhollow[photon_count] = theph.trkSumPtHollowConeDR04();
-                photon_isolationr4ecal[photon_count] = theph.ecalRecHitSumEtConeDR04();
-                photon_isolationr4hcal[photon_count] = theph.hcalTowerSumEtConeDR04();
-                photon_isolationr4ntrack[photon_count] = theph.nTrkSolidConeDR04();
-                photon_isolationr4ntrackhollow[photon_count] = theph.nTrkHollowConeDR04();
-                isolator.setConeSize(0.3);
-                isolator.fGetIsolation(&theph, PFCandidates.product(), myprimvertex, Vertices);
-                photon_isolationpfr3charged[photon_count] = isolator.getIsolationCharged();
-                photon_isolationpfr3photon[photon_count] = isolator.getIsolationPhoton();
-                photon_isolationpfr3neutral[photon_count] = isolator.getIsolationNeutral();
-                isolator.setConeSize(0.4);
-                isolator.fGetIsolation(&theph, PFCandidates.product(), myprimvertex, Vertices);
-                photon_isolationpfr4charged[photon_count] = isolator.getIsolationCharged();
-                photon_isolationpfr4photon[photon_count] = isolator.getIsolationPhoton();
-                photon_isolationpfr4neutral[photon_count] = isolator.getIsolationNeutral();
-
-                //Iso R4 with SC footprint removal https://twiki.cern.ch/twiki/bin/viewauth/CMS/SuperClusterFootprintRemoval
-                //photon_isolationpfr4noscfootprintcharged[photon_count] = remover.PFIsolation("charged", theph.superCluster(), 0);
-                //photon_isolationpfr4noscfootprintphoton[photon_count] = remover.PFIsolation("photon", theph.superCluster());
-                //photon_isolationpfr4noscfootprintneutral[photon_count] = remover.PFIsolation("neutral", theph.superCluster());
-
-                PFIsolation_struct tempPFIso_photon = remover.PFIsolation(theph.superCluster(), edm::Ptr<reco::Vertex> (Vertices, 0));
-                photon_isolationpfr4noscfootprintcharged[photon_count] = tempPFIso_photon.chargediso_primvtx;
-                photon_isolationpfr4noscfootprintphoton[photon_count]  = tempPFIso_photon.photoniso;
-                photon_isolationpfr4noscfootprintneutral[photon_count] = tempPFIso_photon.neutraliso;
-
-                //    photon_isolationpfr3charged[photon_count] = (*(photonIsoPF[0]))[refph];
-                //    photon_isolationpfr3photon[photon_count] = (*(photonIsoPF[1]))[refph];
-                //    photon_isolationpfr3neutral[photon_count] = (*(photonIsoPF[2]))[refph];
-                photon_isolationpfr3charged[photon_count] = theph.chargedHadronIso();
-                photon_isolationpfr3photon[photon_count] = theph.photonIso();
-                photon_isolationpfr3neutral[photon_count] = theph.neutralHadronIso();
-                photon_supercluster_e[photon_count] = theph.superCluster()->energy();
-                photon_supercluster_x[photon_count] = theph.superCluster()->x();
-                photon_supercluster_y[photon_count] = theph.superCluster()->y();
-                photon_supercluster_z[photon_count] = theph.superCluster()->z();
-                photon_supercluster_rawe[photon_count] = theph.superCluster()->rawEnergy();
-                photon_supercluster_phiwidth[photon_count] = theph.superCluster()->phiWidth();
-                photon_supercluster_etawidth[photon_count] = theph.superCluster()->etaWidth();
-                photon_supercluster_nbasiccluster[photon_count] = theph.superCluster()->clustersSize();
-
-                photon_info[photon_count] = 0;
-                photon_info[photon_count] |= theph.isPhoton() << 0;
-                photon_info[photon_count] |= theph.hasConversionTracks() << 1;
-                photon_info[photon_count] |= theph.hasPixelSeed() << 2;
-                photon_info[photon_count] |= ConversionTools::hasMatchedPromptElectron(theph.superCluster(), Electrons, Conversions, bs_position) << 3;
-                photon_info[photon_count] |= theph.isPFlowPhoton() << 4;
-                photon_gapinfo[photon_count] = 0;
-                photon_gapinfo[photon_count] |= theph.isEB() << 0;
-                photon_gapinfo[photon_count] |= theph.isEE() << 1;
-                photon_gapinfo[photon_count] |= theph.isEBGap() << 2;
-                photon_gapinfo[photon_count] |= theph.isEBEtaGap() << 3;
-                photon_gapinfo[photon_count] |= theph.isEBPhiGap() << 4;
-                photon_gapinfo[photon_count] |= theph.isEEGap() << 5;
-                photon_gapinfo[photon_count] |= theph.isEERingGap() << 6;
-                photon_gapinfo[photon_count] |= theph.isEEDeeGap() << 7;
-                photon_gapinfo[photon_count] |= theph.isEBEEGap() << 8;
-                photon_conversionbegin[photon_count] = conversion_count;
-                photon_trigger[photon_count] = GetTrigger(theph, photontriggers);
-
-                ConversionRefVector conversions = theph.conversions();
-
-                for(unsigned j = 0 ; j < conversions.size() ; j++) {
-                    ConversionRef currconv = conversions[j];
-
-                    conversion_info[conversion_count] = 0;
-                    conversion_info[conversion_count] |= currconv->isConverted() << 0;
-                    conversion_info[conversion_count] |= currconv->conversionVertex().isValid() << 1;
-                    conversion_vx[conversion_count] = currconv->conversionVertex().x();
-                    conversion_vy[conversion_count] = currconv->conversionVertex().y();
-                    conversion_vz[conversion_count] = currconv->conversionVertex().z();
-                    conversion_chi2[conversion_count] = currconv->conversionVertex().chi2();
-                    conversion_ndof[conversion_count] = currconv->conversionVertex().ndof();
-                    conversion_cov[conversion_count][0] = currconv->conversionVertex().covariance(0,0);
-                    conversion_cov[conversion_count][1] = currconv->conversionVertex().covariance(0,1);
-                    conversion_cov[conversion_count][2] = currconv->conversionVertex().covariance(0,2);
-                    conversion_cov[conversion_count][3] = currconv->conversionVertex().covariance(1,1);
-                    conversion_cov[conversion_count][4] = currconv->conversionVertex().covariance(1,2);
-                    conversion_cov[conversion_count][5] = currconv->conversionVertex().covariance(2,2);
-                    conversion_mvaout[conversion_count] = currconv->MVAout();
-
-                    conversion_trackndof[conversion_count][0] = -1.;
-                    conversion_trackndof[conversion_count][1] = -1.;
-
-                    if(currconv->nTracks() == 2) {
-                        edm::RefToBase<Track> trA  = currconv->tracks()[0];
-                        TransientTrack SVTTrackA = TTrackBuilder->build(*trA);
-                        TrajectoryStateClosestToPoint TTrackStateA = SVTTrackA.trajectoryStateClosestToPoint(GlobalPoint(currconv->conversionVertex().x(), currconv->conversionVertex().y(), currconv->conversionVertex().z()));
-                        edm::RefToBase<Track> trB  = currconv->tracks()[1];
-                        TransientTrack SVTTrackB = TTrackBuilder->build(*trB);
-                        TrajectoryStateClosestToPoint TTrackStateB = SVTTrackB.trajectoryStateClosestToPoint(GlobalPoint(currconv->conversionVertex().x(), currconv->conversionVertex().y(), currconv->conversionVertex().z()));
-
-                        if(TTrackStateB.isValid() && TTrackStateA.isValid()) {
-
-                            conversion_trackecalpointx[conversion_count][0] = currconv->ecalImpactPosition()[0].X();
-                            conversion_trackecalpointy[conversion_count][0] = currconv->ecalImpactPosition()[0].Y();
-                            conversion_trackecalpointz[conversion_count][0] = currconv->ecalImpactPosition()[0].Z();
-                            conversion_trackpx[conversion_count][0] = TTrackStateA.momentum().x();
-                            conversion_trackpy[conversion_count][0] = TTrackStateA.momentum().y();
-                            conversion_trackpz[conversion_count][0] = TTrackStateA.momentum().z();
-                            conversion_trackclosestpointx[conversion_count][0] =  TTrackStateA.position().x();
-                            conversion_trackclosestpointy[conversion_count][0] =  TTrackStateA.position().y();
-                            conversion_trackclosestpointz[conversion_count][0] =  TTrackStateA.position().z();
-                            conversion_trackchi2[conversion_count][0] = currconv->tracks()[0]->chi2();
-                            conversion_trackndof[conversion_count][0] = currconv->tracks()[0]->ndof();
-                            conversion_trackdxy[conversion_count][0] = TTrackStateA.perigeeParameters().transverseImpactParameter();
-                            conversion_trackdxyerr[conversion_count][0] = TTrackStateA.perigeeError().transverseImpactParameterError();
-                            conversion_trackdz[conversion_count][0] = TTrackStateA.perigeeParameters().longitudinalImpactParameter();
-                            conversion_trackdzerr[conversion_count][0] = TTrackStateA.perigeeError().longitudinalImpactParameterError();
-                            conversion_trackcharge[conversion_count][0] = currconv->tracks()[0]->charge();
-                            conversion_tracknhits[conversion_count][0] = currconv->tracks()[0]->numberOfValidHits();
-                            conversion_tracknmissinghits[conversion_count][0] = currconv->tracks()[0]->numberOfLostHits();
-                            conversion_tracknpixelhits[conversion_count][0] = currconv->tracks()[0]->hitPattern().numberOfValidPixelHits();
-                            conversion_tracknpixellayers[conversion_count][0] = currconv->tracks()[0]->hitPattern().pixelLayersWithMeasurement();
-                            conversion_tracknstriplayers[conversion_count][0] = currconv->tracks()[0]->hitPattern().stripLayersWithMeasurement();
-                            conversion_trackecalpointx[conversion_count][1] = currconv->ecalImpactPosition()[1].X();
-                            conversion_trackecalpointy[conversion_count][1] = currconv->ecalImpactPosition()[1].Y();
-                            conversion_trackecalpointz[conversion_count][1] = currconv->ecalImpactPosition()[1].Z();
-                            conversion_trackpx[conversion_count][1] = TTrackStateB.momentum().x();
-                            conversion_trackpy[conversion_count][1] = TTrackStateB.momentum().y();
-                            conversion_trackpz[conversion_count][1] = TTrackStateB.momentum().z();
-                            conversion_trackclosestpointx[conversion_count][1] =  TTrackStateB.position().x();
-                            conversion_trackclosestpointy[conversion_count][1] =  TTrackStateB.position().y();
-                            conversion_trackclosestpointz[conversion_count][1] =  TTrackStateB.position().z();
-                            conversion_trackchi2[conversion_count][1] = currconv->tracks()[1]->chi2();
-                            conversion_trackndof[conversion_count][1] = currconv->tracks()[1]->ndof();
-                            conversion_trackdxy[conversion_count][1] = TTrackStateB.perigeeParameters().transverseImpactParameter();
-                            conversion_trackdxyerr[conversion_count][1] = TTrackStateB.perigeeError().transverseImpactParameterError();
-                            conversion_trackdz[conversion_count][1] = TTrackStateB.perigeeParameters().longitudinalImpactParameter();
-                            conversion_trackdzerr[conversion_count][1] = TTrackStateB.perigeeError().longitudinalImpactParameterError();
-                            conversion_trackcharge[conversion_count][1] = currconv->tracks()[1]->charge();
-                            conversion_tracknhits[conversion_count][1] = currconv->tracks()[1]->numberOfValidHits();
-                            conversion_tracknmissinghits[conversion_count][1] = currconv->tracks()[1]->numberOfLostHits();
-                            conversion_tracknpixelhits[conversion_count][1] = currconv->tracks()[1]->hitPattern().numberOfValidPixelHits();
-                            conversion_tracknpixellayers[conversion_count][1] = currconv->tracks()[1]->hitPattern().pixelLayersWithMeasurement();
-                            conversion_tracknstriplayers[conversion_count][1] = currconv->tracks()[1]->hitPattern().stripLayersWithMeasurement();
-                        }
-                    }
-
-                    conversion_count++;
-
-                    if(conversion_count == M_conversionmaxcount) {
-                        cerr << "number of conversions > M_conversionmaxcount. They are missing." << endl;
-                        errors |= 1<<4;
-                        break;
-                    }
-                }
-
-                photon_count++;
-
-                if(photon_count == M_photonmaxcount || conversion_count == M_conversionmaxcount) {
-                    cerr << "number of photon > M_photonmaxcount. They are missing." << endl;
-                    errors |= 1<<3;
-                    break;
-                }
-
-                if(theph.pt() >= cPhotonPtMin && fabs(theph.eta()) <= cPhotonEtaMax) {
-                    NumGood++;
-                }
-            }
-        }
-    }
-
-    if(NumGood >= cPhotonNum) {
-        return (true);
-    }
-
-    return (false);
-}
-
-bool RootMaker::AddPatPhotons(const edm::Event &iEvent, const edm::EventSetup &iSetup) {
     if(cdebug) { cout<<"AddPatPhotons..."<<endl; }
 
     int NumGood = 0;
@@ -3243,7 +2523,6 @@ bool RootMaker::AddPatPhotons(const edm::Event &iEvent, const edm::EventSetup &i
                 photon_info[photon_count] |= theph.isPhoton() << 0;
                 photon_info[photon_count] |= theph.hasConversionTracks() << 1;
                 photon_info[photon_count] |= theph.hasPixelSeed() << 2;
-                //photon_info[photon_count] |= ConversionTools::hasMatchedPromptElectron(theph.superCluster(), Electrons, Conversions, bs_position) << 3;
                 photon_info[photon_count] |= theph.isPFlowPhoton() << 4;
                 photon_gapinfo[photon_count] = 0;
                 photon_gapinfo[photon_count] |= theph.isEB() << 0;
@@ -3257,87 +2536,7 @@ bool RootMaker::AddPatPhotons(const edm::Event &iEvent, const edm::EventSetup &i
                 photon_gapinfo[photon_count] |= theph.isEBEEGap() << 8;
                 photon_conversionbegin[photon_count] = conversion_count;
                 photon_trigger[photon_count] = GetTrigger(theph, photontriggers);
-                /*
-                                ConversionRefVector conversions = theph.conversions();
-                                for(unsigned j = 0 ; j < conversions.size() ; j++) {
-                                    ConversionRef currconv = conversions[j];
 
-                                    conversion_info[conversion_count] = 0;
-                                    conversion_info[conversion_count] |= currconv->isConverted() << 0;
-                                    conversion_info[conversion_count] |= currconv->conversionVertex().isValid() << 1;
-                                    conversion_vx[conversion_count] = currconv->conversionVertex().x();
-                                    conversion_vy[conversion_count] = currconv->conversionVertex().y();
-                                    conversion_vz[conversion_count] = currconv->conversionVertex().z();
-                                    conversion_chi2[conversion_count] = currconv->conversionVertex().chi2();
-                                    conversion_ndof[conversion_count] = currconv->conversionVertex().ndof();
-                                    conversion_cov[conversion_count][0] = currconv->conversionVertex().covariance(0,0);
-                                    conversion_cov[conversion_count][1] = currconv->conversionVertex().covariance(0,1);
-                                    conversion_cov[conversion_count][2] = currconv->conversionVertex().covariance(0,2);
-                                    conversion_cov[conversion_count][3] = currconv->conversionVertex().covariance(1,1);
-                                    conversion_cov[conversion_count][4] = currconv->conversionVertex().covariance(1,2);
-                                    conversion_cov[conversion_count][5] = currconv->conversionVertex().covariance(2,2);
-                                    conversion_mvaout[conversion_count] = currconv->MVAout();
-
-                                    conversion_trackndof[conversion_count][0] = -1.;
-                                    conversion_trackndof[conversion_count][1] = -1.;
-                                    if(currconv->nTracks() == 2) {
-                                        edm::RefToBase<Track> trA  = currconv->tracks()[0];
-                                        TransientTrack SVTTrackA = TTrackBuilder->build(*trA);
-                                        TrajectoryStateClosestToPoint TTrackStateA = SVTTrackA.trajectoryStateClosestToPoint(GlobalPoint(currconv->conversionVertex().x(), currconv->conversionVertex().y(), currconv->conversionVertex().z()));
-                                        edm::RefToBase<Track> trB  = currconv->tracks()[1];
-                                        TransientTrack SVTTrackB = TTrackBuilder->build(*trB);
-                                        TrajectoryStateClosestToPoint TTrackStateB = SVTTrackB.trajectoryStateClosestToPoint(GlobalPoint(currconv->conversionVertex().x(), currconv->conversionVertex().y(), currconv->conversionVertex().z()));
-
-                                        if(TTrackStateB.isValid() && TTrackStateA.isValid()) {
-
-                                            conversion_trackecalpointx[conversion_count][0] = currconv->ecalImpactPosition()[0].X();
-                                            conversion_trackecalpointy[conversion_count][0] = currconv->ecalImpactPosition()[0].Y();
-                                            conversion_trackecalpointz[conversion_count][0] = currconv->ecalImpactPosition()[0].Z();
-                                            conversion_trackpx[conversion_count][0] = TTrackStateA.momentum().x();
-                                            conversion_trackpy[conversion_count][0] = TTrackStateA.momentum().y();
-                                            conversion_trackpz[conversion_count][0] = TTrackStateA.momentum().z();
-                                            conversion_trackclosestpointx[conversion_count][0] =  TTrackStateA.position().x();
-                                            conversion_trackclosestpointy[conversion_count][0] =  TTrackStateA.position().y();
-                                            conversion_trackclosestpointz[conversion_count][0] =  TTrackStateA.position().z();
-                                            conversion_trackchi2[conversion_count][0] = currconv->tracks()[0]->chi2();
-                                            conversion_trackndof[conversion_count][0] = currconv->tracks()[0]->ndof();
-                                            conversion_trackdxy[conversion_count][0] = TTrackStateA.perigeeParameters().transverseImpactParameter();
-                                            conversion_trackdxyerr[conversion_count][0] = TTrackStateA.perigeeError().transverseImpactParameterError();
-                                            conversion_trackdz[conversion_count][0] = TTrackStateA.perigeeParameters().longitudinalImpactParameter();
-                                            conversion_trackdzerr[conversion_count][0] = TTrackStateA.perigeeError().longitudinalImpactParameterError();
-                                            conversion_trackcharge[conversion_count][0] = currconv->tracks()[0]->charge();
-                                            conversion_tracknhits[conversion_count][0] = currconv->tracks()[0]->numberOfValidHits();
-                                            conversion_tracknmissinghits[conversion_count][0] = currconv->tracks()[0]->numberOfLostHits();
-                                            conversion_tracknpixelhits[conversion_count][0] = currconv->tracks()[0]->hitPattern().numberOfValidPixelHits();
-                                            conversion_tracknpixellayers[conversion_count][0] = currconv->tracks()[0]->hitPattern().pixelLayersWithMeasurement();
-                                            conversion_tracknstriplayers[conversion_count][0] = currconv->tracks()[0]->hitPattern().stripLayersWithMeasurement();
-                                            conversion_trackecalpointx[conversion_count][1] = currconv->ecalImpactPosition()[1].X();
-                                            conversion_trackecalpointy[conversion_count][1] = currconv->ecalImpactPosition()[1].Y();
-                                            conversion_trackecalpointz[conversion_count][1] = currconv->ecalImpactPosition()[1].Z();
-                                            conversion_trackpx[conversion_count][1] = TTrackStateB.momentum().x();
-                                            conversion_trackpy[conversion_count][1] = TTrackStateB.momentum().y();
-                                            conversion_trackpz[conversion_count][1] = TTrackStateB.momentum().z();
-                                            conversion_trackclosestpointx[conversion_count][1] =  TTrackStateB.position().x();
-                                            conversion_trackclosestpointy[conversion_count][1] =  TTrackStateB.position().y();
-                                            conversion_trackclosestpointz[conversion_count][1] =  TTrackStateB.position().z();
-                                            conversion_trackchi2[conversion_count][1] = currconv->tracks()[1]->chi2();
-                                            conversion_trackndof[conversion_count][1] = currconv->tracks()[1]->ndof();
-                                            conversion_trackdxy[conversion_count][1] = TTrackStateB.perigeeParameters().transverseImpactParameter();
-                                            conversion_trackdxyerr[conversion_count][1] = TTrackStateB.perigeeError().transverseImpactParameterError();
-                                            conversion_trackdz[conversion_count][1] = TTrackStateB.perigeeParameters().longitudinalImpactParameter();
-                                            conversion_trackdzerr[conversion_count][1] = TTrackStateB.perigeeError().longitudinalImpactParameterError();
-                                            conversion_trackcharge[conversion_count][1] = currconv->tracks()[1]->charge();
-                                            conversion_tracknhits[conversion_count][1] = currconv->tracks()[1]->numberOfValidHits();
-                                            conversion_tracknmissinghits[conversion_count][1] = currconv->tracks()[1]->numberOfLostHits();
-                                            conversion_tracknpixelhits[conversion_count][1] = currconv->tracks()[1]->hitPattern().numberOfValidPixelHits();
-                                            conversion_tracknpixellayers[conversion_count][1] = currconv->tracks()[1]->hitPattern().pixelLayersWithMeasurement();
-                                            conversion_tracknstriplayers[conversion_count][1] = currconv->tracks()[1]->hitPattern().stripLayersWithMeasurement();
-                                        }
-                                    }
-                                    conversion_count++;
-                                    if(conversion_count == M_conversionmaxcount) {cerr << "number of conversions > M_conversionmaxcount. They are missing." << endl; errors |= 1<<4; break;}
-                                }
-                */
                 photon_count++;
 
                 if(photon_count == M_photonmaxcount || conversion_count == M_conversionmaxcount) {
@@ -3463,171 +2662,6 @@ bool RootMaker::AddAllConversions(const edm::Event &iEvent) {
 }
 
 bool RootMaker::AddTaus(const edm::Event &iEvent) {
-    if(cdebug) { cout<<"AddTaus..."<<endl; }
-
-    int NumGood = 0;
-    edm::Handle<PFTauCollection> Taus;
-    iEvent.getByToken(recoTausToken_, Taus);
-    edm::Handle<pat::JetCollection> ak4pfJets;
-    iEvent.getByToken(tauJetsToken_, ak4pfJets);
-
-    if(cdebug) {
-        cout<<"Taus.isValid() = "<<Taus.isValid()<<endl;
-        cout<<"Taus->size() = "<<Taus->size()<<endl;
-    }
-
-    if(Taus.isValid()) {
-        vector<edm::Handle<PFTauDiscriminator> > PFTauDiscriminatiors(cTauDiscriminators.size());
-
-        for(unsigned n = 0 ; n < cTauDiscriminators.size() ; n++) {
-            iEvent.getByLabel(cTauDiscriminators[n].c_str(), PFTauDiscriminatiors[n]);
-        }
-
-        edm::Handle<PFTauDiscriminator> hpsPFTauDiscriminationByLooseIsolation;
-        iEvent.getByLabel("hpsPFTauDiscriminationByLooseIsolation", hpsPFTauDiscriminationByLooseIsolation);
-
-        for(unsigned i = 0 ; i < Taus->size() ; i++) {
-            int numtrack = (*Taus)[i].signalPFChargedHadrCands().size();
-            PFTauRef tauCandidate(Taus, i);
-
-            if((*hpsPFTauDiscriminationByLooseIsolation)[tauCandidate] < 0.5 || !(numtrack == 3 || numtrack == 1)) {
-                continue;
-            }
-
-            tau_dishps[tau_count] = 0;
-
-            for(unsigned n = 0 ; n < cTauDiscriminators.size() ; n++) {
-                if((*PFTauDiscriminatiors[n])[tauCandidate] > 0.5) {
-                    tau_dishps[tau_count] |= 1<<n;
-                }
-            }
-
-            tau_px[tau_count] = (*Taus)[i].px();
-            tau_py[tau_count] = (*Taus)[i].py();
-            tau_pz[tau_count] = (*Taus)[i].pz();
-            tau_pt[tau_count] = (*Taus)[i].pt();
-            tau_phi[tau_count] = (*Taus)[i].phi();
-            tau_eta[tau_count] = (*Taus)[i].eta();
-            tau_emfraction[tau_count] = (*Taus)[i].emFraction();
-            tau_hcaltotoverplead[tau_count] = (*Taus)[i].hcalTotOverPLead();
-            tau_hcal3x3overplead[tau_count] = (*Taus)[i].hcalMaxOverPLead();
-            tau_ecalstripsumeoverplead[tau_count] = (*Taus)[i].hcal3x3OverPLead();
-            tau_bremsrecoveryeoverplead[tau_count] = (*Taus)[i].ecalStripSumEOverPLead();
-            tau_calocomp[tau_count] = (*Taus)[i].caloComp();
-            tau_segcomp[tau_count] = (*Taus)[i].segComp();
-
-            tau_charge[tau_count] = (*Taus)[i].charge();
-            tau_chargedbegin[tau_count] = tau_charged_count;
-            PFJetRef thejet = (*Taus)[i].jetRef();
-            bool jetfound = false;
-
-            if(ak4pfJets.isValid()) {
-                jetfound = true;
-                tau_ak4pfjet_e[tau_count] = thejet->energy();
-                tau_ak4pfjet_px[tau_count] = thejet->px();
-                tau_ak4pfjet_py[tau_count] = thejet->py();
-                tau_ak4pfjet_pz[tau_count] = thejet->pz();
-                tau_ak4pfjet_hadronicenergy[tau_count] = thejet->chargedHadronEnergy() + thejet->neutralHadronEnergy();
-                tau_ak4pfjet_chargedhadronicenergy[tau_count] = thejet->chargedHadronEnergy();
-                tau_ak4pfjet_emenergy[tau_count] = thejet->chargedEmEnergy() + thejet->neutralEmEnergy();
-                tau_ak4pfjet_chargedemenergy[tau_count] = thejet->chargedEmEnergy();
-                tau_ak4pfjet_chargedmulti[tau_count] = thejet->chargedMultiplicity();
-                tau_ak4pfjet_neutralmulti[tau_count] = thejet->neutralMultiplicity();
-                tau_ak4pfjet_trigger[tau_count] = GetTrigger(*thejet, jettriggers);
-                break;
-            }
-
-            if(!jetfound) {
-                tau_ak4pfjet_e[tau_count] = -1.;
-            }
-
-            tau_isolationchargednum[tau_count] = 0;
-            tau_isolationchargedpt[tau_count] = 0.;
-            tau_isolationneutralsnum[tau_count] = 0;
-            tau_isolationneutralspt[tau_count] = 0.;
-            tau_pucorrptsum[tau_count] = 0.;
-            tau_isolationgammanum[tau_count] = (*Taus)[i].isolationPFGammaCands().size();
-            tau_isolationgammapt[tau_count] = (*Taus)[i].isolationPFGammaCandsEtSum();
-
-            tau_isolationchargednum[tau_count]  = (*Taus)[i].isolationPFChargedHadrCands().size();
-            tau_isolationchargedpt[tau_count]   = (*Taus)[i].isolationPFChargedHadrCandsPtSum();
-            tau_isolationneutralsnum[tau_count] = (*Taus)[i].isolationPFNeutrHadrCands().size();
-
-            std::vector<double> isocands = extract((*Taus)[i].isolationPFNeutrHadrCands(),std::mem_fun_ref(&PFCandidate::pt));
-            BOOST_FOREACH(double pt, isocands) {
-                tau_isolationneutralspt[tau_count] += pt;
-            }
-            tau_trigger[tau_count] = GetTrigger((*Taus)[i], tautriggers);
-            TrackRef track;
-
-            const std::vector<reco::PFCandidatePtr> &tauSignalPFCands = (*Taus)[i].signalPFCands();
-
-            for(std::vector<reco::PFCandidatePtr>::const_iterator tauSignalPFCand = tauSignalPFCands.begin(); tauSignalPFCand != tauSignalPFCands.end(); ++tauSignalPFCand) {
-                track = (*tauSignalPFCand)->trackRef();
-
-                if(!track.isNull()) {
-                    iEvent.getByToken(dharmonicToken_, dEdxharmonic2);
-                    TransientTrack TTrack = TTrackBuilder->build(track);
-                    TrajectoryStateClosestToPoint TTrackState = TTrack.trajectoryStateClosestToPoint(GlobalPoint(pv_position.x(), pv_position.y(), pv_position.z()));
-                    tau_charged_px[tau_charged_count] = TTrackState.momentum().x();
-                    tau_charged_py[tau_charged_count] = TTrackState.momentum().y();
-                    tau_charged_pz[tau_charged_count] = TTrackState.momentum().z();
-                    tau_charged_closestpointx[tau_charged_count] = TTrackState.position().x();
-                    tau_charged_closestpointy[tau_charged_count] = TTrackState.position().y();
-                    tau_charged_closestpointz[tau_charged_count] = TTrackState.position().z();
-                    tau_charged_dxy[tau_charged_count]    = TTrackState.perigeeParameters().transverseImpactParameter();
-                    tau_charged_dxyerr[tau_charged_count] = TTrackState.perigeeError().transverseImpactParameterError();
-                    tau_charged_dz[tau_charged_count]     = TTrackState.perigeeParameters().longitudinalImpactParameter();
-                    tau_charged_dzerr[tau_charged_count]  = TTrackState.perigeeError().longitudinalImpactParameterError();
-                    tau_charged_chi2[tau_charged_count]   = track->chi2();
-                    tau_charged_ndof[tau_charged_count]   = track->ndof();
-                    tau_charged_charge[tau_charged_count] = track->charge();
-                    tau_charged_nhits[tau_charged_count] = track->numberOfValidHits();
-                    tau_charged_nmissinghits[tau_charged_count] = track->numberOfLostHits();
-                    tau_charged_npixelhits[tau_charged_count] = track->hitPattern().numberOfValidPixelHits();
-                    tau_charged_npixellayers[tau_charged_count] = track->hitPattern().pixelLayersWithMeasurement();
-                    tau_charged_nstriplayers[tau_charged_count] = track->hitPattern().stripLayersWithMeasurement();
-
-                    if(dEdxharmonic2.isValid()) {
-                        tau_charged_dedxharmonic2[tau_charged_count] = (*dEdxharmonic2)[track].dEdx();
-                    } else {
-                        tau_charged_dedxharmonic2[tau_charged_count] = -1.;
-                    }
-
-                    math::XYZPoint ecalPos = PositionOnECalSurface(TTrack);
-                    tau_charged_outerx[tau_charged_count] = ecalPos.x();
-                    tau_charged_outery[tau_charged_count] = ecalPos.y();
-                    tau_charged_outerz[tau_charged_count] = ecalPos.z();
-                    tau_charged_count++;
-
-                    if(tau_charged_count == M_taumaxcount*10) {
-                        break;
-                    }
-                }
-            }
-
-            tau_count++;
-
-            if(tau_count == M_taumaxcount || tau_charged_count == M_taumaxcount*10) {
-                cerr << "number of taus > M_jetmaxcount. They are missing." << endl;
-                errors |= 1<<10;
-                break;
-            }
-
-            if((*Taus)[i].pt() >= cTauPtMin && fabs((*Taus)[i].eta()) < cTauEtaMax) {
-                NumGood++;
-            }
-        }
-    }
-
-    if(NumGood >= cTauNum) {
-        return (true);
-    }
-
-    return (false);
-}
-
-bool RootMaker::AddPatTaus(const edm::Event &iEvent) {
     if(cdebug) { cout<<"AddPatTaus..."<<endl; }
 
     int NumGood = 0;
@@ -3847,140 +2881,6 @@ bool RootMaker::AddTracks(const edm::Event &iEvent) {
     return (false);
 }
 
-bool RootMaker::AddAK4CaloJets(const edm::Event &iEvent, const edm::EventSetup &iSetup) {
-    if(cdebug) { cout<<"AddAK4CaloJets..."<<endl; }
-
-    int NumGood = 0;
-    edm::Handle<pat::JetCollection> ak4caloJets;
-    iEvent.getByToken(ak4caloJetsToken_, ak4caloJets);
-
-    if(cdebug) { cout<<"ak4caloJets.isValid() = "<<ak4caloJets.isValid()<<endl; }
-
-    if(ak4caloJets.isValid()) {
-        for(unsigned i = 0 ; i < ak4caloJets->size() ; i++) {
-            if((*ak4caloJets)[i].pt() >= cAK4CaloFilterPtMin) {
-                ak4calojet_e[ak4calojet_count] = (*ak4caloJets)[i].energy();
-                ak4calojet_px[ak4calojet_count] = (*ak4caloJets)[i].px();
-                ak4calojet_py[ak4calojet_count] = (*ak4caloJets)[i].py();
-                ak4calojet_pz[ak4calojet_count] = (*ak4caloJets)[i].pz();
-                ak4calojet_hadronicenergy[ak4calojet_count] = (*ak4caloJets)[i].energyFractionHadronic() * (*ak4caloJets)[i].energy();
-                ak4calojet_emenergy[ak4calojet_count] = (*ak4caloJets)[i].emEnergyFraction() * (*ak4caloJets)[i].energy();
-
-                if((*ak4caloJets)[i].jecSetsAvailable()) {
-                    ak4calojet_energycorr[ak4calojet_count] = (*ak4caloJets)[i].jecFactor("Uncorrected");
-                    ak4calojet_energycorrl7uds[ak4calojet_count] = -1.;//(*ak4caloJets)[i].jecFactor("L7Parton", "UDS");
-                    ak4calojet_energycorrl7bottom[ak4calojet_count] = -1;//(*ak4caloJets)[i].jecFactor("L7Parton", "BOTTOM");
-                } else {
-                    ak4calojet_energycorr[ak4calojet_count] = -1.;
-                    ak4calojet_energycorrl7uds[ak4calojet_count] = -1.;
-                    ak4calojet_energycorrl7bottom[ak4calojet_count] = -1.;
-                }
-
-                for(unsigned n = 0 ; n < bdisclabel.size() ; n++) {
-                    ak4calojet_btag[ak4calojet_count][n] = (*ak4caloJets)[i].bDiscriminator(bdisclabel[n]);
-                    // if(bdisclabel[n] != "F") {
-                    //     ak4calojet_btag[ak4calojet_count][n] = (*ak4caloJets)[i].bDiscriminator(bdisclabel[n]);
-                    // } else {
-                    //     ak4calojet_btag[ak4calojet_count][n] = -1000;
-                    // }
-                }
-
-                ak4calojet_fhpd[ak4calojet_count] = (*ak4caloJets)[i].jetID().fHPD;
-                ak4calojet_restrictedemf[ak4calojet_count] = (*ak4caloJets)[i].jetID().restrictedEMF;
-// 13-01
-                //for(unsigned n = 0 ; n < min((*ak4caloJets)[i].getPairDiscri().size(), unsigned(M_btagmax)) ; n++) {
-                //  cout << (*ak4caloJets)[i].getPairDiscri()[n].first << " " << (*ak4caloJets)[i].getPairDiscri()[n].second << " " << ak4calojet_btag[i][n] << endl;
-                //}
-                ak4calojet_n90[ak4calojet_count] = (*ak4caloJets)[i].n90();
-                ak4calojet_n60[ak4calojet_count] = (*ak4caloJets)[i].n60();
-                ak4calojet_count++;
-
-                if(ak4calojet_count == M_jetmaxcount) {
-                    cerr << "number of ak4calojet > M_jetmaxcount. They are missing." << endl;
-                    errors |= 1<<8;
-                    break;
-                }
-
-                if((*ak4caloJets)[i].pt() >= cAK4CaloPtMin && fabs((*ak4caloJets)[i].eta()) < cAK4CaloEtaMax) {
-                    NumGood++;
-                }
-            }
-        }
-    }
-
-    if(NumGood >= cAK4CaloNum) {
-        return (true);
-    }
-
-    return (false);
-}
-
-bool RootMaker::AddAK4JPTJets(const edm::Event &iEvent, const edm::EventSetup &iSetup) {
-    if(cdebug) { cout<<"AddAK4JPTJets..."<<endl; }
-
-    int NumGood = 0;
-    edm::Handle<pat::JetCollection> ak4jptJets;
-    iEvent.getByToken(ak4jptJetsToken_, ak4jptJets);
-
-    if(cdebug) { cout<<"ak4jptJets.isValid() = "<<ak4jptJets.isValid()<<endl; }
-
-    if(ak4jptJets.isValid()) {
-        for(unsigned i = 0 ; i < ak4jptJets->size() ; i++) {
-            if((*ak4jptJets)[i].pt() >= cAK4JPTFilterPtMin) {
-                ak4jptjet_e[ak4jptjet_count] = (*ak4jptJets)[i].energy();
-                ak4jptjet_px[ak4jptjet_count] = (*ak4jptJets)[i].px();
-                ak4jptjet_py[ak4jptjet_count] = (*ak4jptJets)[i].py();
-                ak4jptjet_pz[ak4jptjet_count] = (*ak4jptJets)[i].pz();
-                ak4jptjet_hadronicenergy[ak4jptjet_count] = (*ak4jptJets)[i].chargedHadronEnergy() + (*ak4jptJets)[i].neutralHadronEnergy();
-                ak4jptjet_chargedhadronicenergy[ak4jptjet_count] = (*ak4jptJets)[i].chargedHadronEnergy();
-                ak4jptjet_emenergy[ak4jptjet_count] = (*ak4jptJets)[i].chargedEmEnergy() + (*ak4jptJets)[i].neutralEmEnergy();
-                ak4jptjet_chargedemenergy[ak4jptjet_count] = (*ak4jptJets)[i].chargedEmEnergy();
-                ak4jptjet_chargedmulti[ak4jptjet_count] = (*ak4jptJets)[i].chargedMultiplicity();
-
-                if((*ak4jptJets)[i].jecSetsAvailable()) {
-                    ak4jptjet_energycorr[ak4jptjet_count] = (*ak4jptJets)[i].jecFactor("Uncorrected");
-                    ak4jptjet_energycorrl7uds[ak4jptjet_count] = -1.;//(*ak4jptJets)[i].jecFactor("L7Parton", "UDS");
-                    ak4jptjet_energycorrl7bottom[ak4jptjet_count] = -1.;//(*ak4jptJets)[i].jecFactor("L7Parton", "BOTTOM");
-                } else {
-                    ak4jptjet_energycorr[ak4jptjet_count] = -1.;
-                    ak4jptjet_energycorrl7uds[ak4jptjet_count] = -1.;
-                    ak4jptjet_energycorrl7bottom[ak4jptjet_count] = -1.;
-                }
-
-                for(unsigned n = 0 ; n < bdisclabel.size() ; n++) {
-                    ak4jptjet_btag[ak4jptjet_count][n] = (*ak4jptJets)[i].bDiscriminator(bdisclabel[n]);
-                    // if(bdisclabel[n] != "F") {
-                    //     ak4jptjet_btag[ak4jptjet_count][n] = (*ak4jptJets)[i].bDiscriminator(bdisclabel[n]);
-                    // } else {
-                    //     ak4jptjet_btag[ak4jptjet_count][n] = -1000;
-                    // }
-                }
-
-                ak4jptjet_fhpd[ak4jptjet_count] = (*ak4jptJets)[i].jetID().fHPD;
-                ak4jptjet_restrictedemf[ak4jptjet_count] = (*ak4jptJets)[i].jetID().restrictedEMF;
-                ak4jptjet_n90[ak4jptjet_count] = (*ak4jptJets)[i].jetID().n90Hits;
-                ak4jptjet_count++;
-
-                if(ak4jptjet_count == M_jetmaxcount) {
-                    cerr << "number of ak4jptjet > M_jetmaxcount. They are missing." << endl;
-                    errors |= 1<<9;
-                    break;
-                }
-
-                if((*ak4jptJets)[i].pt() >= cAK4JPTPtMin && fabs((*ak4jptJets)[i].eta()) < cAK4JPTEtaMax) {
-                    NumGood++;
-                }
-            }
-        }
-    }
-
-    if(NumGood >= cAK4JPTNum) {
-        return (true);
-    }
-
-    return (false);
-}
-
 bool RootMaker::AddAK4PFCHSJets(const edm::Event &iEvent, const edm::EventSetup &iSetup) {
     if(cdebug)  { cout<<"AddAK4PFCHSJets..."<<endl; }
 
@@ -4028,14 +2928,7 @@ bool RootMaker::AddAK4PFCHSJets(const edm::Event &iEvent, const edm::EventSetup 
                 ak4pfchsjet_energycorrl7bottom[ak4pfchsjet_count] = -1.;//corjet.jecFactor("L7Parton", "BOTTOM");
 
                 JetShape shape;
-
-                if(!cisMiniAOD) {
-                    shape = getJetShape(corjet);
-                }
-
-                if(cisMiniAOD) {
-                    shape = getSlimmedJetShape(corjet);
-                }
+                shape = getSlimmedJetShape(corjet);
 
                 ak4pfchsjet_chargeda[ak4pfchsjet_count] = shape.chargeda;
                 ak4pfchsjet_chargedb[ak4pfchsjet_count] = shape.chargedb;
@@ -4158,14 +3051,7 @@ bool RootMaker::AddAK4PFCHSPuppiJets(const edm::Event &iEvent, const edm::EventS
                 ak4pfchspuppijet_energycorrl7bottom[ak4pfchspuppijet_count] = -1.;//corjet.jecFactor("L7Parton", "BOTTOM");
 
                 JetShape shape;
-
-                if(!cisMiniAOD) {
-                    shape = getJetShape(corjet);
-                }
-
-                if(cisMiniAOD) {
-                    shape = getSlimmedJetShape(corjet);
-                }
+                shape = getSlimmedJetShape(corjet);
 
                 ak4pfchspuppijet_chargeda[ak4pfchspuppijet_count] = shape.chargeda;
                 ak4pfchspuppijet_chargedb[ak4pfchspuppijet_count] = shape.chargedb;
@@ -4235,145 +3121,6 @@ bool RootMaker::AddAK4PFCHSPuppiJets(const edm::Event &iEvent, const edm::EventS
     }
 
     if(NumGood >= cAK4PFCHSPuppiNum) {
-        return (true);
-    }
-
-    return (false);
-}
-
-bool RootMaker::AddAK4PFJets(const edm::Event &iEvent, const edm::EventSetup &iSetup) {
-    if(cdebug) { cout<<"AddAK4PFJets..."<<endl; }
-
-    int NumGood = 0;
-    edm::Handle<PFJetCollection> ak4pfJets;
-    iEvent.getByToken(ak4pfJetsToken_, ak4pfJets);
-    const JetCorrector *corrector = JetCorrector::getJetCorrector((string("ak4PF")+cJetCorrection).c_str(), iSetup);
-    edm::ESHandle<JetCorrectorParametersCollection> JetCorParColl;
-    iSetup.get<JetCorrectionsRecord>().get("AK4PF",JetCorParColl);
-    JetCorrectorParameters const &JetCorPar = (*JetCorParColl)["Uncertainty"];
-    JetCorrectionUncertainty *jecUnc = new JetCorrectionUncertainty(JetCorPar);
-    edm::Handle<JetFlavourMatchingCollection> jetMCFlHandle;
-    iEvent.getByLabel("AK4byValAlgo", jetMCFlHandle);
-    edm::Handle<ValueMap<float> > puidfullHandle;
-    iEvent.getByLabel(edm::InputTag("recoPuJetMva", "fullDiscriminant", "ROOTMAKER"), puidfullHandle);
-    //edm::Handle<ValueMap<float> > puidsimpleHandle;
-    //iEvent.getByLabel(edm::InputTag("recoPuJetMva", "simpleDiscriminant", "ROOTMAKER"), puidsimpleHandle);
-    edm::Handle<ValueMap<float> > puidcutbasedHandle;
-    iEvent.getByLabel(edm::InputTag("recoPuJetMva", "cutbasedDiscriminant", "ROOTMAKER"), puidcutbasedHandle);
-
-    if(cdebug) { cout<<"ak4pfJets.isValid() = "<<ak4pfJets.isValid()<<endl; }
-
-    if(ak4pfJets.isValid()) {
-        for(unsigned i = 0 ; i < ak4pfJets->size() ; i++) {
-            PFJet corjet((*ak4pfJets)[i]);
-            PFJetRef jetref(ak4pfJets, i);
-            double jec = corrector->correction(corjet, iEvent, iSetup);
-            corjet.scaleEnergy(jec);
-
-            if(corjet.pt() >= cAK4PFFilterPtMin) {
-                ak4pfjet_e[ak4pfjet_count] = corjet.energy();
-                ak4pfjet_px[ak4pfjet_count] = corjet.px();
-                ak4pfjet_py[ak4pfjet_count] = corjet.py();
-                ak4pfjet_pz[ak4pfjet_count] = corjet.pz();
-                ak4pfjet_area[ak4pfjet_count] = corjet.jetArea();
-                ak4pfjet_hadronicenergy[ak4pfjet_count] = corjet.chargedHadronEnergy() + corjet.neutralHadronEnergy();
-                ak4pfjet_chargedhadronicenergy[ak4pfjet_count] = corjet.chargedHadronEnergy();
-                ak4pfjet_emenergy[ak4pfjet_count] = corjet.chargedEmEnergy() + corjet.neutralEmEnergy();
-                ak4pfjet_chargedemenergy[ak4pfjet_count] = corjet.chargedEmEnergy();
-                ak4pfjet_hfhadronicenergy[ak4pfjet_count] = corjet.HFHadronEnergy();
-                ak4pfjet_hfemenergy[ak4pfjet_count] = corjet.HFEMEnergy();
-                ak4pfjet_electronenergy[ak4pfjet_count] = corjet.electronEnergy();
-                ak4pfjet_muonenergy[ak4pfjet_count] = corjet.muonEnergy();
-                ak4pfjet_chargedmulti[ak4pfjet_count] = corjet.chargedMultiplicity();
-                ak4pfjet_neutralmulti[ak4pfjet_count] = corjet.neutralMultiplicity();
-                ak4pfjet_hfhadronicmulti[ak4pfjet_count] = corjet.HFHadronMultiplicity();
-                ak4pfjet_hfemmulti[ak4pfjet_count] = corjet.HFEMMultiplicity();
-                ak4pfjet_electronmulti[ak4pfjet_count] = corjet.electronMultiplicity();
-                ak4pfjet_muonmulti[ak4pfjet_count] = corjet.muonMultiplicity();
-                ak4pfjet_energycorr[ak4pfjet_count] = 1./jec;
-                jecUnc->setJetEta(corjet.eta());
-                jecUnc->setJetPt(corjet.pt());
-                ak4pfjet_energycorrunc[ak4pfjet_count] = jecUnc->getUncertainty(true);
-                //cout << ak4pfjet_energycorr[ak4pfjet_count] << endl;
-                ak4pfjet_energycorrl7uds[ak4pfjet_count] = -1.;//corjet.jecFactor("L7Parton", "UDS");
-                ak4pfjet_energycorrl7bottom[ak4pfjet_count] = -1.;//corjet.jecFactor("L7Parton", "BOTTOM");
-                ak4pfjet_puidfull[ak4pfjet_count] = (*puidfullHandle)[jetref];
-                //ak4pfjet_puidsimple[ak4pfjet_count] = (*puidsimpleHandle)[jetref];
-                ak4pfjet_puidcutbased[ak4pfjet_count] = (*puidcutbasedHandle)[jetref];
-                JetShape shape = getJetShape(corjet);
-                ak4pfjet_chargeda[ak4pfjet_count] = shape.chargeda;
-                ak4pfjet_chargedb[ak4pfjet_count] = shape.chargedb;
-                ak4pfjet_neutrala[ak4pfjet_count] = shape.neutrala;
-                ak4pfjet_neutralb[ak4pfjet_count] = shape.neutralb;
-                ak4pfjet_alla[ak4pfjet_count] = shape.alla;
-                ak4pfjet_allb[ak4pfjet_count] = shape.allb;
-                ak4pfjet_chargedfractionmv[ak4pfjet_count] = shape.chargedfractionmv;
-                ak4pfjet_mcflavour[ak4pfjet_count] = 0;
-
-                if(jetMCFlHandle.isValid()) {
-                    const JetFlavourMatchingCollection &jetMCFl = * (jetMCFlHandle.product());
-                    double drmin = 0.5;
-                    int num = -1;
-
-                    for(size_t u = 0; u < jetMCFl.size(); u++) {
-                        double dr =  DR(* (jetMCFl[u].first), corjet);
-
-                        if(dr < drmin) {
-                            drmin = dr;
-                            num = u;
-                        }
-                    }
-
-                    if(num != -1) {
-                        ak4pfjet_mcflavour[ak4pfjet_count] = jetMCFl[num].second.getFlavour();
-                    }
-                }
-
-                for(unsigned n = 0 ; n < bdisclabel.size() ; n++) {
-                    ak4pfjet_btag[ak4pfjet_count][n] = -1000000;
-                    //ak4pfjet_btag[ak4pfjet_count][n] = corjet.bDiscriminator(bdisclabel[n]);
-                    edm::Handle<JetTagCollection> bTagHandle;
-                    iEvent.getByLabel(edm::InputTag(bdisclabel[n], "", "ROOTMAKER"), bTagHandle);
-
-                    if(bTagHandle.isValid()) {
-                        const JetTagCollection &bTags = * (bTagHandle.product());
-                        double drmin = 0.5;
-                        int num = -1;
-
-                        for(size_t u = 0; u < bTags.size(); u++) {
-                            double dr =  DR(* (bTags[u].first), corjet);
-
-                            if(dr < drmin) {
-                                drmin = dr;
-                                num = u;
-                            }
-                        }
-
-                        if(num != -1) {
-                            ak4pfjet_btag[ak4pfjet_count][n] = bTags[num].second;
-                        }
-                    }
-                }
-
-                ak4pfjet_trigger[ak4pfjet_count] = GetTrigger(corjet, jettriggers);
-                ak4pfjet_count++;
-
-                if(ak4pfjet_count == M_jetmaxcount) {
-                    cerr << "number of ak4pfjet > M_jetmaxcount. They are missing." << endl;
-                    errors |= 1<<10;
-                    break;
-                }
-
-                if(corjet.pt() >= cAK4PFPtMin && fabs(corjet.eta()) < cAK4PFEtaMax) {
-                    NumGood++;
-                }
-            }
-        }
-    }
-
-    delete jecUnc;
-
-    if(NumGood >= cAK4PFNum) {
         return (true);
     }
 
@@ -4524,151 +3271,6 @@ RootMaker::JetShape RootMaker::getJetShape(const pat::Jet &jet) {
     return (res);
 }
 
-RootMaker::JetShape RootMaker::getJetShape(const PFJet &jet) {
-    if(cdebug) { cout<<"getJetShape..."<<endl; }
-
-    using namespace TMath;
-    RootMaker::JetShape res;
-    float chargedetaeta1 = 0.;
-    float chargedphiphi1 = 0.;
-    float chargedetaeta2 = 0.;
-    float chargedphiphi2 = 0.;
-    float chargedetaphi = 0.;
-    float chargedptsum = 0.;
-    float chargedptsummv = 0.;
-    float neutraletaeta1 = 0.;
-    float neutralphiphi1 = 0.;
-    float neutraletaeta2 = 0.;
-    float neutralphiphi2 = 0.;
-    float neutraletaphi = 0.;
-    float neutralptsum = 0.;
-    float alletaeta1 = 0.;
-    float alletaeta2 = 0.;
-    float alletaphi = 0.;
-    float allphiphi1 = 0.;
-    float allphiphi2 = 0.;
-    float allptsum = 0.;
-    vector<PFCandidatePtr> constituents(jet.getPFConstituents());
-
-    for(size_t i = 0 ; i < constituents.size() ; ++i) {
-        const PFCandidate &con = * (constituents[i]);
-        float deta = jet.eta() - con.eta();
-        float dphi = jet.phi() - con.phi();
-
-        if(dphi > 4.*atan(1.)) {
-            dphi = dphi-8.*atan(1.);
-        }
-
-        if(dphi < -1.*4.*atan(1.)) {
-            dphi = dphi+8.*atan(1.);
-        }
-
-        if(con.trackRef().isNonnull()) {
-            chargedptsum += con.pt();
-            chargedetaeta1 += deta*con.pt();
-            chargedetaeta2 += deta*deta*con.pt();
-            chargedetaphi += deta*dphi*con.pt();
-            chargedphiphi1 += dphi*con.pt();
-            chargedphiphi2 += dphi*dphi*con.pt();
-            int vertex = getPrimVertex(* (con.trackRef()));
-
-            if(vertex == 0 || vertex == -1) {
-                chargedptsummv += con.pt();
-            }
-        } else {
-            neutralptsum += con.pt();
-            neutraletaeta1 += deta*con.pt();
-            neutraletaeta2 += deta*deta*con.pt();
-            neutraletaphi += deta*dphi*con.pt();
-            neutralphiphi1 += dphi*con.pt();
-            neutralphiphi2 += dphi*dphi*con.pt();
-        }
-
-        allptsum += con.pt();
-        alletaeta1 += deta*con.pt();
-        alletaeta2 += deta*deta*con.pt();
-        alletaphi += deta*dphi*con.pt();
-        allphiphi1 += dphi*con.pt();
-        allphiphi2 += dphi*dphi*con.pt();
-    }
-
-    if(chargedptsum != 0) {
-        chargedetaeta1/=chargedptsum;
-        chargedetaeta2/=chargedptsum;
-        chargedetaphi/=chargedptsum;
-        chargedphiphi1/=chargedptsum;
-        chargedphiphi2/=chargedptsum;
-    } else {
-        chargedetaeta1 = 0.;
-        chargedetaeta2 = 0.;
-        chargedetaphi = 0.;
-        chargedphiphi1 = 0.;
-        chargedphiphi2 = 0.;
-    }
-
-    if(neutralptsum != 0) {
-        neutraletaeta1/=neutralptsum;
-        neutraletaeta2/=neutralptsum;
-        neutraletaphi/=neutralptsum;
-        neutralphiphi1/=neutralptsum;
-        neutralphiphi2/=neutralptsum;
-    } else {
-        neutraletaeta1 = 0.;
-        neutraletaeta2 = 0.;
-        neutraletaphi = 0.;
-        neutralphiphi1 = 0.;
-        neutralphiphi2 = 0.;
-    }
-
-    if(allptsum != 0) {
-        alletaeta1/=allptsum;
-        alletaeta2/=allptsum;
-        alletaphi/=allptsum;
-        allphiphi1/=allptsum;
-        allphiphi2/=allptsum;
-    } else {
-        alletaeta1 = 0.;
-        alletaeta2 = 0.;
-        alletaphi = 0.;
-        allphiphi1 = 0.;
-        allphiphi2 = 0.;
-    }
-
-    double chargedetavar = chargedetaeta2-chargedetaeta1*chargedetaeta1;
-    double chargedphivar = chargedphiphi2-chargedphiphi1*chargedphiphi1;
-    double chargedphidetacov = chargedetaphi - chargedetaeta1*chargedphiphi1;
-
-    double chargeddet = (chargedetavar-chargedphivar)* (chargedetavar-chargedphivar)+4*chargedphidetacov*chargedphidetacov;
-    double chargedx1 = (chargedetavar+chargedphivar+sqrt(chargeddet))/2.;
-    double chargedx2 = (chargedetavar+chargedphivar-sqrt(chargeddet))/2.;
-
-    double neutraletavar = neutraletaeta2-neutraletaeta1*neutraletaeta1;
-    double neutralphivar = neutralphiphi2-neutralphiphi1*neutralphiphi1;
-    double neutralphidetacov = neutraletaphi - neutraletaeta1*neutralphiphi1;
-
-    double neutraldet = (neutraletavar-neutralphivar)* (neutraletavar-neutralphivar)+4*neutralphidetacov*neutralphidetacov;
-    double neutralx1 = (neutraletavar+neutralphivar+sqrt(neutraldet))/2.;
-    double neutralx2 = (neutraletavar+neutralphivar-sqrt(neutraldet))/2.;
-
-    double alletavar = alletaeta2-alletaeta1*alletaeta1;
-    double allphivar = allphiphi2-allphiphi1*allphiphi1;
-    double allphidetacov = alletaphi - alletaeta1*allphiphi1;
-
-    double alldet = (alletavar-allphivar)* (alletavar-allphivar)+4*allphidetacov*allphidetacov;
-    double allx1 = (alletavar+allphivar+sqrt(alldet))/2.;
-    double allx2 = (alletavar+allphivar-sqrt(alldet))/2.;
-
-    res.chargeda = chargedx1;
-    res.chargedb = chargedx2;
-    res.neutrala = neutralx1;
-    res.neutralb = neutralx2;
-    res.alla = allx1;
-    res.allb = allx2;
-    res.chargedfractionmv = chargedptsummv/chargedptsum;
-    return (res);
-
-}
-
 RootMaker::JetShape RootMaker::getSlimmedJetShape(const pat::Jet &jet) {
     if(cdebug) { cout<<"getSlimmedJetShape pat::Jet"<<endl; }
 
@@ -4813,197 +3415,7 @@ RootMaker::JetShape RootMaker::getSlimmedJetShape(const pat::Jet &jet) {
     return (res);
 }
 
-
 bool RootMaker::AddElectrons(const edm::Event &iEvent) {
-    if(cdebug) { cout<<"AddElectrons..."<<endl; }
-
-    int NumGood = 0;
-    /*
-    if(crecelectrontrigger) {
-        iEvent.getByLabel(edm::InputTag("l1extraParticles", "NonIsolated"), L1Electrons);
-        iEvent.getByLabel(edm::InputTag("l1extraParticles", "Isolated"), L1ElectronsIso);
-    }
-    */
-    edm::Handle<reco::GsfElectronCollection> Electrons;
-    iEvent.getByToken(recoElectronsToken_, Electrons);
-    edm::Handle<reco::ConversionCollection> Conversions;
-    iEvent.getByToken(conversionsToken_, Conversions);
-
-    vector< edm::Handle< edm::ValueMap<double> > > electronIsoPF(3);
-
-    iEvent.getByLabel(edm::InputTag("elPFIsoValueCharged03PFIdPFIso"), electronIsoPF[0]);
-    iEvent.getByLabel(edm::InputTag("elPFIsoValueGamma03PFIdPFIso"), electronIsoPF[1]);
-    iEvent.getByLabel(edm::InputTag("elPFIsoValueNeutral03PFIdPFIso"), electronIsoPF[2]);
-
-    edm::Handle<edm::ValueMap<float> > eIDValueMapHyperTight1;
-    iEvent.getByLabel("eidHyperTight1MC", eIDValueMapHyperTight1);
-    const edm::ValueMap<float> &eIDHyperTight1map = * eIDValueMapHyperTight1;
-
-    edm::Handle<edm::ValueMap<float> > eIDValueMapLoose;
-    iEvent.getByLabel("eidLooseMC", eIDValueMapLoose);
-    const edm::ValueMap<float> &eIDLoosemap = * eIDValueMapLoose;
-
-    if(cdebug) {
-        cout<<"Electrons.isValid() = "<<Electrons.isValid()<<endl;
-        cout<<"Electrons->size() = "<<Electrons->size()<<endl;
-    }
-
-    if(Electrons.isValid()) {
-        //for(GsfElectronCollection::const_iterator itel = Electrons->begin() ; itel != Electrons->end() ; ++itel)
-        for(size_t n = 0 ; n < Electrons->size() ; n++) {
-            //const GsfElectron& theel = *itel;
-            const GsfElectron &theel = (*Electrons)[n];
-            GsfElectronRef refel(Electrons, n);
-
-            if(theel.pt() > cElFilterPtMin && TMath::Abs(theel.eta()) < cElFilterEtaMax) {
-                electron_px[electron_count] = theel.px();
-                electron_py[electron_count] = theel.py();
-                electron_pz[electron_count] = theel.pz();
-                electron_pt[electron_count] = theel.pt();
-                electron_phi[electron_count] = theel.phi();
-                electron_eta[electron_count] = theel.eta();
-                electron_correctedecalenergy[electron_count] = theel.ecalEnergy();
-                electron_charge[electron_count] = theel.charge();
-                electron_esuperclusterovertrack[electron_count] = theel.eSuperClusterOverP();
-                electron_eseedclusterovertrack[electron_count] = theel.eSeedClusterOverP();
-                electron_deltaetasuperclustertrack[electron_count] = theel.deltaEtaSuperClusterTrackAtVtx();
-                electron_deltaphisuperclustertrack[electron_count] = theel.deltaPhiSuperClusterTrackAtVtx();
-                electron_e1x5[electron_count] = theel.e1x5();
-                electron_e2x5[electron_count] = theel.e2x5Max();
-                electron_e5x5[electron_count] = theel.e5x5();
-                electron_r9[electron_count] = theel.r9();
-                electron_sigmaetaeta[electron_count] = theel.sigmaEtaEta();
-                electron_sigmaietaieta[electron_count] = theel.sigmaIetaIeta();
-                electron_sigmaiphiiphi[electron_count] = theel.sigmaIphiIphi();
-                electron_ehcaloverecaldepth1[electron_count] = theel.hcalDepth1OverEcal();
-                electron_ehcaloverecaldepth2[electron_count] = theel.hcalDepth2OverEcal();
-                electron_ehcaltoweroverecaldepth1[electron_count] = theel.hcalDepth1OverEcalBc();
-                electron_ehcaltoweroverecaldepth2[electron_count] = theel.hcalDepth2OverEcalBc();
-                electron_isolationr3track[electron_count] = theel.dr03TkSumPt();
-                electron_isolationr3ecal[electron_count] = theel.dr03EcalRecHitSumEt();
-                electron_isolationr3hcal[electron_count] = theel.dr03HcalTowerSumEt();
-                electron_isolationr4track[electron_count] = theel.dr04TkSumPt();
-                electron_isolationr4ecal[electron_count] = theel.dr04EcalRecHitSumEt();
-                electron_isolationr4hcal[electron_count] = theel.dr04HcalTowerSumEt();
-
-                electron_isolationpfr3charged[electron_count] = (* (electronIsoPF[0]))[refel];
-                electron_isolationpfr3photon[electron_count] = (* (electronIsoPF[1]))[refel];
-                electron_isolationpfr3neutral[electron_count] = (* (electronIsoPF[2]))[refel];
-                //electron_isolationpfr3charged[electron_count] = theel.pfIsolationVariables().chargedHadronIso;
-                //electron_isolationpfr3photon[electron_count] = theel.pfIsolationVariables().photonIso;
-                //electron_isolationpfr3neutral[electron_count] = theel.pfIsolationVariables().neutralHadronIso;
-
-                electron_info[electron_count] = 0;
-                electron_info[electron_count] |= theel.isElectron() << 0;
-                electron_info[electron_count] |= ConversionTools::hasMatchedConversion(theel, Conversions, bs_position) << 1;
-                electron_info[electron_count] |= theel.ecalDrivenSeed() << 2;
-                electron_info[electron_count] |= theel.trackerDrivenSeed() << 3;
-
-                electron_gapinfo[electron_count] = 0;
-                electron_gapinfo[electron_count] |= theel.isEB() << 0;
-                electron_gapinfo[electron_count] |= theel.isEE() << 1;
-                electron_gapinfo[electron_count] |= theel.isEBGap() << 2;
-                electron_gapinfo[electron_count] |= theel.isEBEtaGap() << 3;
-                electron_gapinfo[electron_count] |= theel.isEBPhiGap() << 4;
-                electron_gapinfo[electron_count] |= theel.isEEGap() << 5;
-                electron_gapinfo[electron_count] |= theel.isEERingGap() << 6;
-                electron_gapinfo[electron_count] |= theel.isEEDeeGap() << 7;
-                electron_gapinfo[electron_count] |= theel.isEBEEGap() << 8;
-
-                edm::Handle<reco::TrackCollection> ctfTracks;
-                iEvent.getByToken(recoTracksToken_, ctfTracks);
-                ConversionFinder convFinder;
-                ConversionInfo convInfo = convFinder.getConversionInfo(theel, ctfTracks, magneticField->inTesla(GlobalPoint(0.,0.,0.)).z());
-
-                electron_convdist[electron_count] = convInfo.dist();
-                electron_convdcot[electron_count] = convInfo.dcot();
-                electron_convradius[electron_count] = convInfo.radiusOfConversion();
-                electron_fbrems[electron_count] = theel.fbrem();
-                electron_numbrems[electron_count] = theel.numberOfBrems();
-
-                reco::GsfTrackRef gsfTr_e = theel.gsfTrack();
-                TransientTrack TTrack = TTrackBuilder->build(gsfTr_e);
-                math::XYZPoint ecalPos = PositionOnECalSurface(TTrack);
-                electron_outerx[electron_count] = ecalPos.x();
-                electron_outery[electron_count] = ecalPos.y();
-                electron_outerz[electron_count] = ecalPos.z();
-                //TrajectoryStateClosestToPoint TTrackState = TTrack.trajectoryStateClosestToPoint(GlobalPoint(pv_position.x(), pv_position.y(), pv_position.z()));
-
-
-                electron_trackchi2[electron_count] = gsfTr_e->chi2();
-                electron_trackndof[electron_count] = gsfTr_e->ndof();
-
-                electron_nhits[electron_count]        = gsfTr_e->numberOfValidHits();
-                electron_nmissinghits[electron_count] = gsfTr_e->numberOfLostHits();
-                electron_npixelhits[electron_count]   = (gsfTr_e->hitPattern()).numberOfValidPixelHits();
-                electron_npixellayers[electron_count] = (gsfTr_e->hitPattern()).pixelLayersWithMeasurement();
-                electron_nstriplayers[electron_count] = (gsfTr_e->hitPattern()).stripLayersWithMeasurement();
-                //         electron_nhitsexpected[electron_count] = gsfTr_e->trackerExpectedHitsInner().numberOfHits();
-                electron_nhitsexpected[electron_count] = gsfTr_e->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS);
-                electron_dxy[electron_count]    = gsfTr_e->dxy(pv_position);
-                electron_dxyerr[electron_count] = gsfTr_e->dxyError();
-                electron_dz[electron_count]     = gsfTr_e->dz(pv_position);
-                electron_dzerr[electron_count]  = gsfTr_e->dzError();
-
-                electron_vtx[electron_count] = -2;
-                TrackRef closesttrack = theel.closestTrack();
-
-                if(closesttrack.isNonnull()) {
-                    int numvtx = getPrimVertex(*closesttrack);
-                    electron_vtx[electron_count] = numvtx;
-                    TransientTrack TTrackCL = TTrackBuilder->build(closesttrack);
-                    TrajectoryStateClosestToPoint TTrackStateCL;
-
-                    if(numvtx < 0) {
-                        TTrackStateCL = TTrackCL.trajectoryStateClosestToPoint(GlobalPoint(pv_position.x(), pv_position.y(), pv_position.z()));
-                    } else {
-                        TTrackStateCL = TTrackCL.trajectoryStateClosestToPoint(GlobalPoint(primvertex_x[numvtx], primvertex_y[numvtx], primvertex_z[numvtx]));
-                    }
-
-                    electron_closestpointx[electron_count] = TTrackStateCL.position().x();
-                    electron_closestpointy[electron_count] = TTrackStateCL.position().y();
-                    electron_closestpointz[electron_count] = TTrackStateCL.position().z();
-                }
-
-                electron_trigger[electron_count] = GetTrigger(theel, electrontriggers);
-
-                edm::Ref<reco::GsfElectronCollection> electronRef(Electrons,n);
-                electron_eID[electron_count]=0;
-                electron_eID[electron_count] |= (Byte_t)eIDHyperTight1map[electronRef];
-                electron_eID[electron_count] |= ((Byte_t)eIDLoosemap[electronRef]<<4);
-
-                electron_supercluster_e[electron_count] = theel.superCluster()->energy();
-                electron_supercluster_x[electron_count] = theel.superCluster()->x();
-                electron_supercluster_y[electron_count] = theel.superCluster()->y();
-                electron_supercluster_z[electron_count] = theel.superCluster()->z();
-                electron_supercluster_rawe[electron_count] = theel.superCluster()->rawEnergy();
-                electron_supercluster_phiwidth[electron_count] = theel.superCluster()->phiWidth();
-                electron_supercluster_etawidth[electron_count] = theel.superCluster()->etaWidth();
-                electron_supercluster_nbasiccluster[electron_count] = theel.superCluster()->clustersSize();
-
-                electron_count++;
-
-                if(electron_count == M_electronmaxcount) {
-                    cerr << "number of electron > M_electronmaxcount. They are missing." << endl;
-                    errors |= 1<<1;
-                    break;
-                }
-
-                if(theel.pt() >= cElPtMin && fabs(theel.eta()) <= cElEtaMax && theel.dr03TkSumPt()/theel.pt() <= cElTrackIso) {
-                    NumGood++;
-                }
-            }
-        }
-    }
-
-    if(NumGood >= cElNum) {
-        return (true);
-    }
-
-    return (false);
-}
-
-bool RootMaker::AddPatElectrons(const edm::Event &iEvent) {
     if(cdebug) { cout<<"AddPatElectrons..."<<endl; }
 
     int NumGood = 0;
@@ -5151,7 +3563,6 @@ bool RootMaker::AddPatElectrons(const edm::Event &iEvent) {
                 electron_npixellayers[electron_count] = (gsfTr_e->hitPattern()).pixelLayersWithMeasurement();
                 electron_nstriplayers[electron_count] = (gsfTr_e->hitPattern()).stripLayersWithMeasurement();
 
-                //         electron_nhitsexpected[electron_count] = gsfTr_e->trackerExpectedHitsInner().numberOfHits();
                 electron_nhitsexpected[electron_count] = gsfTr_e->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS);
 
                 electron_dxy[electron_count] = gsfTr_e->dxy(pv_position);
@@ -5183,12 +3594,6 @@ bool RootMaker::AddPatElectrons(const edm::Event &iEvent) {
 
 
                 electron_trigger[electron_count] = GetTrigger(theel, electrontriggers);
-                /*
-                edm::Ref<reco::GsfElectronCollection> electronRef(Electrons,n);
-                electron_eID[electron_count]=0;
-                electron_eID[electron_count] |= (Byte_t)eIDHyperTight1map[electronRef];
-                electron_eID[electron_count] |= ((Byte_t)eIDLoosemap[electronRef]<<4);
-                */
                 electron_supercluster_e[electron_count] = theel.superCluster()->energy();
                 electron_supercluster_x[electron_count] = theel.superCluster()->x();
                 electron_supercluster_y[electron_count] = theel.superCluster()->y();
@@ -5267,320 +3672,19 @@ Int_t RootMaker::getSuperClusterPh(const SuperClusterRef &A) {
     return (-1);
 }
 
-
-//// manual cut based electron ID
-//Int_t RootMaker::getCBElectronID(const pat::Electron &theel) {
-//    if(cdebug) {
-//        cout<<"getCBElectronID..."<<endl;
-//    }
-//
-//    float superClusterEta = theel.superCluster()->eta();
-//    float full5x5 = theel.full5x5_sigmaIetaIeta();
-//    float dEtaIn = abs(theel.deltaEtaSuperClusterTrackAtVtx());
-//    float dPhiIn = abs(theel.deltaPhiSuperClusterTrackAtVtx());
-//    float hOverE = theel.hadronicOverEm();
-//    float relIso = (theel.pfIsolationVariables().sumChargedHadronPt + std::max(0.0, theel.pfIsolationVariables().sumNeutralHadronEt + theel.pfIsolationVariables().sumPhotonEt - 0.5*theel.pfIsolationVariables().sumPUPt)) / theel.pt();
-//    float ooEmooP = fabs((1/theel.ecalEnergy()) - (1/(theel.ecalEnergy() / theel.eSuperClusterOverP())));
-//    float absd0 = fabs(theel.gsfTrack()->dxy(pv_position));
-//    float absdz = fabs(theel.gsfTrack()->dz(pv_position));
-//    int   expHits = theel.gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS);
-//    int   passConv = theel.passConversionVeto();
-//
-//    // PHYS14 selection, conditions: PU20 bx25
-//    // https://twiki.cern.ch/twiki/bin/viewauth/CMS/CutBasedElectronIdentificationRun2
-//    if(fabs(superClusterEta) <= 1.479) {
-//        // BARREL TIGHT
-//        if(
-//            full5x5  < 0.010181 &&
-//            dEtaIn   < 0.006574 &&
-//            dPhiIn   < 0.022868 &&
-//            hOverE   < 0.037553 &&
-//            relIso   < 0.074355 &&
-//            ooEmooP  < 0.131191 &&
-//            absd0    < 0.009924 &&
-//            absdz    < 0.015310 &&
-//            expHits  <= 1       &&
-//            passConv == 1
-//        ) {
-//            return (4);
-//        }
-//        // BARREL MEDIUM
-//        if(
-//            full5x5  < 0.010399 &&
-//            dEtaIn   < 0.007641 &&
-//            dPhiIn   < 0.032643 &&
-//            hOverE   < 0.060662 &&
-//            relIso   < 0.097213 &&
-//            ooEmooP  < 0.153897 &&
-//            absd0    < 0.011811 &&
-//            absdz    < 0.070775 &&
-//            expHits  <= 1       &&
-//            passConv == 1
-//        ) {
-//            return (3);
-//        }
-//        // BARREL LOOSE
-//        if(
-//            full5x5  < 0.010557 &&
-//            dEtaIn   < 0.012442 &&
-//            dPhiIn   < 0.072624 &&
-//            hOverE   < 0.121476 &&
-//            relIso   < 0.120026 &&
-//            ooEmooP  < 0.221803 &&
-//            absd0    < 0.022664 &&
-//            absdz    < 0.173670 &&
-//            expHits  <= 1       &&
-//            passConv == 1
-//        ) {
-//            return (2);
-//        }
-//        // BARREL VETO
-//        if(
-//            full5x5  < 0.011100 &&
-//            dEtaIn   < 0.016315 &&
-//            dPhiIn   < 0.252044 &&
-//            hOverE   < 0.345843 &&
-//            relIso   < 0.164369 &&
-//            ooEmooP  < 0.248070 &&
-//            absd0    < 0.060279 &&
-//            absdz    < 0.800538 &&
-//            expHits  <= 2       &&
-//            passConv == 1
-//        ) {
-//            return (1);
-//        }
-//    }
-//    // ENDCAP
-//    else if(fabs(superClusterEta) > 1.479 && fabs(superClusterEta) <=2.5) {
-//        // ENDCAP TIGHT
-//        if(
-//            full5x5  < 0.028766 &&
-//            dEtaIn   < 0.005681 &&
-//            dPhiIn   < 0.032046 &&
-//            hOverE   < 0.081902 &&
-//            relIso   < 0.090185 &&
-//            ooEmooP  < 0.106055 &&
-//            absd0    < 0.027261 &&
-//            absdz    < 0.147154 &&
-//            expHits  <= 1       &&
-//            passConv == 1
-//        ) {
-//            return (4);
-//        }
-//        // ENDCAP MEDIUM
-//        if(
-//            full5x5  < 0.029524 &&
-//            dEtaIn   < 0.009285 &&
-//            dPhiIn   < 0.042447 &&
-//            hOverE   < 0.104263 &&
-//            relIso   < 0.116708 &&
-//            ooEmooP  < 0.137468 &&
-//            absd0    < 0.051682 &&
-//            absdz    < 0.180720 &&
-//            expHits  <= 1       &&
-//            passConv == 1
-//        ) {
-//            return (3);
-//        }
-//        // ENDCAP LOOSE
-//        if(
-//            full5x5  < 0.032602 &&
-//            dEtaIn   < 0.010654 &&
-//            dPhiIn   < 0.145129 &&
-//            hOverE   < 0.131862 &&
-//            relIso   < 0.162914 &&
-//            ooEmooP  < 0.142283 &&
-//            absd0    < 0.097358 &&
-//            absdz    < 0.198444 &&
-//            expHits  <= 1       &&
-//            passConv == 1
-//        ) {
-//            return (2);
-//        }
-//        // ENDCAP VETO
-//        if(
-//            full5x5  < 0.033987 &&
-//            dEtaIn   < 0.010671 &&
-//            dPhiIn   < 0.245263 &&
-//            hOverE   < 0.134691 &&
-//            relIso   < 0.212604 &&
-//            ooEmooP  < 0.157160 &&
-//            absd0    < 0.273097 &&
-//            absdz    < 0.885860 &&
-//            expHits  <= 3       &&
-//            passConv == 1
-//        ) {
-//            return (1);
-//        }
-//    } // end endcap
-//    return (-1);
-//}
-//
-//// manual cut based electron ID
-//Int_t RootMaker::getCBElectronID(const reco::GsfElectron &theel) {
-//    if(cdebug) {
-//        cout<<"getCBElectronID..."<<endl;
-//    }
-//
-//    float superClusterEta = theel.superCluster()->eta();
-//    float full5x5 = theel.full5x5_sigmaIetaIeta();
-//    float dEtaIn = abs(theel.deltaEtaSuperClusterTrackAtVtx());
-//    float dPhiIn = abs(theel.deltaPhiSuperClusterTrackAtVtx());
-//    float hOverE = theel.hadronicOverEm();
-//    float relIso = (theel.pfIsolationVariables().sumChargedHadronPt + std::max(0.0, theel.pfIsolationVariables().sumNeutralHadronEt + theel.pfIsolationVariables().sumPhotonEt - 0.5*theel.pfIsolationVariables().sumPUPt)) / theel.pt();
-//    float ooEmooP = fabs((1/theel.ecalEnergy()) - (1/(theel.ecalEnergy() / theel.eSuperClusterOverP())));
-//    float absd0 = fabs(theel.gsfTrack()->dxy(pv_position));
-//    float absdz = fabs(theel.gsfTrack()->dz(pv_position));
-//    int   expHits = theel.gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS);
-//    //int   passConv = theel.passConversionVeto();
-//    int   passConv = 1;
-//
-//    // PHYS14 selection, conditions: PU20 bx25
-//    // https://twiki.cern.ch/twiki/bin/viewauth/CMS/CutBasedElectronIdentificationRun2
-//    if(fabs(superClusterEta) <= 1.479) {
-//        // BARREL TIGHT
-//        if(
-//            full5x5  < 0.010181 &&
-//            dEtaIn   < 0.006574 &&
-//            dPhiIn   < 0.022868 &&
-//            hOverE   < 0.037553 &&
-//            relIso   < 0.074355 &&
-//            ooEmooP  < 0.131191 &&
-//            absd0    < 0.009924 &&
-//            absdz    < 0.015310 &&
-//            expHits  <= 1       &&
-//            passConv == 1
-//        ) {
-//            return (4);
-//        }
-//        // BARREL MEDIUM
-//        if(
-//            full5x5  < 0.010399 &&
-//            dEtaIn   < 0.007641 &&
-//            dPhiIn   < 0.032643 &&
-//            hOverE   < 0.060662 &&
-//            relIso   < 0.097213 &&
-//            ooEmooP  < 0.153897 &&
-//            absd0    < 0.011811 &&
-//            absdz    < 0.070775 &&
-//            expHits  <= 1       &&
-//            passConv == 1
-//        ) {
-//            return (3);
-//        }
-//        // BARREL LOOSE
-//        if(
-//            full5x5  < 0.010557 &&
-//            dEtaIn   < 0.012442 &&
-//            dPhiIn   < 0.072624 &&
-//            hOverE   < 0.121476 &&
-//            relIso   < 0.120026 &&
-//            ooEmooP  < 0.221803 &&
-//            absd0    < 0.022664 &&
-//            absdz    < 0.173670 &&
-//            expHits  <= 1       &&
-//            passConv == 1
-//        ) {
-//            return (2);
-//        }
-//        // BARREL VETO
-//        if(
-//            full5x5  < 0.011100 &&
-//            dEtaIn   < 0.016315 &&
-//            dPhiIn   < 0.252044 &&
-//            hOverE   < 0.345843 &&
-//            relIso   < 0.164369 &&
-//            ooEmooP  < 0.248070 &&
-//            absd0    < 0.060279 &&
-//            absdz    < 0.800538 &&
-//            expHits  <= 2       &&
-//            passConv == 1
-//        ) {
-//            return (1);
-//        }
-//    }
-//    // ENDCAP
-//    else if(fabs(superClusterEta) > 1.479 && fabs(superClusterEta) <=2.5) {
-//        // ENDCAP TIGHT
-//        if(
-//            full5x5  < 0.028766 &&
-//            dEtaIn   < 0.005681 &&
-//            dPhiIn   < 0.032046 &&
-//            hOverE   < 0.081902 &&
-//            relIso   < 0.090185 &&
-//            ooEmooP  < 0.106055 &&
-//            absd0    < 0.027261 &&
-//            absdz    < 0.147154 &&
-//            expHits  <= 1       &&
-//            passConv == 1
-//        ) {
-//            return (4);
-//        }
-//        // ENDCAP MEDIUM
-//        if(
-//            full5x5  < 0.029524 &&
-//            dEtaIn   < 0.009285 &&
-//            dPhiIn   < 0.042447 &&
-//            hOverE   < 0.104263 &&
-//            relIso   < 0.116708 &&
-//            ooEmooP  < 0.137468 &&
-//            absd0    < 0.051682 &&
-//            absdz    < 0.180720 &&
-//            expHits  <= 1       &&
-//            passConv == 1
-//        ) {
-//            return (3);
-//        }
-//        // ENDCAP LOOSE
-//        if(
-//            full5x5  < 0.032602 &&
-//            dEtaIn   < 0.010654 &&
-//            dPhiIn   < 0.145129 &&
-//            hOverE   < 0.131862 &&
-//            relIso   < 0.162914 &&
-//            ooEmooP  < 0.142283 &&
-//            absd0    < 0.097358 &&
-//            absdz    < 0.198444 &&
-//            expHits  <= 1       &&
-//            passConv == 1
-//        ) {
-//            return (2);
-//        }
-//        // ENDCAP VETO
-//        if(
-//            full5x5  < 0.033987 &&
-//            dEtaIn   < 0.010671 &&
-//            dPhiIn   < 0.245263 &&
-//            hOverE   < 0.134691 &&
-//            relIso   < 0.212604 &&
-//            ooEmooP  < 0.157160 &&
-//            absd0    < 0.273097 &&
-//            absdz    < 0.885860 &&
-//            expHits  <= 3       &&
-//            passConv == 1
-//        ) {
-//            return (1);
-//        }
-//    } // end endcap
-//    return (-1);
-//}
-
 // for miniAOD, where trackRef is not available
 Int_t RootMaker::getPrimVertex(const pat::PackedCandidate *con) {
     if(Vertices.isValid()) {
         if(con->PVUsedInFit) {
             return  0;
         }
-
-        if(con->PVTight) {
+        else if(con->PVTight) {
             return -1;
         }
-
-        if(con->PVLoose) {
+        else if(con->PVLoose) {
             return -2;
         }
-
-        if(con->NoPV) {
+        else {
             return -2;
         }
     }
@@ -5602,235 +3706,6 @@ Int_t RootMaker::getPrimVertex(const Track &trk) {
     }
 
     return (-1);
-}
-
-bool RootMaker::AddVertices(const edm::Event &iEvent) {
-    if(cdebug) { cout<<"AddVertices..."<<endl; }
-
-    double mpi = 0.13957018;
-    double mp = 0.93827203;
-    edm::Handle<TrackCollection> Tracks;
-    iEvent.getByToken(recoTracksToken_, Tracks);
-    iEvent.getByToken(dharmonicToken_, dEdxharmonic2);
-
-    if(cdebug) { cout<<"Tracks.isValid() = "<<Tracks.isValid()<<endl; }
-
-    if(Tracks.isValid() && primvertex_count > 0) {
-        KalmanVertexFitter fitter(true);
-
-        for(unsigned a = 0 ; a < Tracks->size() ; a++) {
-            if(!((*Tracks)[a].normalizedChi2() < cVertexTRKChi2 && (*Tracks)[a].numberOfValidHits() >= cVertexTRKHitsMin)) {
-                continue;
-            }
-
-            for(unsigned b = 0 ; b < a ; b++) {
-                if(!((*Tracks)[a].charge() != (*Tracks)[b].charge() && (*Tracks)[b].normalizedChi2() < cVertexTRKChi2 && (*Tracks)[b].numberOfValidHits() >= cVertexTRKHitsMin)) {
-                    continue;
-                }
-
-                vector<TransientTrack> testvec;
-                testvec.resize(2);
-                testvec[0] = TTrackBuilder->build((*Tracks)[a]);
-                testvec[1] = TTrackBuilder->build((*Tracks)[b]);
-
-                TransientVertex testvertex = fitter.vertex(testvec);
-
-                if(testvertex.isValid() && testvertex.normalisedChiSquared() < cVertexChi2) {
-                    const Vertex &secvertex = (Vertex)testvertex;
-                    SMatrixSym3D covmatrix = primvertex.covariance() + secvertex.covariance();
-                    SVector3 dist(primvertex.x() - secvertex.x(), primvertex.y() - secvertex.y(), 0.);
-                    double vertexsig2d =  ROOT::Math::Mag2(dist) / sqrt(ROOT::Math::Similarity(covmatrix, dist));
-
-                    if(vertexsig2d > cVertexSig2D) {
-                        using namespace TMath;
-                        TLorentzVector A((*Tracks)[a].px(), (*Tracks)[a].py(), (*Tracks)[a].pz(), Sqrt(Power((*Tracks)[a].px(), 2) + Power((*Tracks)[a].py(),2) + Power((*Tracks)[a].pz(), 2) + mpi*mpi));
-                        TLorentzVector B((*Tracks)[b].px(), (*Tracks)[b].py(), (*Tracks)[b].pz(), Sqrt(Power((*Tracks)[b].px(), 2) + Power((*Tracks)[b].py(),2) + Power((*Tracks)[b].pz(), 2) + mpi*mpi));
-                        double mkaon = (A+B).M();
-                        A.SetE(Sqrt(A.E()*A.E() - mpi*mpi + mp*mp));
-                        double mlambdaa = (A+B).M();
-                        A.SetE(Sqrt(A.E()*A.E() + mpi*mpi - mp*mp));
-                        B.SetE(Sqrt(B.E()*B.E() - mpi*mpi + mp*mp));
-                        double mlambdab = (A+B).M();
-
-                        if(Abs(mkaon - 0.49765) < cKaonMassWindow || Abs(mlambdaa - 1.115683) < cLambdaMassWindow || Abs(mlambdab - 1.115683) < cLambdaMassWindow) {
-
-                            secvertices_vx[secvertices_count] = secvertex.x();
-                            secvertices_vy[secvertices_count] = secvertex.y();
-                            secvertices_vz[secvertices_count] = secvertex.z();
-                            secvertices_chi2[secvertices_count] = secvertex.chi2();
-                            secvertices_ndof[secvertices_count] = secvertex.ndof();
-                            secvertices_cov[secvertices_count][0] = secvertex.covariance(0,0);
-                            secvertices_cov[secvertices_count][1] = secvertex.covariance(0,1);
-                            secvertices_cov[secvertices_count][2] = secvertex.covariance(0,2);
-                            secvertices_cov[secvertices_count][3] = secvertex.covariance(1,1);
-                            secvertices_cov[secvertices_count][4] = secvertex.covariance(1,2);
-                            secvertices_cov[secvertices_count][5] = secvertex.covariance(2,2);
-
-                            for(Int_t j = 0 ; j < 2 ; j++) {
-                                TrajectoryStateClosestToPoint TTrackState = testvec[j].trajectoryStateClosestToPoint(GlobalPoint(secvertex.x(), secvertex.y(), secvertex.z()));
-                                TrackRef tr;
-
-                                if(j==0) { tr = TrackRef(Tracks, a); }
-
-                                if(j==1) { tr = TrackRef(Tracks, b); }
-
-                                secvertices_track_px[secvertices_count][j] = TTrackState.momentum().x();
-                                secvertices_track_py[secvertices_count][j] = TTrackState.momentum().y();
-                                secvertices_track_pz[secvertices_count][j] = TTrackState.momentum().z();
-                                secvertices_track_closestpointx[secvertices_count][j] = TTrackState.position().x();
-                                secvertices_track_closestpointy[secvertices_count][j] = TTrackState.position().y();
-                                secvertices_track_closestpointz[secvertices_count][j] = TTrackState.position().z();
-                                secvertices_track_chi2[secvertices_count][j]   = tr->chi2();
-                                secvertices_track_ndof[secvertices_count][j]   = tr->ndof();
-                                secvertices_track_dxy[secvertices_count][j]    = TTrackState.perigeeParameters().transverseImpactParameter();
-                                secvertices_track_dxyerr[secvertices_count][j] = TTrackState.perigeeError().transverseImpactParameterError();
-                                secvertices_track_dz[secvertices_count][j]     = TTrackState.perigeeParameters().longitudinalImpactParameter();
-                                secvertices_track_dzerr[secvertices_count][j]  = TTrackState.perigeeError().longitudinalImpactParameterError();
-
-                                if(dEdxharmonic2.isValid()) {
-                                    secvertices_track_dedxharmonic2[secvertices_count][j] = (*dEdxharmonic2)[tr].dEdx();
-                                } else {
-                                    secvertices_track_dedxharmonic2[secvertices_count][j] = -1.;
-                                }
-
-                                secvertices_track_charge[secvertices_count][j] = tr->charge();
-                                secvertices_track_nhits[secvertices_count][j] = tr->numberOfValidHits();
-                                secvertices_track_nmissinghits[secvertices_count][j] = tr->numberOfLostHits();
-                                secvertices_track_npixelhits[secvertices_count][j] = tr->hitPattern().numberOfValidPixelHits();
-                                secvertices_track_npixellayers[secvertices_count][j] = tr->hitPattern().pixelLayersWithMeasurement();
-                                secvertices_track_nstriplayers[secvertices_count][j] = tr->hitPattern().stripLayersWithMeasurement();
-                            }
-
-                            secvertices_count++;
-
-                            if(secvertices_count == M_secverticesmaxcount) {
-                                cerr << "number of secvertices > M_secverticesmaxcount. They are missing." << endl;
-                                break;
-                            }
-                        }
-
-                    }
-                }
-            }
-        }
-    }
-
-    return (true);
-}
-
-bool RootMaker::AddMuVertices(const edm::Event &iEvent) {
-    if(cdebug) { cout<<"AddMuVertices..."<<endl; }
-
-    iEvent.getByToken(dharmonicToken_, dEdxharmonic2);
-    edm::Handle<reco::MuonCollection> Muons;
-    iEvent.getByToken(recoMuonsToken_, Muons);
-    int count = 0;
-
-    if(Muons.isValid() && primvertex_count > 0) {
-        vector<TransientTrack> testvec(2);
-        KalmanVertexFitter fitter(true);
-
-        // 1st loop over muons
-        for(unsigned int i = 0; i < Muons->size(); ++i) {
-            if(!((*Muons)[i].isGlobalMuon() && (*Muons)[i].isTrackerMuon() && (*Muons)[i].innerTrack().isNonnull())) {
-                continue;
-            }
-
-            TrackRef trA = (*Muons)[i].innerTrack();
-
-            // 2nd loop over muons
-            for(unsigned int j = i+1; j < Muons->size(); ++j) {
-                if(!((*Muons)[j].isGlobalMuon() && (*Muons)[j].isTrackerMuon() && (*Muons)[j].innerTrack().isNonnull())) {
-                    continue;
-                }
-
-                if(!((*Muons)[i].charge()* (*Muons)[j].charge() < 0)) {
-                    continue;
-                }
-
-                TrackRef trB = (*Muons)[j].innerTrack();
-                testvec[0] = TTrackBuilder->build(trA);
-                testvec[1] = TTrackBuilder->build(trB);
-
-                TransientVertex testvertex = fitter.vertex(testvec);
-
-                if(testvertex.isValid()) {
-                    const Vertex &secvertex = (Vertex)testvertex;
-                    using namespace TMath;
-                    TLorentzVector A(trA->px(), trA->py(), trA->pz(), Sqrt(Power(trA->px(), 2) + Power(trA->py(), 2) + Power(trA->pz(), 2)));
-                    TLorentzVector B(trB->px(), trB->py(), trB->pz(), Sqrt(Power(trB->px(), 2) + Power(trB->py(), 2) + Power(trB->pz(), 2)));
-                    double mass = (A+B).M();
-
-                    if(Abs(mass - 3.097) < 1.5 || Abs(mass - 9.46) < 1.5) {    //J/Psi and Y
-                        count++;
-                        musecvertices_vx[musecvertices_count] = secvertex.x();
-                        musecvertices_vy[musecvertices_count] = secvertex.y();
-                        musecvertices_vz[musecvertices_count] = secvertex.z();
-                        musecvertices_chi2[musecvertices_count] = secvertex.chi2();
-                        musecvertices_ndof[musecvertices_count] = secvertex.ndof();
-                        musecvertices_cov[musecvertices_count][0] = secvertex.covariance(0,0);
-                        musecvertices_cov[musecvertices_count][1] = secvertex.covariance(0,1);
-                        musecvertices_cov[musecvertices_count][2] = secvertex.covariance(0,2);
-                        musecvertices_cov[musecvertices_count][3] = secvertex.covariance(1,1);
-                        musecvertices_cov[musecvertices_count][4] = secvertex.covariance(1,2);
-                        musecvertices_cov[musecvertices_count][5] = secvertex.covariance(2,2);
-
-                        for(int j = 0; j < 2; ++j) {
-                            TrajectoryStateClosestToPoint TTrackState = testvec[j].trajectoryStateClosestToPoint(GlobalPoint(secvertex.x(), secvertex.y(), secvertex.z()));
-                            TrackRef tr;
-
-                            if(j==0) {
-                                tr = (*Muons)[i].innerTrack();
-                            }
-
-                            if(j==1) {
-                                tr = (*Muons)[j].innerTrack();
-                            }
-
-                            musecvertices_track_px[musecvertices_count][j]            = TTrackState.momentum().x();
-                            musecvertices_track_py[musecvertices_count][j]            = TTrackState.momentum().y();
-                            musecvertices_track_pz[musecvertices_count][j]            = TTrackState.momentum().z();
-                            musecvertices_track_closestpointx[musecvertices_count][j] = TTrackState.position().x();
-                            musecvertices_track_closestpointy[musecvertices_count][j] = TTrackState.position().y();
-                            musecvertices_track_closestpointz[musecvertices_count][j] = TTrackState.position().z();
-                            musecvertices_track_chi2[musecvertices_count][j]          = tr->chi2();
-                            musecvertices_track_ndof[musecvertices_count][j]          = tr->ndof();
-                            musecvertices_track_dxy[musecvertices_count][j]           = TTrackState.perigeeParameters().transverseImpactParameter();
-                            musecvertices_track_dxyerr[musecvertices_count][j]        = TTrackState.perigeeError().transverseImpactParameterError();
-                            musecvertices_track_dz[musecvertices_count][j]            = TTrackState.perigeeParameters().longitudinalImpactParameter();
-                            musecvertices_track_dzerr[musecvertices_count][j]         = TTrackState.perigeeError().longitudinalImpactParameterError();
-
-                            if(dEdxharmonic2.isValid()) {
-                                musecvertices_track_dedxharmonic2[musecvertices_count][j] = (*dEdxharmonic2)[tr].dEdx();
-                            } else {
-                                musecvertices_track_dedxharmonic2[musecvertices_count][j] = -1;
-                            }
-
-                            musecvertices_track_charge[musecvertices_count][j]        = tr->charge();
-                            musecvertices_track_nhits[musecvertices_count][j]         = tr->numberOfValidHits();
-                            musecvertices_track_nmissinghits[musecvertices_count][j]  = tr->numberOfLostHits();
-                            musecvertices_track_npixelhits[musecvertices_count][j]    = tr->hitPattern().numberOfValidPixelHits();
-                            musecvertices_track_npixellayers[musecvertices_count][j]  = tr->hitPattern().pixelLayersWithMeasurement();
-                            musecvertices_track_nstriplayers[musecvertices_count][j]  = tr->hitPattern().stripLayersWithMeasurement();
-                        }
-
-                        musecvertices_count++;
-
-                        if(musecvertices_count == M_musecverticesmaxcount) {
-                            cerr << "number of secvertices > M_musecverticesmaxcount. They are missing." << endl;
-                            break;
-                        }
-                    }
-                }
-            }// end of 2nd loop over muons
-        }// end of 1st loop over muons
-    }
-
-    if(crecsecvertices && count > 0) {
-        AddVertices(iEvent);
-    }
-
-    return (true);
 }
 
 double RootMaker::DR(const Candidate &A, const Candidate &B) {
