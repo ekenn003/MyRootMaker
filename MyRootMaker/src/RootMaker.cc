@@ -142,6 +142,8 @@ RootMaker::RootMaker(const edm::ParameterSet &iConfig) :
     cKaonMassWindow(iConfig.getUntrackedParameter<double> ("RecVertexKaonMassWin", 0.05)),
     cLambdaMassWindow(iConfig.getUntrackedParameter<double> ("RecVertexLambdaMassWin", 0.02)),
 
+    HLTPrescaleProvider_(iConfig, consumesCollector(), *this),
+
     propagatorWithMaterial(0)
 {
     testids.push_back(24);  //0
@@ -181,6 +183,7 @@ RootMaker::~RootMaker() {
     }
 }
 
+/*
 const PFCandidate &RootMaker::removeRef(const PFCandidatePtr &pfRef) {
     return *pfRef;
 }
@@ -199,6 +202,7 @@ std::vector<double> RootMaker::extract(const Collection &cands, Function func) {
 
     return output;
 }
+*/
 
 void RootMaker::beginJob() {
     if(cdebug) { cout<<"begin job..."<<endl; }
@@ -894,7 +898,7 @@ void RootMaker::beginJob() {
     runtree->Branch("run_l1techprescaletables", run_l1techprescaletables, "run_l1techprescaletables[run_l1techprescaletablescount]/i");
 }
 
-void RootMaker::beginRun(const edm::Run &iRun, const edm::EventSetup &iSetup) {
+void RootMaker::beginRun(const edm::Run &iRun, const edm::EventSetup &iSetup, const edm::ParameterSet& iConfig) {
     if(cdebug) { cout<<"beginRun..."<<endl; }
 
     if(propagatorWithMaterial != 0) {
@@ -943,9 +947,13 @@ void RootMaker::beginRun(const edm::Run &iRun, const edm::EventSetup &iSetup) {
     //HLT names and prescales
     bool changed = true;
 
-    if(ctrigger) {
+    //if(ctrigger) {
         HLTConfiguration.init(iRun, iSetup, cTriggerProcess, changed);
-    }
+        //HLTPrescaleProvider HLTPrescaleProvider_;
+        //HLTPrescaleProvider_(iConfig, consumesCollector(), *this);
+
+        HLTPrescaleProvider_.init(iRun, iSetup, cTriggerProcess, changed);
+    //}
 
     run_hltcount = HLTConfiguration.size();
 
@@ -1005,16 +1013,16 @@ void RootMaker::beginRun(const edm::Run &iRun, const edm::EventSetup &iSetup) {
     }
 
     strcpy(run_taudiscriminators, alltaudiscriminators.c_str());
-    //*/L1GtUtils l1info;
-    //*/l1info.retrieveL1EventSetup(iSetup);
+    ////L1GtUtils l1info;
+    ////l1info.retrieveL1EventSetup(iSetup);
 
-    //*/run_hltprescaletablescount = HLTConfiguration.prescaleSize()*HLTConfiguration.size();
+    run_hltprescaletablescount = HLTConfiguration.prescaleSize()*HLTConfiguration.size();
 
     for(unsigned j = 0 ; j < HLTConfiguration.prescaleSize() ; j++) {
         for(unsigned i = 0 ; i < HLTConfiguration.size() ; i++) {
             int l1bit = -1;
             int l1prescale = 0;
-            //*/L1GtUtils::TriggerCategory trigCategory;
+         ////   L1GtUtils::TriggerCategory trigCategory;
             const vector<pair<bool, string> > l1seed = HLTConfiguration.hltL1GTSeeds(i);
 
             if(l1seed.size() == 1) {
@@ -1025,7 +1033,7 @@ void RootMaker::beginRun(const edm::Run &iRun, const edm::EventSetup &iSetup) {
                 //    cout<<"l1bit = "<<l1bit <<endl;
                 //    cout<<"(l1GtPfAlgo.product()->gtPrescaleFactors())["<<j<<"][l1bit] = "<<(l1GtPfAlgo.product()->gtPrescaleFactors())[j][l1bit]<<"\n"<<endl;
                 //}
-                //*/l1info.l1AlgoTechTrigBitNumber(l1seed[0].second, trigCategory, l1bit);
+        ////        l1info.l1AlgoTechTrigBitNumber(l1seed[0].second, trigCategory, l1bit);
                 l1prescale = (l1GtPfAlgo.product()->gtPrescaleFactors())[j][l1bit];
             }
 
@@ -1145,7 +1153,8 @@ void RootMaker::analyze(const edm::Event &iEvent, const edm::EventSetup &iSetup)
 
     lumi_l1techprescaletable = (L1trigger->gtFdlWord()).gtPrescaleFactorIndexTech();
     lumi_l1algoprescaletable = (L1trigger->gtFdlWord()).gtPrescaleFactorIndexAlgo();
-    //*/lumi_hltprescaletable = HLTConfiguration.prescaleSet(iEvent, iSetup);
+    //lumi_hltprescaletable = HLTConfiguration.prescaleSet(iEvent, iSetup);
+    lumi_hltprescaletable = HLTPrescaleProvider_.prescaleSet(iEvent, iSetup);
     //if (cdebug) {
     //    cout<<"lumi_l1techprescaletable = "<<lumi_l1techprescaletable<<endl;
     //    cout<<"lumi_l1algoprescaletable = "<<lumi_l1algoprescaletable<<endl;

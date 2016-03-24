@@ -1,144 +1,62 @@
 // second line of test comments here
 #ifndef RootMaker_h
 #define RootMaker_h
-#include "FWCore/Framework/interface/MakerMacros.h"
 
-#include "FWCore/Framework/interface/Frameworkfwd.h"
-#include "FWCore/Framework/interface/EDAnalyzer.h"
+#include "CommonTools/UtilAlgos/interface/TFileService.h"
 
-#include <string>
-#include <map>
-#include <vector>
-#include <cstdlib>
-#include <algorithm>
-
-#include <boost/regex.hpp>
-#include <boost/algorithm/string.hpp>
-
-#include "FWCore/Framework/interface/Event.h"
-#include "FWCore/ParameterSet/interface/ParameterSet.h"
-#include "FWCore/Utilities/interface/InputTag.h"
-
-#include "FWCore/Framework/interface/LuminosityBlock.h"
-#include "DataFormats/Luminosity/interface/LumiSummary.h"
-
-#include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
-#include "DataFormats/Common/interface/TriggerResults.h"
-#include "DataFormats/HLTReco/interface/TriggerEvent.h"
-#include "FWCore/Common/interface/TriggerNames.h"
-
-//#include "DataFormats/L1Trigger/interface/L1MuonParticle.h"
-//#include "DataFormats/L1Trigger/interface/L1MuonParticleFwd.h"
-//#include "DataFormats/L1Trigger/interface/L1EmParticle.h"
-//#include "DataFormats/L1Trigger/interface/L1EmParticleFwd.h"
-#include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerReadoutRecord.h"
-//#include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerObjectMapRecord.h"
-#include "CondFormats/L1TObjects/interface/L1GtPrescaleFactors.h"
 #include "CondFormats/DataRecord/interface/L1GtPrescaleFactorsAlgoTrigRcd.h"
 #include "CondFormats/DataRecord/interface/L1GtPrescaleFactorsTechTrigRcd.h"
-#include "L1Trigger/GlobalTriggerAnalyzer/interface/L1GtUtils.h"
+#include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
+#include "CondFormats/JetMETObjects/interface/JetCorrectorParameters.h"
+#include "CondFormats/L1TObjects/interface/L1GtPrescaleFactors.h"
+#include "FWCore/Framework/interface/ConsumesCollector.h"
 
-#include "RecoEcal/EgammaCoreTools/interface/EcalClusterLazyTools.h"
 
+#include "DataFormats/BTauReco/interface/JetTag.h"
 #include "DataFormats/CaloRecHit/interface/CaloCluster.h"
 #include "DataFormats/CaloRecHit/interface/CaloClusterFwd.h"
-#include "DataFormats/TrackReco/interface/Track.h"
-#include "DataFormats/TrackReco/interface/TrackFwd.h"
-#include "TrackingTools/TransientTrack/interface/TransientTrack.h"
-#include "DataFormats/TrackReco/interface/DeDxData.h"
-#include "DataFormats/EgammaReco/interface/SuperCluster.h"
-#include "DataFormats/EgammaReco/interface/SuperClusterFwd.h"
-#include "DataFormats/EgammaCandidates/interface/GsfElectron.h"
-#include "DataFormats/EgammaCandidates/interface/GsfElectronFwd.h"
-#include "DataFormats/GsfTrackReco/interface/GsfTrack.h"
-
-#include "DataFormats/EgammaCandidates/interface/Photon.h"
-#include "DataFormats/EgammaCandidates/interface/PhotonFwd.h"
+#include "DataFormats/Candidate/interface/VertexCompositeCandidate.h"
+#include "DataFormats/Candidate/interface/VertexCompositeCandidateFwd.h"
+#include "DataFormats/Common/interface/TriggerResults.h"
+#include "DataFormats/EcalRecHit/interface/EcalRecHitCollections.h"
 #include "DataFormats/EgammaCandidates/interface/Conversion.h"
 #include "DataFormats/EgammaCandidates/interface/ConversionFwd.h"
+#include "DataFormats/EgammaCandidates/interface/GsfElectron.h"
+#include "DataFormats/EgammaCandidates/interface/GsfElectronFwd.h"
+#include "DataFormats/EgammaCandidates/interface/Photon.h"
+#include "DataFormats/EgammaCandidates/interface/PhotonFwd.h"
+#include "DataFormats/EgammaReco/interface/SuperCluster.h"
+#include "DataFormats/EgammaReco/interface/SuperClusterFwd.h"
+#include "DataFormats/GeometrySurface/interface/BoundCylinder.h"
+#include "DataFormats/GeometrySurface/interface/BoundDisk.h"
+#include "DataFormats/GeometrySurface/interface/Cylinder.h"
+#include "DataFormats/GeometrySurface/interface/Plane.h"
+#include "DataFormats/GeometrySurface/interface/SimpleCylinderBounds.h"
+#include "DataFormats/GeometrySurface/interface/SimpleDiskBounds.h"
+#include "DataFormats/GsfTrackReco/interface/GsfTrack.h"
+#include "DataFormats/HLTReco/interface/TriggerEvent.h"
+#include "DataFormats/HepMCCandidate/interface/GenParticle.h"
+#include "DataFormats/HepMCCandidate/interface/GenParticleFwd.h"
+#include "DataFormats/JetReco/interface/CaloJet.h"
+#include "DataFormats/JetReco/interface/CaloJetCollection.h"
+#include "DataFormats/JetReco/interface/Jet.h"
+#include "DataFormats/JetReco/interface/JetCollection.h"
+#include "DataFormats/JetReco/interface/PFJet.h"
+#include "DataFormats/JetReco/interface/PFJetCollection.h"
+#include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerReadoutRecord.h"
+#include "DataFormats/Luminosity/interface/LumiSummary.h"
+#include "DataFormats/METReco/interface/CaloMET.h"
+#include "DataFormats/METReco/interface/CaloMETFwd.h"
+#include "DataFormats/METReco/interface/GenMET.h"
+#include "DataFormats/METReco/interface/GenMETFwd.h"
+#include "DataFormats/METReco/interface/HcalNoiseSummary.h"
+#include "DataFormats/METReco/interface/MET.h"
+#include "DataFormats/METReco/interface/METFwd.h"
+#include "DataFormats/METReco/interface/PFMET.h"
+#include "DataFormats/METReco/interface/PFMETFwd.h"
 #include "DataFormats/MuonReco/interface/Muon.h"
 #include "DataFormats/MuonReco/interface/MuonFwd.h"
 #include "DataFormats/MuonReco/interface/MuonSelectors.h"
-#include "DataFormats/TauReco/interface/PFTau.h"
-#include "DataFormats/TauReco/interface/PFTauFwd.h"
-#include "DataFormats/TauReco/interface/PFTauDiscriminator.h"
-#include "DataFormats/METReco/interface/MET.h"
-#include "DataFormats/METReco/interface/METFwd.h"
-#include "DataFormats/METReco/interface/CaloMET.h"
-#include "DataFormats/METReco/interface/CaloMETFwd.h"
-#include "DataFormats/METReco/interface/PFMET.h"
-#include "DataFormats/METReco/interface/PFMETFwd.h"
-#include "DataFormats/BTauReco/interface/JetTag.h"
-#include "DataFormats/JetReco/interface/CaloJet.h"
-#include "DataFormats/JetReco/interface/CaloJetCollection.h"
-#include "DataFormats/JetReco/interface/PFJet.h"
-#include "DataFormats/JetReco/interface/PFJetCollection.h"
-#include "DataFormats/JetReco/interface/Jet.h"
-#include "DataFormats/JetReco/interface/JetCollection.h"
-#include "JetMETCorrections/Objects/interface/JetCorrector.h"
-#include "JetMETCorrections/Objects/interface/JetCorrectionsRecord.h"
-#include "CondFormats/JetMETObjects/interface/JetCorrectorParameters.h"
-#include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
-#include "DataFormats/VertexReco/interface/Vertex.h"
-#include "DataFormats/VertexReco/interface/VertexFwd.h"
-#include "DataFormats/Candidate/interface/VertexCompositeCandidate.h"
-#include "DataFormats/Candidate/interface/VertexCompositeCandidateFwd.h"
-#include "DataFormats/RecoCandidate/interface/RecoChargedCandidate.h"
-
-#include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
-#include "SimDataFormats/JetMatching/interface/JetFlavourMatching.h"
-#include "DataFormats/HepMCCandidate/interface/GenParticle.h"
-#include "DataFormats/HepMCCandidate/interface/GenParticleFwd.h"
-#include "DataFormats/METReco/interface/GenMET.h"
-#include "DataFormats/METReco/interface/GenMETFwd.h"
-#include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
-
-#include "TrackingTools/Records/interface/TransientTrackRecord.h"
-#include "TrackingTools/TransientTrack/interface/TransientTrackBuilder.h"
-
-#include "DataFormats/PatCandidates/interface/Muon.h"
-#include "DataFormats/PatCandidates/interface/Electron.h"
-#include "DataFormats/PatCandidates/interface/Photon.h"
-#include "DataFormats/PatCandidates/interface/Tau.h"
-#include "DataFormats/PatCandidates/interface/Jet.h"
-#include "DataFormats/PatCandidates/interface/MET.h"
-
-#include "DataFormats/EcalRecHit/interface/EcalRecHitCollections.h"
-#include "Geometry/CaloGeometry/interface/CaloGeometry.h"
-#include "Geometry/Records/interface/CaloGeometryRecord.h"
-
-#include "RecoEgamma/EgammaTools/interface/ConversionInfo.h"
-#include "RecoEgamma/EgammaTools/interface/ConversionFinder.h"
-
-#include "DataFormats/RecoCandidate/interface/IsoDeposit.h"
-#include "RecoEgamma/EgammaTools/interface/ConversionTools.h"
-
-#include "TH1D.h"
-#include "TH2D.h"
-#include "TMath.h"
-#include "TTree.h"
-#include "TLorentzVector.h"
-#include <Math/Functions.h>
-#include <Math/SVector.h>
-#include <Math/SMatrix.h>
-
-#include "FWCore/ServiceRegistry/interface/Service.h"
-#include "CommonTools/UtilAlgos/interface/TFileService.h"
-
-#include "DataFormats/GeometrySurface/interface/SimpleCylinderBounds.h"
-#include "DataFormats/GeometrySurface/interface/SimpleDiskBounds.h"
-#include "DataFormats/GeometrySurface/interface/Cylinder.h"
-#include "DataFormats/GeometrySurface/interface/Plane.h"
-#include "DataFormats/GeometrySurface/interface/BoundCylinder.h"
-#include "DataFormats/GeometrySurface/interface/BoundDisk.h"
-#include "TrackingTools/TrajectoryState/interface/TrajectoryStateOnSurface.h"
-#include "TrackingTools/TransientTrack/interface/TransientTrack.h"
-#include "TrackingTools/MaterialEffects/interface/PropagatorWithMaterial.h"
-#include "MagneticField/Records/interface/IdealMagneticFieldRecord.h"
-
-#include "RecoVertex/KalmanVertexFit/interface/KalmanVertexFitter.h"
-#include "RecoVertex/VertexPrimitives/interface/TransientVertex.h"
-
 #include "DataFormats/ParticleFlowCandidate/interface/IsolatedPFCandidate.h"
 #include "DataFormats/ParticleFlowCandidate/interface/IsolatedPFCandidateFwd.h"
 #include "DataFormats/ParticleFlowCandidate/interface/PFCandidate.h"
@@ -151,16 +69,95 @@
 #include "DataFormats/ParticleFlowCandidate/interface/PFCandidatePhotonExtraFwd.h"
 #include "DataFormats/ParticleFlowCandidate/interface/PileUpPFCandidate.h"
 #include "DataFormats/ParticleFlowCandidate/interface/PileUpPFCandidateFwd.h"
+#include "DataFormats/PatCandidates/interface/Electron.h"
+#include "DataFormats/PatCandidates/interface/Jet.h"
+#include "DataFormats/PatCandidates/interface/MET.h"
+#include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
 #include "DataFormats/PatCandidates/interface/PackedTriggerPrescales.h"
-#include "DataFormats/METReco/interface/HcalNoiseSummary.h"
-
+#include "DataFormats/PatCandidates/interface/Photon.h"
+#include "DataFormats/PatCandidates/interface/Tau.h"
+#include "DataFormats/RecoCandidate/interface/IsoDeposit.h"
+#include "DataFormats/RecoCandidate/interface/RecoChargedCandidate.h"
+#include "DataFormats/TauReco/interface/PFTau.h"
+#include "DataFormats/TauReco/interface/PFTauDiscriminator.h"
+#include "DataFormats/TauReco/interface/PFTauFwd.h"
+#include "DataFormats/TrackReco/interface/DeDxData.h"
+#include "DataFormats/TrackReco/interface/Track.h"
+#include "DataFormats/TrackReco/interface/TrackFwd.h"
+#include "DataFormats/VertexReco/interface/Vertex.h"
+#include "DataFormats/VertexReco/interface/VertexFwd.h"
 
 #include "EgammaAnalysis/ElectronTools/src/PFIsolationEstimator.cc"
 #include "EgammaAnalysis/ElectronTools/src/SuperClusterHelper.cc"
+
+#include "FWCore/Common/interface/TriggerNames.h"
+#include "FWCore/Framework/interface/EDAnalyzer.h"
+#include "FWCore/Framework/interface/Event.h"
+#include "FWCore/Framework/interface/Frameworkfwd.h"
+#include "FWCore/Framework/interface/LuminosityBlock.h"
+#include "FWCore/Framework/interface/MakerMacros.h"
+#include "FWCore/ParameterSet/interface/ParameterSet.h"
+#include "FWCore/ServiceRegistry/interface/Service.h"
+#include "FWCore/Utilities/interface/InputTag.h"
+
+#include "Geometry/CaloGeometry/interface/CaloGeometry.h"
+#include "Geometry/Records/interface/CaloGeometryRecord.h"
+
+#include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
+#include "HLTrigger/HLTcore/interface/HLTPrescaleProvider.h"
+
+#include "JetMETCorrections/Objects/interface/JetCorrectionsRecord.h"
+#include "JetMETCorrections/Objects/interface/JetCorrector.h"
+
+#include "MagneticField/Records/interface/IdealMagneticFieldRecord.h"
+
 #include "PFIsolation/SuperClusterFootprintRemoval/interface/SuperClusterFootprintRemoval.h"
 
+#include "RecoEcal/EgammaCoreTools/interface/EcalClusterLazyTools.h"
+
+#include "RecoEgamma/EgammaTools/interface/ConversionFinder.h"
+#include "RecoEgamma/EgammaTools/interface/ConversionInfo.h"
+#include "RecoEgamma/EgammaTools/interface/ConversionTools.h"
+
+#include "RecoVertex/KalmanVertexFit/interface/KalmanVertexFitter.h"
+#include "RecoVertex/VertexPrimitives/interface/TransientVertex.h"
+
+#include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
+#include "SimDataFormats/JetMatching/interface/JetFlavourMatching.h"
+#include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
+
+#include "TrackingTools/MaterialEffects/interface/PropagatorWithMaterial.h"
+#include "TrackingTools/Records/interface/TransientTrackRecord.h"
+#include "TrackingTools/TrajectoryState/interface/TrajectoryStateOnSurface.h"
+#include "TrackingTools/TransientTrack/interface/TransientTrack.h"
+#include "TrackingTools/TransientTrack/interface/TransientTrack.h"
+#include "TrackingTools/TransientTrack/interface/TransientTrackBuilder.h"
+
 #include "TGeoPara.h"
+#include "TH1D.h"
+#include "TH2D.h"
+#include "TLorentzVector.h"
+#include "TMath.h"
+#include "TTree.h"
+
+#include <Math/Functions.h>
+#include <Math/SMatrix.h>
+#include <Math/SVector.h>
+#include <algorithm>
+#include <boost/algorithm/string.hpp>
+#include <boost/regex.hpp>
+#include <cstdlib>
+#include <map>
+#include <string>
+#include <vector>
+
+//#include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerObjectMapRecord.h"
+//#include "DataFormats/L1Trigger/interface/L1EmParticle.h"
+//#include "DataFormats/L1Trigger/interface/L1EmParticleFwd.h"
+//#include "DataFormats/L1Trigger/interface/L1MuonParticle.h"
+//#include "DataFormats/L1Trigger/interface/L1MuonParticleFwd.h"
+//#include "L1Trigger/GlobalTriggerAnalyzer/interface/L1GtUtils.h"
 
 using namespace std;
 using namespace reco;
@@ -192,11 +189,12 @@ class RootMaker : public edm::EDAnalyzer {
     virtual void beginJob();
     virtual void endJob();
 
+/*
     const PFCandidate &removeRef(const PFCandidatePtr &pfRef);
     template<typename Collection, typename Function>
     std::vector<double> extract(const Collection &cands, Function func);
-
-    virtual void beginRun(const edm::Run &iRun, const edm::EventSetup &iSetup);
+*/
+    virtual void beginRun(const edm::Run &iRun, const edm::EventSetup &iSetup, const edm::ParameterSet& iConfig);
     void TriggerIndexSelection(vector<string> configstring, vector<pair<unsigned, int> > &triggers, string &allnames);
     virtual void beginLuminosityBlock(const edm::LuminosityBlock &iLumiBlock, const edm::EventSetup &iSetup);
     virtual void endLuminosityBlock(const edm::LuminosityBlock &iLumiBlock, const edm::EventSetup &iSetup);
@@ -391,9 +389,11 @@ class RootMaker : public edm::EDAnalyzer {
     Cylinder::ConstCylinderPointer ecalBarrel;
     Plane::ConstPlanePointer ecalNegativeEtaEndcap;
     Plane::ConstPlanePointer ecalPositiveEtaEndcap;
-    PropagatorWithMaterial *propagatorWithMaterial;
 
+    HLTPrescaleProvider HLTPrescaleProvider_;
+    PropagatorWithMaterial *propagatorWithMaterial;
     HLTConfigProvider HLTConfiguration;
+
     edm::Handle<edm::TriggerResults> HLTrigger;
     edm::Handle<trigger::TriggerEvent> HLTriggerEvent;
     //edm::Handle<l1extra::L1MuonParticleCollection> L1Muons;
